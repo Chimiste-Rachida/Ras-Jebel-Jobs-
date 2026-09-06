@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ras Jebel Jobs — Connexion</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}.wrap{max-width:1050px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}.logo{font-size:25px;font-weight:800;color:#123b5d}.card{background:white;border-radius:20px;box-shadow:0 10px 35px #123b5d18;padding:30px;max-width:520px;margin:30px auto}.tabs{display:flex;gap:8px;background:#eef2f6;padding:5px;border-radius:12px;margin-bottom:22px}.tabs button{flex:1;border:0;padding:12px;border-radius:9px;cursor:pointer;background:transparent;font-weight:700}.tabs .on{background:#123b5d;color:white}.role{display:flex;gap:10px;margin:15px 0}.role button{flex:1;padding:12px;border:1px solid #d8dee8;border-radius:10px;background:white;cursor:pointer}.role .sel{border-color:#f5a623;background:#fff8ec}.field{margin:13px 0}.field label{display:block;font-weight:700;margin-bottom:7px}.field input{width:100%;padding:13px;border:1px solid #d8dee8;border-radius:10px;font-size:15px}.main{width:100%;padding:14px;border:0;border-radius:10px;background:#123b5d;color:white;font-weight:800;font-size:16px;cursor:pointer;margin-top:8px}.msg{margin-top:14px;padding:12px;border-radius:10px;display:none}.ok{background:#e9f8ef;color:#146c36}.err{background:#fff0f0;color:#a11}.small{text-align:center;color:#687386;font-size:13px;margin-top:18px}.back{color:#123b5d;text-decoration:none;font-weight:700}@media(max-width:600px){.wrap{padding:15px}.card{padding:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div class="logo">🇹🇳 Ras Jebel Jobs</div><a class="back" href="index.html">← Accueil</a></div>
+<div class="card">
+<div class="tabs"><button id="loginTab" class="on" onclick="showMode('login')">Connexion</button><button id="signupTab" onclick="showMode('signup')">Créer un compte</button></div>
+<div id="roleBox" style="display:none"><b>Je suis :</b><div class="role"><button id="candidate" class="sel" onclick="setRole('candidate')">👤 Chercheur d'emploi</button><button id="company" onclick="setRole('company')">🏢 Entreprise</button></div></div>
+<div id="nameBox" class="field" style="display:none"><label>Nom et prénom / Nom de l'entreprise</label><input id="name" placeholder="Votre nom"></div>
+<div class="field"><label>Email</label><input id="email" type="email" placeholder="exemple@email.com"></div>
+<div class="field"><label>Mot de passe</label><input id="password" type="password" placeholder="Minimum 6 caractères"></div>
+<button id="submit" class="main" onclick="submitAuth()">Se connecter</button>
+<div id="msg" class="msg"></div>
+<div class="small">Ras Jebel Jobs — Plateforme locale d'emploi</div>
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://gkiynoqovpuzudzpnryn.supabase.co';
+const SUPABASE_KEY='sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw';
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let mode='login',role='candidate';
+function showMode(m){mode=m;document.getElementById('loginTab').classList.toggle('on',m==='login');document.getElementById('signupTab').classList.toggle('on',m==='signup');document.getElementById('roleBox').style.display=m==='signup'?'block':'none';document.getElementById('nameBox').style.display=m==='signup'?'block':'none';document.getElementById('submit').textContent=m==='signup'?'Créer mon compte':'Se connecter';hideMsg();}
+function setRole(r){role=r;document.getElementById('candidate').classList.toggle('sel',r==='candidate');document.getElementById('company').classList.toggle('sel',r==='company');}
+function msg(t,ok=false){const e=document.getElementById('msg');e.textContent=t;e.className='msg '+(ok?'ok':'err');e.style.display='block'} function hideMsg(){document.getElementById('msg').style.display='none'}
+async function submitAuth(){hideMsg();const email=document.getElementById('email').value.trim();const password=document.getElementById('password').value;const name=document.getElementById('name').value.trim();if(!email||!password)return msg('اكتب الإيميل وكلمة السر.');if(mode==='signup'&&password.length<6)return msg('كلمة السر لازم تكون 6 أحرف على الأقل.');
+try{if(mode==='signup'){if(!name)return msg('اكتب الاسم.');const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:name,role}}});if(error)throw error;msg('تم إنشاء الحساب. تفقد الإيميل إذا طلب منك تأكيد الحساب.',true);}else{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;msg('تم تسجيل الدخول بنجاح ✅',true);setTimeout(()=>location.href=role==='company'?'company-dashboard.html':'candidate-dashboard.html',700);}}catch(e){msg(e.message||'حدث خطأ. حاول مرة أخرى.')}}
+</script>
+</body></html>
