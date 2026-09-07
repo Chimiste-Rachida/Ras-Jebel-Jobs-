@@ -1,324 +1,120 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
 
-<title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #222;
+    }
 
-<style>
+    header {
+      background: #123b5d;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f7fa;
-    margin: 0;
-    padding: 20px;
-}
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-}
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
 
-h1 {
-    text-align: center;
-}
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      margin: 8px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
 
-.job {
-    background: white;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px #ddd;
-}
+    button {
+      background: #123b5d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-button {
-    background: #0f766e;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-}
+    .job {
+      border: 1px solid #ddd;
+      padding: 18px;
+      margin: 15px 0;
+      border-radius: 10px;
+    }
 
-button:hover {
-    opacity: 0.9;
-}
+    .job h3 {
+      color: #123b5d;
+      margin-top: 0;
+    }
 
-.success {
-    color: green;
-    font-weight: bold;
-}
+    .error {
+      color: #c62828;
+      background: #ffebee;
+      padding: 15px;
+      border-radius: 8px;
+    }
 
-.error {
-    color: red;
-    font-weight: bold;
-}
+    .success {
+      color: #2e7d32;
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 8px;
+    }
 
-input,
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 15px;
-    box-sizing: border-box;
-}
-
-</style>
-
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #123b5d;
+      color: white;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 
 <body>
 
+<header>
+  <h1>👤 فضاء الباحث عن عمل</h1>
+  <p>حضّر ملفك المهني وابدأ في البحث عن فرصتك.</p>
+</header>
+
 <div class="container">
 
-<h1>👤 فضاء الباحث عن عمل</h1>
+  <div class="card">
+    <h2>📝 معلوماتي</h2>
 
-<p>
-حضّر ملفك المهني وابدأ في البحث عن فرصتك.
-</p>
+    <label>الإسم واللقب</label>
+    <input id="fullName" type="text" placeholder="الإسم واللقب">
 
-<hr>
+    <label>البريد الإلكتروني</label>
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
 
-<h2>📝 معلوماتي</h2>
+    <label>رقم الهاتف</label>
+    <input id="phone" type="text" placeholder="رقم الهاتف">
 
-<label>الإسم واللقب</label>
-<input type="text" id="name">
+    <label>الاختصاص</label>
+    <input id="specialty" type="text" placeholder="مثال: Chimie">
 
-<label>البريد الإلكتروني</label>
-<input type="email" id="email">
+    <label>المهارات</label>
+    <textarea id="skills" placeholder="اكتب مهاراتك..."></textarea>
 
-<label>رقم الهاتف</label>
-<input type="tel" id="phone">
-
-<label>الاختصاص</label>
-<input type="text" id="speciality">
-
-<label>المهارات</label>
-<textarea id="skills"></textarea>
-
-<button onclick="saveProfile()">
-💾 حفظ الملف
-</button>
-
-<p id="profileMessage"></p>
-
-<hr>
-
-<h2>📄 CV متاعي</h2>
-
-<p>اختار الـCV من الهاتف:</p>
-
-<input type="file" id="cv" accept=".pdf,.doc,.docx">
-
-<hr>
-
-<h2>💼 عروض الشغل المتاحة</h2>
-
-<div id="jobs">
-جاري تحميل عروض الشغل...
-</div>
-
-</div>
-
-<script>
-
-/* ==============================
-   SUPABASE
-============================== */
-
-const SUPABASE_URL =
-"https://gkiynoqovpuzudzpnryn.supabase.co";
-
-const SUPABASE_ANON_KEY =
-"sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
-
-const supabaseClient =
-window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-);
-
-
-/* ==============================
-   CANDIDATE
-============================== */
-
-const CANDIDATE_ID =
-"78a1c8a4-3c76-46da-918a-dd6c6bd5370b";
-
-
-/* ==============================
-   SAVE PROFILE DEMO
-============================== */
-
-function saveProfile() {
-
-    document.getElementById("profileMessage").innerText =
-    "✅ تم حفظ الملف الشخصي بنجاح!";
-
-}
-
-
-/* ==============================
-   LOAD JOBS
-============================== */
-
-async function loadJobs() {
-
-    const container =
-    document.getElementById("jobs");
-
-    const { data, error } =
-    await supabaseClient
-    .from("jobs")
-    .select(
-        "id,title,description,location,status,experience,contract_type"
-    )
-    .eq("status", "active")
-    .order("created_at", {
-        ascending: false
-    });
-
-
-    if (error) {
-
-        console.error(error);
-
-        container.innerHTML =
-        '<p class="error">❌ صار مشكل في تحميل عروض الشغل.</p>';
-
-        return;
-    }
-
-
-    if (!data || data.length === 0) {
-
-        container.innerHTML =
-        "<p>لا توجد عروض شغل متاحة حاليًا.</p>";
-
-        return;
-    }
-
-
-    container.innerHTML = "";
-
-
-    data.forEach(function(job) {
-
-        container.innerHTML += `
-
-        <div class="job">
-
-            <h3>🧪 ${job.title}</h3>
-
-            <p>📍 ${job.location || ""}</p>
-
-            <p>💼 ${job.contract_type || ""}</p>
-
-            <p>👩‍🔬 ${job.experience || ""}</p>
-
-            <p>${job.description || ""}</p>
-
-            <label>💬 رسالة الترشح</label>
-
-            <textarea
-                id="message-${job.id}"
-                placeholder="اكتب رسالة قصيرة..."
-            ></textarea>
-
-            <br>
-
-            <button onclick="applyJob('${job.id}')">
-                📩 ترشح للعرض
-            </button>
-
-            <p id="apply-${job.id}"></p>
-
-        </div>
-
-        `;
-
-    });
-
-}
-
-
-/* ==============================
-   APPLY TO JOB
-============================== */
-
-async function applyJob(jobId) {
-
-    const messageElement =
-    document.getElementById("message-" + jobId);
-
-    const resultElement =
-    document.getElementById("apply-" + jobId);
-
-
-    const message =
-    messageElement.value;
-
-
-    resultElement.innerText =
-    "⏳ جاري تسجيل الترشح...";
-
-
-    const { data, error } =
-    await supabaseClient
-    .from("applications")
-    .insert({
-
-        job_id: jobId,
-
-        candidate_id: CANDIDATE_ID,
-
-        cv_url: null,
-
-        message: message,
-
-        status: "pending"
-
-    })
-    .select();
-
-
-    if (error) {
-
-        console.error(error);
-
-        resultElement.innerText =
-        "❌ صار مشكل في تسجيل الترشح: " +
-        error.message;
-
-        resultElement.className =
-        "error";
-
-        return;
-    }
-
-
-    resultElement.innerText =
-    "✅ تم تسجيل ترشحك بنجاح!";
-
-    resultElement.className =
-    "success";
-
-}
-
-
-/* ==============================
-   START
-============================== */
-
-loadJobs();
-
-</script>
-
-</body>
-
-</html>
+    <button onclick="saveProfile()">
