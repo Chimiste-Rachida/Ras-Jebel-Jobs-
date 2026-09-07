@@ -1,86 +1,216 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{
-    font-family:Arial,sans-serif;
-    max-width:900px;
-    margin:auto;
-    padding:20px;
-    background:#f5f7fa;
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 20px;
 }
-h1{text-align:center;}
-.job{
-    background:white;
-    padding:20px;
-    margin:15px 0;
-    border-radius:12px;
-    box-shadow:0 2px 8px #ddd;
+
+.container {
+    max-width: 900px;
+    margin: auto;
 }
-button{
-    padding:10px 18px;
-    border:0;
-    border-radius:8px;
-    cursor:pointer;
+
+h1 {
+    text-align: center;
 }
+
+.job {
+    background: white;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px #ddd;
+}
+
+button {
+    background: #0f766e;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.success {
+    color: green;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    box-sizing: border-box;
+}
+
 </style>
+
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>👤 فضاء الباحث عن عمل</h1>
-<p>حضّر ملفك المهني وابدأ في البحث عن فرصتك.</p>
+
+<p>
+حضّر ملفك المهني وابدأ في البحث عن فرصتك.
+</p>
+
+<hr>
+
+<h2>📝 معلوماتي</h2>
+
+<label>الإسم واللقب</label>
+<input type="text" id="name">
+
+<label>البريد الإلكتروني</label>
+<input type="email" id="email">
+
+<label>رقم الهاتف</label>
+<input type="tel" id="phone">
+
+<label>الاختصاص</label>
+<input type="text" id="speciality">
+
+<label>المهارات</label>
+<textarea id="skills"></textarea>
+
+<button onclick="saveProfile()">
+💾 حفظ الملف
+</button>
+
+<p id="profileMessage"></p>
+
+<hr>
+
+<h2>📄 CV متاعي</h2>
+
+<p>اختار الـCV من الهاتف:</p>
+
+<input type="file" id="cv" accept=".pdf,.doc,.docx">
+
+<hr>
 
 <h2>💼 عروض الشغل المتاحة</h2>
 
 <div id="jobs">
-    جاري تحميل عروض الشغل...
+جاري تحميل عروض الشغل...
+</div>
+
 </div>
 
 <script>
 
-const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_...";
+/* ==============================
+   SUPABASE
+============================== */
 
-const supabaseClient = window.supabase.createClient(
+const SUPABASE_URL =
+"https://gkiynoqovpuzudzpnryn.supabase.co";
+
+const SUPABASE_ANON_KEY =
+"sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+const supabaseClient =
+window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
 );
 
-async function loadJobs(){
 
-    const { data, error } = await supabaseClient
-        .from("jobs")
-        .select("id,title,description,location,status,experience,contract_type")
-        .eq("status","active")
-        .order("created_at",{ascending:false});
+/* ==============================
+   CANDIDATE
+============================== */
 
-    const container = document.getElementById("jobs");
+const CANDIDATE_ID =
+"78a1c8a4-3c76-46da-918a-dd6c6bd5370b";
 
-    if(error){
-        container.innerHTML =
-        "<p>❌ صار مشكل في تحميل عروض الشغل.</p>";
+
+/* ==============================
+   SAVE PROFILE DEMO
+============================== */
+
+function saveProfile() {
+
+    document.getElementById("profileMessage").innerText =
+    "✅ تم حفظ الملف الشخصي بنجاح!";
+
+}
+
+
+/* ==============================
+   LOAD JOBS
+============================== */
+
+async function loadJobs() {
+
+    const container =
+    document.getElementById("jobs");
+
+    const { data, error } =
+    await supabaseClient
+    .from("jobs")
+    .select(
+        "id,title,description,location,status,experience,contract_type"
+    )
+    .eq("status", "active")
+    .order("created_at", {
+        ascending: false
+    });
+
+
+    if (error) {
+
         console.error(error);
+
+        container.innerHTML =
+        '<p class="error">❌ صار مشكل في تحميل عروض الشغل.</p>';
+
         return;
     }
 
-    if(!data || data.length === 0){
+
+    if (!data || data.length === 0) {
+
         container.innerHTML =
         "<p>لا توجد عروض شغل متاحة حاليًا.</p>";
+
         return;
     }
+
 
     container.innerHTML = "";
 
-    data.forEach(job => {
+
+    data.forEach(function(job) {
 
         container.innerHTML += `
+
         <div class="job">
 
             <h3>🧪 ${job.title}</h3>
@@ -93,23 +223,102 @@ async function loadJobs(){
 
             <p>${job.description || ""}</p>
 
+            <label>💬 رسالة الترشح</label>
+
+            <textarea
+                id="message-${job.id}"
+                placeholder="اكتب رسالة قصيرة..."
+            ></textarea>
+
+            <br>
+
             <button onclick="applyJob('${job.id}')">
                 📩 ترشح للعرض
             </button>
 
+            <p id="apply-${job.id}"></p>
+
         </div>
+
         `;
 
     });
+
 }
 
-function applyJob(jobId){
-    alert("✅ تم تسجيل ترشحك المبدئي للعرض!");
+
+/* ==============================
+   APPLY TO JOB
+============================== */
+
+async function applyJob(jobId) {
+
+    const messageElement =
+    document.getElementById("message-" + jobId);
+
+    const resultElement =
+    document.getElementById("apply-" + jobId);
+
+
+    const message =
+    messageElement.value;
+
+
+    resultElement.innerText =
+    "⏳ جاري تسجيل الترشح...";
+
+
+    const { data, error } =
+    await supabaseClient
+    .from("applications")
+    .insert({
+
+        job_id: jobId,
+
+        candidate_id: CANDIDATE_ID,
+
+        cv_url: null,
+
+        message: message,
+
+        status: "pending"
+
+    })
+    .select();
+
+
+    if (error) {
+
+        console.error(error);
+
+        resultElement.innerText =
+        "❌ صار مشكل في تسجيل الترشح: " +
+        error.message;
+
+        resultElement.className =
+        "error";
+
+        return;
+    }
+
+
+    resultElement.innerText =
+    "✅ تم تسجيل ترشحك بنجاح!";
+
+    resultElement.className =
+    "success";
+
 }
+
+
+/* ==============================
+   START
+============================== */
 
 loadJobs();
 
 </script>
 
 </body>
+
 </html>
