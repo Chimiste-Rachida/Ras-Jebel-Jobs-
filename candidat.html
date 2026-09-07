@@ -41,4 +41,29 @@ document.getElementById("message").innerText =
 </script>
 
 </body>
+<h2>📄 CV متاعي</h2>
+
+<p>اختار الـCV من الهاتف متاعك:</p>
+
+<input type="file" id="cv" accept=".pdf,.doc,.docx">
+
+<br><br>
+
+<button onclick="saveCV()">📤 إضافة الـCV</button>
+
+<p id="cvMessage"></p>
+
+<script>
+function saveCV(){
+    const file = document.getElementById("cv").files[0];
+
+    if(!file){
+        alert("⚠️ اختار ملف CV أولاً");
+        return;
+    }
+
+    document.getElementById("cvMessage").innerText =
+    "✅ تم اختيار الـCV: " + file.name;
+}
+</script>
 </html>
