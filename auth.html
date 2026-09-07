@@ -2,8 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ras Jebel Jobs — Connexion</title>
 
 <style>
@@ -13,26 +12,26 @@ body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f5f7fb;
-color:#172033
+color:#172033;
 }
 
 .wrap{
 max-width:1050px;
 margin:auto;
-padding:24px
+padding:24px;
 }
 
 .top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:30px
+margin-bottom:30px;
 }
 
 .logo{
 font-size:25px;
 font-weight:800;
-color:#123b5d
+color:#123b5d;
 }
 
 .card{
@@ -41,7 +40,7 @@ border-radius:20px;
 box-shadow:0 10px 35px #123b5d18;
 padding:30px;
 max-width:520px;
-margin:30px auto
+margin:30px auto;
 }
 
 .tabs{
@@ -50,7 +49,7 @@ gap:8px;
 background:#eef2f6;
 padding:5px;
 border-radius:12px;
-margin-bottom:22px
+margin-bottom:22px;
 }
 
 .tabs button{
@@ -60,18 +59,18 @@ padding:12px;
 border-radius:9px;
 cursor:pointer;
 background:transparent;
-font-weight:700
+font-weight:700;
 }
 
 .tabs .on{
 background:#123b5d;
-color:white
+color:white;
 }
 
 .role{
 display:flex;
 gap:10px;
-margin:15px 0
+margin:15px 0;
 }
 
 .role button{
@@ -80,22 +79,22 @@ padding:12px;
 border:1px solid #d8dee8;
 border-radius:10px;
 background:white;
-cursor:pointer
+cursor:pointer;
 }
 
 .role .sel{
 border-color:#f5a623;
-background:#fff8ec
+background:#fff8ec;
 }
 
 .field{
-margin:13px 0
+margin:13px 0;
 }
 
 .field label{
 display:block;
 font-weight:700;
-margin-bottom:7px
+margin-bottom:7px;
 }
 
 .field input{
@@ -103,7 +102,7 @@ width:100%;
 padding:13px;
 border:1px solid #d8dee8;
 border-radius:10px;
-font-size:15px
+font-size:15px;
 }
 
 .main{
@@ -116,11 +115,7 @@ color:white;
 font-weight:800;
 font-size:16px;
 cursor:pointer;
-margin-top:8px
-}
-
-.main:hover{
-opacity:.92
+margin-top:8px;
 }
 
 .linkBtn{
@@ -129,7 +124,7 @@ background:none;
 color:#123b5d;
 font-weight:700;
 cursor:pointer;
-margin-top:12px
+margin-top:12px;
 }
 
 .msg{
@@ -137,34 +132,34 @@ margin-top:14px;
 padding:12px;
 border-radius:10px;
 display:none;
-line-height:1.5
+line-height:1.5;
 }
 
 .ok{
 background:#e9f8ef;
-color:#146c36
+color:#146c36;
 }
 
 .err{
 background:#fff0f0;
-color:#a11
+color:#a11;
 }
 
 .small{
 text-align:center;
 color:#687386;
 font-size:13px;
-margin-top:18px
+margin-top:18px;
 }
 
 .back{
 color:#123b5d;
 text-decoration:none;
-font-weight:700
+font-weight:700;
 }
 
 .hidden{
-display:none!important
+display:none!important;
 }
 
 @media(max-width:600px){
@@ -189,22 +184,15 @@ display:none!important
 
 <div class="card">
 
-<!-- LOGIN / SIGNUP -->
-
 <div id="authBox">
 
 <div class="tabs">
 
-<button
-id="loginTab"
-class="on"
-onclick="showMode('login')">
+<button id="loginTab" class="on" onclick="showMode('login')">
 Connexion
 </button>
 
-<button
-id="signupTab"
-onclick="showMode('signup')">
+<button id="signupTab" onclick="showMode('signup')">
 Créer un compte
 </button>
 
@@ -216,16 +204,11 @@ Créer un compte
 
 <div class="role">
 
-<button
-id="candidate"
-class="sel"
-onclick="setRole('candidate')">
+<button id="candidate" class="sel" onclick="setRole('candidate')">
 👤 Chercheur d'emploi
 </button>
 
-<button
-id="company"
-onclick="setRole('company')">
+<button id="company" onclick="setRole('company')">
 🏢 Entreprise
 </button>
 
@@ -233,18 +216,11 @@ onclick="setRole('company')">
 
 </div>
 
-<div
-id="nameBox"
-class="field"
-style="display:none">
+<div id="nameBox" class="field" style="display:none">
 
-<label>
-Nom et prénom / Nom de l'entreprise
-</label>
+<label>Nom et prénom / Nom de l'entreprise</label>
 
-<input
-id="name"
-placeholder="Votre nom">
+<input id="name" placeholder="Votre nom">
 
 </div>
 
@@ -252,10 +228,7 @@ placeholder="Votre nom">
 
 <label>Email</label>
 
-<input
-id="email"
-type="email"
-placeholder="exemple@email.com">
+<input id="email" type="email" placeholder="exemple@email.com">
 
 </div>
 
@@ -263,48 +236,27 @@ placeholder="exemple@email.com">
 
 <label>Mot de passe</label>
 
-<input
-id="password"
-type="password"
-placeholder="Minimum 6 caractères">
+<input id="password" type="password" placeholder="Minimum 6 caractères">
 
 </div>
 
-<button
-id="submit"
-class="main"
-onclick="submitAuth()">
-
+<button id="submit" class="main" onclick="submitAuth()">
 Se connecter
-
 </button>
 
 <div style="text-align:center">
 
-<button
-type="button"
-class="linkBtn"
-onclick="showForgot()">
-
-Mot de passe oublié ?
-
+<button type="button" class="linkBtn" onclick="showForgot()">
+🔑 Mot de passe oublié ?
 </button>
 
 </div>
 
-<div
-id="msg"
-class="msg">
-</div>
+<div id="msg" class="msg"></div>
 
 </div>
 
-
-<!-- PASSWORD RESET -->
-
-<div
-id="forgotBox"
-class="hidden">
+<div id="forgotBox" class="hidden">
 
 <h2>🔑 Réinitialiser le mot de passe</h2>
 
@@ -316,47 +268,27 @@ Entre ton adresse email et nous t'enverrons un lien pour créer un nouveau mot d
 
 <label>Email</label>
 
-<input
-id="resetEmail"
-type="email"
-placeholder="exemple@email.com">
+<input id="resetEmail" type="email" placeholder="exemple@email.com">
 
 </div>
 
-<button
-class="main"
-onclick="sendResetEmail()">
-
+<button class="main" onclick="sendResetEmail()">
 Envoyer le lien
-
 </button>
 
 <div style="text-align:center">
 
-<button
-type="button"
-class="linkBtn"
-onclick="showLogin()">
-
+<button type="button" class="linkBtn" onclick="showLogin()">
 ← Retour à la connexion
-
 </button>
 
 </div>
 
-<div
-id="resetMsg"
-class="msg">
-</div>
+<div id="resetMsg" class="msg"></div>
 
 </div>
 
-
-<!-- NEW PASSWORD -->
-
-<div
-id="newPasswordBox"
-class="hidden">
+<div id="newPasswordBox" class="hidden">
 
 <h2>🔐 Nouveau mot de passe</h2>
 
@@ -368,10 +300,7 @@ Choisis maintenant ton nouveau mot de passe.
 
 <label>Nouveau mot de passe</label>
 
-<input
-id="newPassword"
-type="password"
-placeholder="Minimum 6 caractères">
+<input id="newPassword" type="password" placeholder="Minimum 6 caractères">
 
 </div>
 
@@ -379,37 +308,24 @@ placeholder="Minimum 6 caractères">
 
 <label>Confirmer le mot de passe</label>
 
-<input
-id="confirmPassword"
-type="password"
-placeholder="Retape le mot de passe">
+<input id="confirmPassword" type="password" placeholder="Retape le mot de passe">
 
 </div>
 
-<button
-class="main"
-onclick="updatePassword()">
-
+<button class="main" onclick="updatePassword()">
 Enregistrer le nouveau mot de passe
-
 </button>
 
-<div
-id="passwordMsg"
-class="msg">
-</div>
+<div id="passwordMsg" class="msg"></div>
 
 </div>
-
 
 <div class="small">
 Ras Jebel Jobs — Plateforme locale d'emploi
 </div>
 
 </div>
-
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -427,431 +343,238 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-let mode = 'login';
-let role = 'candidate';
-
-
-/* =========================
-   MODE CONNEXION / INSCRIPTION
-========================= */
+let mode='login';
+let role='candidate';
 
 function showMode(m){
 
-mode = m;
+mode=m;
 
-document
-.getElementById('loginTab')
-.classList.toggle('on',m === 'login');
+document.getElementById('loginTab')
+.classList.toggle('on',m==='login');
 
-document
-.getElementById('signupTab')
-.classList.toggle('on',m === 'signup');
+document.getElementById('signupTab')
+.classList.toggle('on',m==='signup');
 
-document
-.getElementById('roleBox')
-.style.display =
-m === 'signup'
-? 'block'
-: 'none';
+document.getElementById('roleBox').style.display=
+m==='signup'?'block':'none';
 
-document
-.getElementById('nameBox')
-.style.display =
-m === 'signup'
-? 'block'
-: 'none';
+document.getElementById('nameBox').style.display=
+m==='signup'?'block':'none';
 
-document
-.getElementById('submit')
-.textContent =
-m === 'signup'
-? 'Créer mon compte'
-: 'Se connecter';
-
-hideMsg();
+document.getElementById('submit').textContent=
+m==='signup'?'Créer mon compte':'Se connecter';
 
 }
-
-
-/* =========================
-   ROLE
-========================= */
 
 function setRole(r){
 
-role = r;
+role=r;
 
-document
-.getElementById('candidate')
-.classList.toggle(
-'sel',
-r === 'candidate'
-);
+document.getElementById('candidate')
+.classList.toggle('sel',r==='candidate');
 
-document
-.getElementById('company')
-.classList.toggle(
-'sel',
-r === 'company'
-);
+document.getElementById('company')
+.classList.toggle('sel',r==='company');
 
 }
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function msg(t,ok=false){
-
-const e =
-document.getElementById('msg');
-
-e.textContent = t;
-
-e.className =
-'msg ' + (ok ? 'ok' : 'err');
-
-e.style.display = 'block';
-
-}
-
-function hideMsg(){
-
-document
-.getElementById('msg')
-.style.display = 'none';
-
-}
-
-
-/* =========================
-   AFFICHER MOT DE PASSE OUBLIÉ
-========================= */
 
 function showForgot(){
 
-document
-.getElementById('authBox')
+document.getElementById('authBox')
 .classList.add('hidden');
 
-document
-.getElementById('forgotBox')
+document.getElementById('forgotBox')
 .classList.remove('hidden');
 
-document
-.getElementById('newPasswordBox')
-.classList.add('hidden');
-
 }
-
-
-/* =========================
-   RETOUR CONNEXION
-========================= */
 
 function showLogin(){
 
-document
-.getElementById('forgotBox')
+document.getElementById('forgotBox')
 .classList.add('hidden');
 
-document
-.getElementById('newPasswordBox')
+document.getElementById('newPasswordBox')
 .classList.add('hidden');
 
-document
-.getElementById('authBox')
+document.getElementById('authBox')
 .classList.remove('hidden');
 
-document
-.getElementById('loginTab')
-.classList.add('on');
-
-document
-.getElementById('signupTab')
-.classList.remove('on');
-
-mode = 'login';
+mode='login';
 
 }
 
+function showMessage(id,text,ok=false){
 
-/* =========================
-   ENVOYER EMAIL RESET
-========================= */
+const e=document.getElementById(id);
+
+e.textContent=text;
+
+e.className='msg '+(ok?'ok':'err');
+
+e.style.display='block';
+
+}
 
 async function sendResetEmail(){
 
-const email =
-document
-.getElementById('resetEmail')
-.value
-.trim();
-
-const resetMsg =
-document.getElementById('resetMsg');
-
-resetMsg.style.display='none';
-
+const email=document.getElementById('resetEmail')
+.value.trim();
 
 if(!email){
 
-resetMsg.textContent =
-'اكتب الإيميل متاعك.';
-
-resetMsg.className='msg err';
-
-resetMsg.style.display='block';
+showMessage('resetMsg','اكتب الإيميل متاعك.');
 
 return;
-
 }
-
 
 try{
 
-const redirectUrl =
-window.location.origin +
+const redirectUrl=
+window.location.origin+
 window.location.pathname;
 
-
-const {error} =
-await supabaseClient.auth
+const {error}=await supabaseClient.auth
 .resetPasswordForEmail(
 email,
-{
-redirectTo:redirectUrl
-}
+{redirectTo:redirectUrl}
 );
-
 
 if(error) throw error;
 
-
-resetMsg.textContent =
-'تم إرسال رابط تغيير كلمة العبور إلى إيميلك ✅ تفقد البريد الإلكتروني.';
-
-resetMsg.className='msg ok';
-
-resetMsg.style.display='block';
-
+showMessage(
+'resetMsg',
+'تم إرسال رابط تغيير كلمة العبور إلى إيميلك ✅ تفقد البريد الإلكتروني.',
+true
+);
 
 }catch(e){
 
-resetMsg.textContent =
-e.message ||
-'حدث خطأ. حاول مرة أخرى.';
-
-resetMsg.className='msg err';
-
-resetMsg.style.display='block';
+showMessage(
+'resetMsg',
+e.message||'حدث خطأ.',
+false
+);
 
 }
 
 }
-
-
-/* =========================
-   DETECT PASSWORD RECOVERY
-========================= */
 
 supabaseClient.auth.onAuthStateChange(
-async (event,session)=>{
+async(event,session)=>{
 
-if(event === 'PASSWORD_RECOVERY'){
+if(event==='PASSWORD_RECOVERY'){
 
-document
-.getElementById('authBox')
+document.getElementById('authBox')
 .classList.add('hidden');
 
-document
-.getElementById('forgotBox')
+document.getElementById('forgotBox')
 .classList.add('hidden');
 
-document
-.getElementById('newPasswordBox')
+document.getElementById('newPasswordBox')
 .classList.remove('hidden');
 
 }
 
-}
-);
-
-
-/* =========================
-   CHANGER MOT DE PASSE
-========================= */
+});
 
 async function updatePassword(){
 
-const password =
-document
-.getElementById('newPassword')
-.value;
+const password=
+document.getElementById('newPassword').value;
 
-const confirm =
-document
-.getElementById('confirmPassword')
-.value;
+const confirm=
+document.getElementById('confirmPassword').value;
 
-const passwordMsg =
-document
-.getElementById('passwordMsg');
+if(!password||!confirm){
 
-passwordMsg.style.display='none';
-
-
-if(!password || !confirm){
-
-passwordMsg.textContent =
-'اكتب كلمة العبور الجديدة وأعد كتابتها.';
-
-passwordMsg.className='msg err';
-
-passwordMsg.style.display='block';
-
-return;
-
-}
-
-
-if(password.length < 6){
-
-passwordMsg.textContent =
-'كلمة العبور لازم تكون 6 أحرف على الأقل.';
-
-passwordMsg.className='msg err';
-
-passwordMsg.style.display='block';
-
-return;
-
-}
-
-
-if(password !== confirm){
-
-passwordMsg.textContent =
-'كلمتا العبور غير متطابقتين.';
-
-passwordMsg.className='msg err';
-
-passwordMsg.style.display='block';
-
-return;
-
-}
-
-
-try{
-
-const {error} =
-await supabaseClient.auth
-.updateUser({
-password:password
-});
-
-
-if(error) throw error;
-
-
-passwordMsg.textContent =
-'تم تغيير كلمة العبور بنجاح ✅ يمكنك الآن تسجيل الدخول.';
-
-passwordMsg.className='msg ok';
-
-passwordMsg.style.display='block';
-
-
-setTimeout(()=>{
-
-showLogin();
-
-},1500);
-
-
-}catch(e){
-
-passwordMsg.textContent =
-e.message ||
-'حدث خطأ أثناء تغيير كلمة العبور.';
-
-passwordMsg.className='msg err';
-
-passwordMsg.style.display='block';
-
-}
-
-}
-
-
-/* =========================
-   CONNEXION / INSCRIPTION
-========================= */
-
-async function submitAuth(){
-
-hideMsg();
-
-const email =
-document
-.getElementById('email')
-.value
-.trim();
-
-const password =
-document
-.getElementById('password')
-.value;
-
-const name =
-document
-.getElementById('name')
-.value
-.trim();
-
-
-if(!email || !password){
-
-return msg(
-'اكتب الإيميل وكلمة العبور.'
+showMessage(
+'passwordMsg',
+'اكتب كلمة العبور الجديدة وأعد كتابتها.'
 );
 
+return;
 }
 
+if(password.length<6){
 
-if(
-mode === 'signup' &&
-password.length < 6
-){
-
-return msg(
+showMessage(
+'passwordMsg',
 'كلمة العبور لازم تكون 6 أحرف على الأقل.'
 );
 
+return;
 }
 
+if(password!==confirm){
+
+showMessage(
+'passwordMsg',
+'كلمتا العبور غير متطابقتين.'
+);
+
+return;
+}
 
 try{
 
+const {error}=await supabaseClient.auth
+.updateUser({password:password});
 
-/* =========================
-   INSCRIPTION
-========================= */
+if(error) throw error;
 
-if(mode === 'signup'){
+showMessage(
+'passwordMsg',
+'تم تغيير كلمة العبور بنجاح ✅',
+true
+);
 
-if(!name){
+setTimeout(showLogin,1500);
 
-return msg(
-'اكتب الاسم.'
+}catch(e){
+
+showMessage(
+'passwordMsg',
+e.message||'حدث خطأ.'
 );
 
 }
 
+}
 
-const {data,error} =
+async function submitAuth(){
+
+const email=
+document.getElementById('email').value.trim();
+
+const password=
+document.getElementById('password').value;
+
+const name=
+document.getElementById('name').value.trim();
+
+if(!email||!password){
+
+showMessage(
+'msg',
+'اكتب الإيميل وكلمة العبور.'
+);
+
+return;
+}
+
+try{
+
+if(mode==='signup'){
+
+if(!name){
+
+showMessage('msg','اكتب الاسم.');
+
+return;
+}
+
+const {data,error}=
 await supabaseClient.auth.signUp({
 
 email:email,
@@ -859,39 +582,27 @@ email:email,
 password:password,
 
 options:{
-
 data:{
 full_name:name,
 role:role
 }
-
 }
 
 });
 
-
 if(error) throw error;
 
-
-if(data.user){
-
-msg(
-'تم إنشاء الحساب بنجاح ✅ تفقد الإيميل لتأكيد الحساب إذا طُلب منك ذلك.',
+showMessage(
+'msg',
+'تم إنشاء الحساب بنجاح ✅',
 true
 );
-
-}
 
 return;
 
 }
 
-
-/* =========================
-   CONNEXION
-========================= */
-
-const {data,error} =
+const {data,error}=
 await supabaseClient.auth.signInWithPassword({
 
 email:email,
@@ -900,49 +611,45 @@ password:password
 
 });
 
-
 if(error) throw error;
 
+const user=data.user;
 
-const user =
-data.user;
+const savedRole=
+user?.user_metadata?.role||'candidate';
 
-
-const savedRole =
-user?.user_metadata?.role ||
-'candidate';
-
-
-msg(
+showMessage(
+'msg',
 'تم تسجيل الدخول بنجاح ✅',
 true
 );
 
-
 setTimeout(()=>{
 
-if(savedRole === 'company'){
+if(savedRole==='company'){
 
-location.href =
-'company-dashboard.html';
+/*
+لا يوجد حاليًا company-dashboard.html
+لذلك نرجع للصفحة الرئيسية مؤقتًا.
+*/
+
+location.href='index.html';
 
 }else{
 
-location.href =
-'candidat.html';
+location.href='candidat.html';
 
 }
 
 },800);
 
-
 }catch(e){
 
 console.error(e);
 
-msg(
-e.message ||
-'حدث خطأ. حاول مرة أخرى.'
+showMessage(
+'msg',
+e.message||'حدث خطأ. حاول مرة أخرى.'
 );
 
 }
