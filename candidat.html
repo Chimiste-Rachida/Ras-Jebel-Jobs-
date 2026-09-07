@@ -3,69 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ras Jebel Jobs</title>
+  <title>Ras Jebel Jobs - الباحث عن عمل</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .job {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      margin-top: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      border: 0;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+    }
+
+    .success {
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: #b91c1c;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>👤 فضاء الباحث عن عمل</h1>
+<div class="container">
 
-<h2>💼 عروض الشغل المتاحة</h2>
+  <h1>👤 فضاء الباحث عن عمل</h1>
 
-<div id="jobs">جاري تحميل العروض... ⏳</div>
+  <h2>💼 عروض الشغل المتاحة</h2>
+
+  <div id="jobs">جاري تحميل العروض... ⏳</div>
+
+</div>
 
 <script>
-const supabaseUrl = "https://gkiynoqovpuzudzpnryn.supabase.co";
 
-const supabaseKey = "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+const SUPABASE_URL =
+  "https://gkiynoqovpuzudzpnryn.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
 const supabaseClient =
-  supabase.createClient(supabaseUrl, supabaseKey);
+  supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const CANDIDATE_ID =
+  "78a1c8a4-3c76-46da-918a-dd6c6bd5370b";
+
 
 async function loadJobs() {
 
-  const jobs = document.getElementById("jobs");
+  const container = document.getElementById("jobs");
 
   const { data, error } = await supabaseClient
     .from("jobs")
-    .select("id,title,description,location,contract_type,experience,status")
+    .select("id,title,description,location,contract_type,experience")
     .eq("status", "active")
     .order("created_at", { ascending: false });
 
   if (error) {
-    jobs.innerHTML = "❌ صار مشكل: " + error.message;
+    container.innerHTML =
+      `<div class="error">❌ ${error.message}</div>`;
     return;
   }
 
   if (!data || data.length === 0) {
-    jobs.innerHTML = "📭 ما فماش عروض شغل حاليا.";
+    container.innerHTML = "📭 ما فماش عروض شغل حاليًا.";
     return;
   }
 
-  jobs.innerHTML = "";
+  container.innerHTML = "";
 
   data.forEach(job => {
 
-    jobs.innerHTML += `
-      <div>
-        <hr>
-        <h3>💼 ${job.title}</h3>
-        <p>📍 ${job.location || ""}</p>
-        <p>📄 ${job.contract_type || ""}</p>
-        <p>🎓 ${job.experience || ""}</p>
-        <p>${job.description || ""}</p>
-        <button onclick="alert('تم اختيار هذه الوظيفة')">
-          📩 تقديم الترشح
-        </button>
-      </div>
+    const div = document.createElement("div");
+
+    div.className = "job";
+
+    div.innerHTML = `
+      <h3>💼 ${job.title}</h3>
+
+      <p>📍 ${job.location || "غير محدد"}</p>
+
+      <p>📄 ${job.contract_type || "غير محدد"}</p>
+
+      <p>🎓 ${job.experience || "غير محددة"}</p>
+
+      <p>${job.description || ""}</p>
+
+      <textarea
+        id="message-${job.id}"
+        placeholder="رسالتك للمؤسسة (اختياري)">
+      </textarea>
+
+      <button onclick="applyJob('${job.id}')">
+        📩 تقديم الترشح
+      </button>
+
+      <div id="result-${job.id}"></div>
     `;
+
+    container.appendChild(div);
   });
 }
 
-loadJobs();
-</script>
 
-</body>
-</html>
+async function applyJob(jobId) {
+
+  const message =
+    document.getElementById(`message-${jobId}`).value;
+
+  const result =
+    document.getElementById(`result-${jobId}`);
+
+  result.innerHTML = "⏳ جاري إرسال الترشح...";
+
+
+  const { error } = await supabaseClient
+    .from("applications")
+    .insert({
+      job_id: jobId,
+      candidate_id: CANDIDATE_ID,
+      cv_url: null,
+      message: message,
+      status: "pending"
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    result.innerHTML =
+      `<div class="error">❌ ${error.message}</div>`;
+
+    return;
+  }
+
+
+  result.innerHTML =
+    `<div class="success">✅
