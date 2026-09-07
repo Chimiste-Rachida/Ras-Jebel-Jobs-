@@ -1,106 +1,84 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,sans-serif;
-}
+body{font-family:Arial;background:#f4f7fb;margin:0;color:#172033}
+header,footer{background:#123b5d;color:white;padding:20px;text-align:center}
+main{max-width:800px;margin:30px auto;padding:15px}
+.card{background:white;padding:25px;margin-bottom:20px;border-radius:15px}
+input,textarea{width:100%;padding:12px;margin:8px 0 15px;box-sizing:border-box}
+button{background:#123b5d;color:white;border:0;padding:12px 20px;border-radius:8px}
+</style>
+</head>
 
-body{
-    background:#f4f7fb;
-    color:#172033;
-}
+<body>
 
-header{
-    background:#123b5d;
-    color:white;
-    padding:18px 6%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+<header>
+<h2>Ras Jebel Jobs</h2>
+<a href="index.html" style="color:white">← الرئيسية</a>
+</header>
 
-.logo{
-    font-size:23px;
-    font-weight:bold;
-}
+<main>
 
-header a{
-    color:white;
-    text-decoration:none;
-}
+<div class="card">
+<h1>👤 فضاء الباحث عن عمل</h1>
+<p>حضّر ملفك المهني وابدأ في البحث عن فرصتك.</p>
+</div>
 
-.container{
-    max-width:1050px;
-    margin:40px auto;
-    padding:20px;
-}
+<div class="card">
+<h2>📝 معلوماتي</h2>
 
-.welcome{
-    background:linear-gradient(135deg,#123b5d,#1f6f8b);
-    color:white;
-    padding:40px;
-    border-radius:18px;
-    margin-bottom:30px;
-}
+<label>الإسم واللقب</label>
+<input id="name" type="text" placeholder="اكتب اسمك ولقبك">
 
-.welcome h1{
-    margin-bottom:12px;
-}
+<label>البريد الإلكتروني</label>
+<input id="email" type="email" placeholder="example@email.com">
 
-.card{
-    background:white;
-    padding:28px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
-    margin-bottom:25px;
-}
+<label>رقم الهاتف</label>
+<input id="phone" type="tel" placeholder="XX XXX XXX">
 
-.card h2{
-    color:#123b5d;
-    margin-bottom:20px;
-}
+<label>الاختصاص</label>
+<input id="speciality" type="text" placeholder="مثال: Chimie industrielle">
 
-label{
-    display:block;
-    margin-top:15px;
-    font-weight:bold;
-}
+<label>المهارات</label>
+<textarea id="skills" placeholder="HPLC, GC, contrôle qualité..."></textarea>
 
-input,textarea{
-    width:100%;
-    padding:13px;
-    margin-top:7px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:15px;
-}
+<button onclick="saveProfile()">💾 حفظ الملف</button>
 
-textarea{
-    height:100px;
-}
+<p id="message" style="color:green"></p>
+</div>
 
-button{
-    margin-top:20px;
-    padding:13px 22px;
-    border:0;
-    border-radius:9px;
-    background:#123b5d;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-}
+<div class="card">
+<h2>📄 CV متاعي</h2>
+<input type="file" accept=".pdf,.doc,.docx">
+<button onclick="alert('✅ تم اختيار الـCV')">📤 إضافة الـCV</button>
+</div>
 
-.success{
-    display:none;
-    margin-top:18px;
-    padding:15px;
-    background:#e8
+<div class="card">
+<h2>💼 عروض الشغل</h2>
+<h3>🧪 Technicienne de laboratoire</h3>
+<p>📍 رأس الجبل</p>
+<button onclick="alert('✅ تم تسجيل ترشحك')">📩 ترشح للعرض</button>
+</div>
+
+</main>
+
+<footer>
+© 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
+Ras Jebel Jobs — منصة الوظائف المحلية
+</footer>
+
+<script>
+function saveProfile(){
+localStorage.setItem("candidateName",document.getElementById("name").value);
+document.getElementById("message").innerText="✅ تم حفظ الملف الشخصي بنجاح!";
+}
+</script>
+
+</body>
+</html>
