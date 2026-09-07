@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ras Jebel Jobs</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ras Jebel Jobs</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -12,7 +14,58 @@
 
 <h2>💼 عروض الشغل المتاحة</h2>
 
-<p>جاري تحميل العروض... ⏳</p>
+<div id="jobs">جاري تحميل العروض... ⏳</div>
+
+<script>
+const supabaseUrl = "https://gkiynoqovpuzudzpnryn.supabase.co";
+
+const supabaseKey = "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+const supabaseClient =
+  supabase.createClient(supabaseUrl, supabaseKey);
+
+async function loadJobs() {
+
+  const jobs = document.getElementById("jobs");
+
+  const { data, error } = await supabaseClient
+    .from("jobs")
+    .select("id,title,description,location,contract_type,experience,status")
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    jobs.innerHTML = "❌ صار مشكل: " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    jobs.innerHTML = "📭 ما فماش عروض شغل حاليا.";
+    return;
+  }
+
+  jobs.innerHTML = "";
+
+  data.forEach(job => {
+
+    jobs.innerHTML += `
+      <div>
+        <hr>
+        <h3>💼 ${job.title}</h3>
+        <p>📍 ${job.location || ""}</p>
+        <p>📄 ${job.contract_type || ""}</p>
+        <p>🎓 ${job.experience || ""}</p>
+        <p>${job.description || ""}</p>
+        <button onclick="alert('تم اختيار هذه الوظيفة')">
+          📩 تقديم الترشح
+        </button>
+      </div>
+    `;
+  });
+}
+
+loadJobs();
+</script>
 
 </body>
 </html>
