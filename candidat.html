@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#123b5d;
+    color:white;
+    padding:18px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:bold;
+}
+
+.back{
+    color:white;
+    text-decoration:none;
+}
+
+.container{
+    max-width:1050px;
+    margin:40px auto;
+    padding:0 20px;
+}
+
+.welcome{
+    background:linear-gradient(135deg,#123b5d,#1f6f8b);
+    color:white;
+    padding:40px;
+    border-radius:18px;
+    margin-bottom:30px;
+}
+
+.welcome h1{
+    margin-bottom:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:white;
+    padding:28px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.07);
+}
+
+.card h2{
+    color:#123b5d;
+    margin-bottom:18px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:13px;
+    margin:7px 0 14px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+button{
+    border:0;
+    border-radius:9px;
+    padding:13px 20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary{
+    background:#123b5d;
+    color:white;
+}
+
+.orange{
+    background:#f5a623;
+    color:white;
+}
+
+.jobs{
+    margin-top:30px;
+}
+
+.job{
+    border:1px solid #e5e7eb;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.job h3{
+    color:#123b5d;
+    margin-bottom:8px;
+}
+
+.job p{
+    margin:6px 0;
+    color:#555;
+}
+
+footer{
+    background:#123b5d;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:50px;
+    line-height:2;
+}
+
+@media(max-width:650px){
+
+    .welcome{
+        padding:25px;
+    }
+
+    header{
+        padding:15px 20px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Ras Jebel Jobs
+    </div>
+
+    <a class="back" href="index.html">
+        ← الرئيسية
+    </a>
+
+</header>
+
+<div class="container">
+
+    <section class="welcome">
+
+        <h1>👤 فضاء الباحث عن عمل</h1>
+
+        <p>
+            حضّر ملفك المهني وخلي المؤسسات تلقاك بسهولة.
+        </p>
+
+    </section>
+
+    <div class="grid">
+
+        <div class="card">
+
+            <h2>📝 معلوماتي</h2>
+
+            <label>الإسم واللقب</label>
+            <input id="name" type="text"
+            placeholder="اكتب اسمك ولقبك">
+
+            <label>البريد الإلكتروني</label>
+            <input id="email" type="email"
+            placeholder="example@email.com">
+
+            <label>رقم الهاتف</label>
+            <input id="phone" type="tel"
+            placeholder="XX XXX XXX">
+
+            <label>الاختصاص</label>
+            <input id="speciality" type="text"
+            placeholder="مثال: Chimie industrielle">
+
+            <label>المهارات</label>
+            <textarea id="skills"
+            placeholder="مثال: HPLC, GC, contrôle qualité..."></textarea>
+
+            <button class="primary" onclick="saveProfile()">
+                💾 حفظ الملف
+            </button>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📄 CV متاعي</h2>
+
+            <p style="margin-bottom:15px;color:#666
