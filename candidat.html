@@ -4,97 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>فضاء الباحث عن عمل | Ras Jebel Jobs</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    background:#f5f7fa;
+}
+h1{text-align:center;}
+.job{
+    background:white;
+    padding:20px;
+    margin:15px 0;
+    border-radius:12px;
+    box-shadow:0 2px 8px #ddd;
+}
+button{
+    padding:10px 18px;
+    border:0;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
 <h1>👤 فضاء الباحث عن عمل</h1>
-
 <p>حضّر ملفك المهني وابدأ في البحث عن فرصتك.</p>
 
-<h2>📝 معلوماتي</h2>
+<h2>💼 عروض الشغل المتاحة</h2>
 
-<label>الإسم واللقب</label><br>
-<input type="text" id="name"><br><br>
-
-<label>البريد الإلكتروني</label><br>
-<input type="email" id="email"><br><br>
-
-<label>رقم الهاتف</label><br>
-<input type="tel" id="phone"><br><br>
-
-<label>الاختصاص</label><br>
-<input type="text" id="speciality"><br><br>
-
-<label>المهارات</label><br>
-<textarea id="skills"></textarea><br><br>
-
-<button onclick="saveProfile()">💾 حفظ الملف</button>
-
-<p id="message"></p>
+<div id="jobs">
+    جاري تحميل عروض الشغل...
+</div>
 
 <script>
-function saveProfile(){
-document.getElementById("message").innerText =
-"✅ تم حفظ الملف الشخصي بنجاح!";
-}
-</script>
 
-</body>
-<h2>📄 CV متاعي</h2>
+const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
+const SUPABASE_ANON_KEY = "ضع_مفتاح_Supabase_هنا";
 
-<p>اختار الـCV من الهاتف متاعك:</p>
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
 
-<input type="file" id="cv" accept=".pdf,.doc,.docx">
+async function loadJobs(){
 
-<br><br>
+    const { data, error } = await supabaseClient
+        .from("jobs")
+        .select("id,title,description,location,status,experience,contract_type")
+        .eq("status","active")
+        .order("created_at",{ascending:false});
 
-<button onclick="saveCV()">📤 إضافة الـCV</button>
+    const container = document.getElementById("jobs");
 
-<p id="cvMessage"></p>
-
-<script>
-function saveCV(){
-    const file = document.getElementById("cv").files[0];
-
-    if(!file){
-        alert("⚠️ اختار ملف CV أولاً");
+    if(error){
+        container.innerHTML =
+        "<p>❌ صار مشكل في تحميل عروض الشغل.</p>";
+        console.error(error);
         return;
     }
 
-    document.getElementById("cvMessage").innerText =
-    "✅ تم اختيار الـCV: " + file.name;
+    if(!data || data.length === 0){
+        container.innerHTML =
+        "<p>لا توجد عروض شغل متاحة حاليًا.</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(job => {
+
+        container.innerHTML += `
+        <div class="job">
+
+            <h3>🧪 ${job.title}</h3>
+
+            <p>📍 ${job.location || ""}</p>
+
+            <p>💼 ${job.contract_type || ""}</p>
+
+            <p>👩‍🔬 ${job.experience || ""}</p>
+
+            <p>${job.description || ""}</p>
+
+            <button onclick="applyJob('${job.id}')">
+                📩 ترشح للعرض
+            </button>
+
+        </div>
+        `;
+
+    });
 }
-</script>
-    <h2>💼 عروض الشغل</h2>
 
-<div>
-<h3>🧪 Technicienne de laboratoire</h3>
-<p>📍 رأس الجبل</p>
-<p>🏢 Entreprise industrielle</p>
-<p>💼 Débutant accepté</p>
-
-<button onclick="applyJob('Technicienne de laboratoire')">
-📩 ترشح للعرض
-</button>
-</div>
-
-<hr>
-
-<div>
-<h3>🏭 Agent de production</h3>
-<p>📍 بنزرت</p>
-<p>🏢 Industrie</p>
-<p>💼 Temps plein</p>
-
-<button onclick="applyJob('Agent de production')">
-📩 ترشح للعرض
-</button>
-</div>
-
-<script>
-function applyJob(job){
-    alert("✅ تم تسجيل ترشحك المبدئي لـ: " + job);
+function applyJob(jobId){
+    alert("✅ تم تسجيل ترشحك المبدئي للعرض!");
 }
+
+loadJobs();
+
 </script>
+
+</body>
 </html>
