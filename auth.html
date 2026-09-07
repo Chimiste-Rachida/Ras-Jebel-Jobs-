@@ -119,11 +119,25 @@ cursor:pointer;
 margin-top:8px
 }
 
+.main:hover{
+opacity:.92
+}
+
+.linkBtn{
+border:0;
+background:none;
+color:#123b5d;
+font-weight:700;
+cursor:pointer;
+margin-top:12px
+}
+
 .msg{
 margin-top:14px;
 padding:12px;
 border-radius:10px;
-display:none
+display:none;
+line-height:1.5
 }
 
 .ok{
@@ -149,9 +163,14 @@ text-decoration:none;
 font-weight:700
 }
 
+.hidden{
+display:none!important
+}
+
 @media(max-width:600px){
 .wrap{padding:15px}
 .card{padding:22px}
+.role{flex-direction:column}
 }
 </style>
 </head>
@@ -162,10 +181,17 @@ font-weight:700
 
 <div class="top">
 <div class="logo">🇹🇳 Ras Jebel Jobs</div>
-<a class="back" href="index.html">← Accueil</a>
+
+<a class="back" href="index.html">
+← Accueil
+</a>
 </div>
 
 <div class="card">
+
+<!-- LOGIN / SIGNUP -->
+
+<div id="authBox">
 
 <div class="tabs">
 
@@ -253,17 +279,137 @@ Se connecter
 
 </button>
 
+<div style="text-align:center">
+
+<button
+type="button"
+class="linkBtn"
+onclick="showForgot()">
+
+Mot de passe oublié ?
+
+</button>
+
+</div>
+
 <div
 id="msg"
 class="msg">
 </div>
+
+</div>
+
+
+<!-- PASSWORD RESET -->
+
+<div
+id="forgotBox"
+class="hidden">
+
+<h2>🔑 Réinitialiser le mot de passe</h2>
+
+<p>
+Entre ton adresse email et nous t'enverrons un lien pour créer un nouveau mot de passe.
+</p>
+
+<div class="field">
+
+<label>Email</label>
+
+<input
+id="resetEmail"
+type="email"
+placeholder="exemple@email.com">
+
+</div>
+
+<button
+class="main"
+onclick="sendResetEmail()">
+
+Envoyer le lien
+
+</button>
+
+<div style="text-align:center">
+
+<button
+type="button"
+class="linkBtn"
+onclick="showLogin()">
+
+← Retour à la connexion
+
+</button>
+
+</div>
+
+<div
+id="resetMsg"
+class="msg">
+</div>
+
+</div>
+
+
+<!-- NEW PASSWORD -->
+
+<div
+id="newPasswordBox"
+class="hidden">
+
+<h2>🔐 Nouveau mot de passe</h2>
+
+<p>
+Choisis maintenant ton nouveau mot de passe.
+</p>
+
+<div class="field">
+
+<label>Nouveau mot de passe</label>
+
+<input
+id="newPassword"
+type="password"
+placeholder="Minimum 6 caractères">
+
+</div>
+
+<div class="field">
+
+<label>Confirmer le mot de passe</label>
+
+<input
+id="confirmPassword"
+type="password"
+placeholder="Retape le mot de passe">
+
+</div>
+
+<button
+class="main"
+onclick="updatePassword()">
+
+Enregistrer le nouveau mot de passe
+
+</button>
+
+<div
+id="passwordMsg"
+class="msg">
+</div>
+
+</div>
+
 
 <div class="small">
 Ras Jebel Jobs — Plateforme locale d'emploi
 </div>
 
 </div>
+
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -285,6 +431,10 @@ let mode = 'login';
 let role = 'candidate';
 
 
+/* =========================
+   MODE CONNEXION / INSCRIPTION
+========================= */
+
 function showMode(m){
 
 mode = m;
@@ -300,12 +450,16 @@ document
 document
 .getElementById('roleBox')
 .style.display =
-m === 'signup' ? 'block' : 'none';
+m === 'signup'
+? 'block'
+: 'none';
 
 document
 .getElementById('nameBox')
 .style.display =
-m === 'signup' ? 'block' : 'none';
+m === 'signup'
+? 'block'
+: 'none';
 
 document
 .getElementById('submit')
@@ -315,8 +469,13 @@ m === 'signup'
 : 'Se connecter';
 
 hideMsg();
+
 }
 
+
+/* =========================
+   ROLE
+========================= */
 
 function setRole(r){
 
@@ -339,6 +498,10 @@ r === 'company'
 }
 
 
+/* =========================
+   MESSAGE
+========================= */
+
 function msg(t,ok=false){
 
 const e =
@@ -353,7 +516,6 @@ e.style.display = 'block';
 
 }
 
-
 function hideMsg(){
 
 document
@@ -362,6 +524,271 @@ document
 
 }
 
+
+/* =========================
+   AFFICHER MOT DE PASSE OUBLIÉ
+========================= */
+
+function showForgot(){
+
+document
+.getElementById('authBox')
+.classList.add('hidden');
+
+document
+.getElementById('forgotBox')
+.classList.remove('hidden');
+
+document
+.getElementById('newPasswordBox')
+.classList.add('hidden');
+
+}
+
+
+/* =========================
+   RETOUR CONNEXION
+========================= */
+
+function showLogin(){
+
+document
+.getElementById('forgotBox')
+.classList.add('hidden');
+
+document
+.getElementById('newPasswordBox')
+.classList.add('hidden');
+
+document
+.getElementById('authBox')
+.classList.remove('hidden');
+
+document
+.getElementById('loginTab')
+.classList.add('on');
+
+document
+.getElementById('signupTab')
+.classList.remove('on');
+
+mode = 'login';
+
+}
+
+
+/* =========================
+   ENVOYER EMAIL RESET
+========================= */
+
+async function sendResetEmail(){
+
+const email =
+document
+.getElementById('resetEmail')
+.value
+.trim();
+
+const resetMsg =
+document.getElementById('resetMsg');
+
+resetMsg.style.display='none';
+
+
+if(!email){
+
+resetMsg.textContent =
+'اكتب الإيميل متاعك.';
+
+resetMsg.className='msg err';
+
+resetMsg.style.display='block';
+
+return;
+
+}
+
+
+try{
+
+const redirectUrl =
+window.location.origin +
+window.location.pathname;
+
+
+const {error} =
+await supabaseClient.auth
+.resetPasswordForEmail(
+email,
+{
+redirectTo:redirectUrl
+}
+);
+
+
+if(error) throw error;
+
+
+resetMsg.textContent =
+'تم إرسال رابط تغيير كلمة العبور إلى إيميلك ✅ تفقد البريد الإلكتروني.';
+
+resetMsg.className='msg ok';
+
+resetMsg.style.display='block';
+
+
+}catch(e){
+
+resetMsg.textContent =
+e.message ||
+'حدث خطأ. حاول مرة أخرى.';
+
+resetMsg.className='msg err';
+
+resetMsg.style.display='block';
+
+}
+
+}
+
+
+/* =========================
+   DETECT PASSWORD RECOVERY
+========================= */
+
+supabaseClient.auth.onAuthStateChange(
+async (event,session)=>{
+
+if(event === 'PASSWORD_RECOVERY'){
+
+document
+.getElementById('authBox')
+.classList.add('hidden');
+
+document
+.getElementById('forgotBox')
+.classList.add('hidden');
+
+document
+.getElementById('newPasswordBox')
+.classList.remove('hidden');
+
+}
+
+}
+);
+
+
+/* =========================
+   CHANGER MOT DE PASSE
+========================= */
+
+async function updatePassword(){
+
+const password =
+document
+.getElementById('newPassword')
+.value;
+
+const confirm =
+document
+.getElementById('confirmPassword')
+.value;
+
+const passwordMsg =
+document
+.getElementById('passwordMsg');
+
+passwordMsg.style.display='none';
+
+
+if(!password || !confirm){
+
+passwordMsg.textContent =
+'اكتب كلمة العبور الجديدة وأعد كتابتها.';
+
+passwordMsg.className='msg err';
+
+passwordMsg.style.display='block';
+
+return;
+
+}
+
+
+if(password.length < 6){
+
+passwordMsg.textContent =
+'كلمة العبور لازم تكون 6 أحرف على الأقل.';
+
+passwordMsg.className='msg err';
+
+passwordMsg.style.display='block';
+
+return;
+
+}
+
+
+if(password !== confirm){
+
+passwordMsg.textContent =
+'كلمتا العبور غير متطابقتين.';
+
+passwordMsg.className='msg err';
+
+passwordMsg.style.display='block';
+
+return;
+
+}
+
+
+try{
+
+const {error} =
+await supabaseClient.auth
+.updateUser({
+password:password
+});
+
+
+if(error) throw error;
+
+
+passwordMsg.textContent =
+'تم تغيير كلمة العبور بنجاح ✅ يمكنك الآن تسجيل الدخول.';
+
+passwordMsg.className='msg ok';
+
+passwordMsg.style.display='block';
+
+
+setTimeout(()=>{
+
+showLogin();
+
+},1500);
+
+
+}catch(e){
+
+passwordMsg.textContent =
+e.message ||
+'حدث خطأ أثناء تغيير كلمة العبور.';
+
+passwordMsg.className='msg err';
+
+passwordMsg.style.display='block';
+
+}
+
+}
+
+
+/* =========================
+   CONNEXION / INSCRIPTION
+========================= */
 
 async function submitAuth(){
 
@@ -388,7 +815,7 @@ document
 if(!email || !password){
 
 return msg(
-'اكتب الإيميل وكلمة السر.'
+'اكتب الإيميل وكلمة العبور.'
 );
 
 }
@@ -400,7 +827,7 @@ password.length < 6
 ){
 
 return msg(
-'كلمة السر لازم تكون 6 أحرف على الأقل.'
+'كلمة العبور لازم تكون 6 أحرف على الأقل.'
 );
 
 }
@@ -410,7 +837,7 @@ try{
 
 
 /* =========================
-   CREATION DU COMPTE
+   INSCRIPTION
 ========================= */
 
 if(mode === 'signup'){
@@ -427,9 +854,9 @@ return msg(
 const {data,error} =
 await supabaseClient.auth.signUp({
 
-email: email,
+email:email,
 
-password: password,
+password:password,
 
 options:{
 
@@ -454,7 +881,6 @@ true
 );
 
 }
-
 
 return;
 
@@ -482,10 +908,9 @@ const user =
 data.user;
 
 
-/* نسترجع الدور المحفوظ في الحساب */
-
 const savedRole =
-user?.user_metadata?.role || 'candidate';
+user?.user_metadata?.role ||
+'candidate';
 
 
 msg(
@@ -493,8 +918,6 @@ msg(
 true
 );
 
-
-/* توجيه حسب نوع الحساب */
 
 setTimeout(()=>{
 
