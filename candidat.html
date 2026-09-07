@@ -1,96 +1,203 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ras Jebel Jobs</title>
-<style>
-body{font-family:Arial;margin:0;background:#f5f7fa;color:#222}
-header{background:#0f172a;color:white;text-align:center;padding:25px}
-.container{max-width:900px;margin:25px auto;padding:15px}
-.card{background:white;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 4px 15px #0001}
-button{background:#0f172a;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer}
-footer{text-align:center;padding:25px;color:#666}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ras Jebel Jobs</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      color: #222;
+    }
+
+    header {
+      background: #17324d;
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .job {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .job h3 {
+      margin-top: 0;
+      color: #17324d;
+    }
+
+    .info {
+      margin: 8px 0;
+    }
+
+    button {
+      background: #17324d;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+      background: #17324d;
+      color: white;
+    }
+
+    #message {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-<h1>👤 فضاء الباحث عن عمل</h1>
-<p>Ras Jebel Jobs</p>
+  <h1>👤 فضاء الباحث عن عمل</h1>
+  <p>Ras Jebel Jobs</p>
 </header>
 
-<div class="container">
-<div class="card">
-<h2>💼 عروض الشغل المتاحة</h2>
-<div id="jobs">جاري تحميل العروض...</div>
-</div>
-</div>
+<main>
+  <h2>💼 عروض الشغل المتاحة</h2>
+
+  <div id="message">جاري تحميل العروض...</div>
+  <div id="jobs"></div>
+</main>
 
 <footer>
-© 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
-Ras Jebel Jobs — منصة الوظائف المحلية
+  © 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
+  Ras Jebel Jobs — منصة الوظائف المحلية
 </footer>
 
 <script>
-const URL="https://gkiynoqovpuzudzpnryn.supabase.co";
 
-async function loadJobs(){
+const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
 
-try{
+const SUPABASE_KEY =
+  "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-const response=await fetch(
-URL+"/rest/v1/jobs?status=eq.active&select=*",
-{
-headers:{
-"Content-Type":"application/json"
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+async function loadJobs() {
+
+  const message = document.getElementById("message");
+  const jobsContainer = document.getElementById("jobs");
+
+  const { data: jobs, error } = await supabaseClient
+    .from("jobs")
+    .select("id,title,description,location,contract_type,experience")
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    message.innerHTML = "❌ تعذر تحميل عروض الشغل";
+    return;
+  }
+
+  if (!jobs || jobs.length === 0) {
+    message.innerHTML = "📭 ما فماش عروض شغل متاحة حاليا";
+    return;
+  }
+
+  message.innerHTML = "";
+
+  jobsContainer.innerHTML = jobs.map(job => `
+    <div class="job">
+
+      <h3>${job.title || ""}</h3>
+
+      <div class="info">
+        📍 ${job.location || "غير محدد"}
+      </div>
+
+      <div class="info">
+        📄 ${job.contract_type || "غير محدد"}
+      </div>
+
+      <div class="info">
+        🎓 ${job.experience || "غير محدد"}
+      </div>
+
+      <p>
+        ${job.description || ""}
+      </p>
+
+      <button onclick="applyJob('${job.id}')">
+        📩 تقديم الترشح
+      </button>
+
+    </div>
+  `).join("");
 }
-}
-);
 
-const jobs=await response.json();
+async function applyJob(jobId) {
 
-if(!response.ok){
-throw new Error("Erreur");
-}
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
 
-if(jobs.length===0){
-document.getElementById("jobs").innerHTML=
-"لا توجد عروض شغل حاليًا.";
-return;
-}
+  if (userError || !user) {
+    alert("⚠️ يلزمك تسجيل الدخول أولا");
+    window.location.href = "auth.html";
+    return;
+  }
 
-document.getElementById("jobs").innerHTML=
-jobs.map(job=>`
-<div class="card">
-<h3>${job.title}</h3>
-<p>📍 ${job.location||""}</p>
-<p>📄 ${job.contract_type||""}</p>
-<p>🎓 ${job.experience||""}</p>
-<p>${job.description||""}</p>
-<button onclick="applyJob('${job.id}')">
-📩 تقديم الترشح
-</button>
-</div>
-`).join("");
+  const message = prompt(
+    "اكتب رسالة قصيرة للمؤسسة (اختياري):"
+  );
 
-}catch(e){
+  const { error } = await supabaseClient
+    .from("applications")
+    .insert({
+      job_id: jobId,
+      candidate_id: user.id,
+      cv_url: null,
+      message: message || "",
+      status: "pending"
+    });
 
-document.getElementById("jobs").innerHTML=
-"❌ تعذر تحميل عروض الشغل";
+  if (error) {
+    console.error(error);
+    alert("❌ صار مشكل أثناء تقديم الترشح: " + error.message);
+    return;
+  }
 
-console.error(e);
-
-}
-
-}
-
-function applyJob(jobId){
-alert("📩 سيتم تفعيل الترشح في الخطوة التالية.");
+  alert("✅ تم تقديم ترشحك بنجاح ❤️");
 }
 
 loadJobs();
+
 </script>
 
 </body>
