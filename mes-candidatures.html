@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ترشحاتي — Ras Jebel Jobs</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      color: #222;
+    }
+
+    header {
+      background: #17324d;
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .application {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .application h3 {
+      color: #17324d;
+      margin-top: 0;
+    }
+
+    .info {
+      margin: 10px 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: #fff3cd;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      margin-top: 40px;
+      background: #17324d;
+      color: white;
+    }
+
+    #message {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📋 ترشحاتي</h1>
+  <p>Ras Jebel Jobs</p>
+</header>
+
+<main>
+
+  <h2>📨 الترشحات متاعي</h2>
+
+  <div id="message">جاري تحميل الترشحات...</div>
+  <div id="applications"></div>
+
+</main>
+
+<footer>
+  © 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
+  Ras Jebel Jobs — منصة الوظائف المحلية
+</footer>
+
+<script>
+
+const SUPABASE_URL =
+  "https://gkiynoqovpuzudzpnryn.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+async function loadApplications() {
+
+  const message = document.getElementById("message");
+  const container = document.getElementById("applications");
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    message.innerHTML =
+      "⚠️ يلزمك تسجيل الدخول أولا.";
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("applications")
+    .select(`
+      id,
+      job_id,
+      status,
+      message,
+      created_at,
+      jobs (
+        title,
+        location,
+        contract_type,
+        experience
+      )
+    `)
+    .eq("candidate_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    message.innerHTML =
+      "❌ تعذر تحميل الترشحات";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    message.innerHTML =
+      "📭 ما عندك حتى ترشح حاليا.";
+    return;
+  }
+
+  message.innerHTML = "";
+
+  container.innerHTML = data.map(application => {
+
+    const job = application.jobs || {};
+
+    let statusText = "قيد الدراسة";
+
+    if (application.status === "accepted") {
+      statusText = "✅ مقبول";
+    }
+
+    if (application.status === "rejected") {
+      statusText = "❌ مرفوض";
+    }
+
+    return `
+      <div class="application">
+
+        <h3>
+          ${job.title || "عرض شغل"}
+        </h3>
+
+        <div class="info">
+          📍 ${job.location || "غير محدد"}
+        </div>
+
+        <div class="info">
+          📄 ${job.contract_type || "غير محدد"}
+        </div>
+
+        <div class="info">
+          🎓 ${job.experience || "غير محدد"}
+        </div>
+
+        <div class="info">
+          🗓️ تاريخ الترشح:
+          ${new Date(application.created_at).toLocaleDateString("fr-FR")}
+        </div>
+
+        <div class="info">
+          الحالة:
+          <span class="status">
+            ${statusText}
+          </span>
+        </div>
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+
+loadApplications();
+
+</script>
+
+</body>
+</html>
