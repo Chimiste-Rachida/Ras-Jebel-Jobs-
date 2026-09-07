@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ras Jebel Jobs - فضاء الباحث عن عمل</title>
+<title>Ras Jebel Jobs</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#222}
-header{background:#0f172a;color:#fff;padding:25px;text-align:center}
-.container{max-width:900px;margin:30px auto;padding:15px}
-.card{background:#fff;border-radius:15px;padding:22px;margin-bottom:20px;box-shadow:0 5px 20px #0001}
-button{background:#0f172a;color:#fff;border:0;padding:12px 20px;border-radius:8px;font-size:16px}
+body{font-family:Arial;margin:0;background:#f5f7fa;color:#222}
+header{background:#0f172a;color:white;text-align:center;padding:25px}
+.container{max-width:900px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 4px 15px #0001}
+button{background:#0f172a;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer}
 footer{text-align:center;padding:25px;color:#666}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -33,104 +34,60 @@ Ras Jebel Jobs — منصة الوظائف المحلية
 </footer>
 
 <script>
-const SUPABASE_URL="https://gkiynoqovpuzudzpnryn.supabase.co";
-
-/* سيتم استعمال جلسة تسجيل الدخول الموجودة في المتصفح */
-async function getUser(){
-
-const token=localStorage.getItem("supabase_access_token");
-
-if(!token)return null;
-
-const r=await fetch(SUPABASE_URL+"/auth/v1/user",{
-headers:{
-"apikey":token,
-"Authorization":"Bearer "+token
-}
-});
-
-if(!r.ok)return null;
-
-return await r.json();
-}
+const URL="https://gkiynoqovpuzudzpnryn.supabase.co";
 
 async function loadJobs(){
 
-const r=await fetch(
-SUPABASE_URL+"/rest/v1/jobs?status=eq.active&select=*",
+try{
+
+const response=await fetch(
+URL+"/rest/v1/jobs?status=eq.active&select=*",
 {
 headers:{
-"apikey":localStorage.getItem("supabase_access_token")||"",
-"Authorization":"Bearer "+(localStorage.getItem("supabase_access_token")||"")
+"Content-Type":"application/json"
 }
-});
+}
+);
 
-if(!r.ok){
-document.getElementById("jobs").innerHTML="❌ تعذر تحميل عروض الشغل";
+const jobs=await response.json();
+
+if(!response.ok){
+throw new Error("Erreur");
+}
+
+if(jobs.length===0){
+document.getElementById("jobs").innerHTML=
+"لا توجد عروض شغل حاليًا.";
 return;
 }
 
-const jobs=await r.json();
-
-if(!jobs.length){
-document.getElementById("jobs").innerHTML="لا توجد عروض شغل حاليًا.";
-return;
-}
-
-document.getElementById("jobs").innerHTML=jobs.map(job=>`
+document.getElementById("jobs").innerHTML=
+jobs.map(job=>`
 <div class="card">
 <h3>${job.title}</h3>
 <p>📍 ${job.location||""}</p>
 <p>📄 ${job.contract_type||""}</p>
 <p>🎓 ${job.experience||""}</p>
 <p>${job.description||""}</p>
-<button onclick="applyJob('${job.id}')">📩 تقديم الترشح</button>
+<button onclick="applyJob('${job.id}')">
+📩 تقديم الترشح
+</button>
 </div>
 `).join("");
+
+}catch(e){
+
+document.getElementById("jobs").innerHTML=
+"❌ تعذر تحميل عروض الشغل";
+
+console.error(e);
+
 }
 
-async function applyJob(jobId){
-
-const token=localStorage.getItem("supabase_access_token");
-
-if(!token){
-alert("❌ يلزم تسجيل الدخول أولًا.");
-return;
 }
 
-const user=await getUser();
-
-if(!user){
-alert("❌ جلسة تسجيل الدخول غير صالحة.");
-return;
-}
-
-const message=prompt("اكتبي رسالة قصيرة لصاحب العمل:");
-
-if(message===null)return;
-
-const r=await fetch(SUPABASE_URL+"/rest/v1/applications",{
-method:"POST",
-headers:{
-"apikey":token,
-"Authorization":"Bearer "+token,
-"Content-Type":"application/json",
-"Prefer":"return=minimal"
-},
-body:JSON.stringify({
-job_id:jobId,
-candidate_id:user.id,
-message:message,
-status:"pending"
-})
-});
-
-if(r.ok){
-alert("✅ تم إرسال ترشحك بنجاح!");
-}else{
-const error=await r.text();
-alert("❌ "+error);
-}
+function applyJob(jobId){
+alert("📩 سيتم تفعيل الترشح في الخطوة التالية.");
 }
 
 loadJobs();
