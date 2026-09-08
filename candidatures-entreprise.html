@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ترشحات المؤسسة | Ras Jebel Jobs</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #1f2937;
+    }
+
+    header {
+      background: linear-gradient(135deg, #111827, #374151);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .candidate-name {
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .info {
+      margin: 8px 0;
+      color: #4b5563;
+    }
+
+    .message {
+      background: #f9fafb;
+      border-right: 4px solid #374151;
+      padding: 12px;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+
+    .pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .accepted {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .rejected {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    button {
+      border: none;
+      padding: 11px 18px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .accept {
+      background: #16a34a;
+      color: white;
+    }
+
+    .reject {
+      background: #dc2626;
+      color: white;
+    }
+
+    .cv {
+      background: #374151;
+      color: white;
+      text-decoration: none;
+      padding: 11px 18px;
+      border-radius: 9px;
+      display: inline-block;
+      font-weight: bold;
+    }
+
+    button:hover,
+    .cv:hover {
+      opacity: 0.85;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      margin-top: 40px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #b91c1c;
+      text-align: center;
+      padding: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>👥 ترشحات المؤسسة</h1>
+  <p>Ras Jebel Jobs</p>
+</header>
+
+<main>
+  <div id="message"></div>
+  <div id="applications"></div>
+</main>
+
+<footer>
+  © 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
+  Ras Jebel Jobs — منصة الوظائف المحلية
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  async function loadApplications() {
+
+    const message = document.getElementById("message");
+    const container = document.getElementById("applications");
+
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      message.innerHTML =
+        '<div class="error">⚠️ يلزم تسجيل الدخول أولا.</div>';
+      return;
+    }
+
+    const { data: company, error: companyError } =
+      await supabaseClient
+        .from("companies")
+        .select("id, company_name")
+        .eq("owner_id", user.id)
+        .limit(1)
+        .maybeSingle();
+
+    if (companyError) {
+      message.innerHTML =
+        '<div class="error">❌ تعذر تحميل المؤسسة.</div>';
+      console.error(companyError);
+      return;
+    }
+
+    if (!company) {
+      message.innerHTML =
+        '<div class="error">⚠️ ما فماش مؤسسة مربوطة بهذا الحساب.</div>';
+      return;
+    }
+
+    const { data, error } = await supabaseClient
+      .from("applications")
+      .select(`
+        id,
+        message,
+        status,
+        created_at,
+        cv_url,
+        jobs!inner (
+          id,
+          title,
+          company_id
+        ),
+        profiles!inner (
+          id,
+          full_name,
+          email
+        )
+      `)
+      .eq("jobs.company_id", company.id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      message.innerHTML =
+        '<div class="error">❌ تعذر تحميل الترشحات.</div>';
+      console.error(error);
+      return;
+    }
+
+    message.innerHTML =
+      `<div class="card">
+        <strong>🏢 المؤسسة:</strong> ${company.company_name}
+        <br>
+        <strong>📊 عدد الترشحات:</strong> ${data.length}
+      </div>`;
+
+    if (!data || data.length === 0) {
+      container.innerHTML =
+        '<div class="card empty">📭 ما فماش ترشحات حاليا.</div>';
+      return;
+    }
+
+    container.innerHTML = data.map(app => {
+
+      let statusClass = "pending";
+      let statusText = "🟡 قيد الدراسة";
+
+      if (app.status === "accepted") {
+        statusClass = "accepted";
+        statusText = "🟢 مقبول";
+      }
+
+      if (app.status === "rejected") {
+        statusClass = "rejected";
+        statusText = "🔴 مرفوض";
+      }
+
+      const candidateName =
+        app.profiles?.full_name || "مترشح";
+
+      const email =
+        app.profiles?.email || "";
+
+      const jobTitle =
+        app.jobs?.title || "عرض عمل";
+
+      const date =
+        new Date(app.created_at).toLocaleDateString("fr-FR");
+
+      return `
+        <div class="card">
+
+          <div class="candidate-name">
+            👤 ${candidateName}
+          </div>
+
+          <div class="info">
+            📧 ${email}
+          </div>
+
+          <div class="info">
+            💼 ${jobTitle}
+          </div>
+
+          <div class="info">
+            📅 تاريخ الترشح: ${date}
+          </div>
+
+          <div>
+            <span class="status ${statusClass}">
+              ${statusText}
+            </span>
+          </div>
+
+          <div class="message">
+            💬 <strong>رسالة المترشح:</strong><br>
+            ${app.message || "ما فماش رسالة."}
+          </div>
+
+          ${
+            app.cv_url
+              ? `<a class="cv" href="${app.cv_url}" target="_blank">
+                   📄 فتح CV
+                 </a>`
+              : ""
+          }
+
+          <div class="buttons">
+
+            <button
+              class="accept"
+              onclick="updateStatus('${app.id}', 'accepted')">
+              ✅ قبول
+            </button>
+
+            <button
+              class="reject"
+              onclick="updateStatus('${app.id}', 'rejected')">
+              ❌ رفض
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function updateStatus(applicationId, newStatus) {
+
+    const { error } = await supabaseClient
+      .from("applications")
+      .update({
+        status: newStatus
+      })
+      .eq("id", applicationId);
+
+    if (error) {
+      alert("❌ صار مشكل في تحديث الحالة");
+      console.error(error);
+      return;
+    }
+
+    alert(
+      newStatus === "accepted"
+        ? "✅ تم قبول الترشح"
+        : "❌ تم رفض الترشح"
+    );
+
+    loadApplications();
+  }
+
+  loadApplications();
+</script>
+
+</body>
+</html>
