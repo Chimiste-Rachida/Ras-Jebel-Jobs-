@@ -311,8 +311,12 @@ async function loadApplications() {
   }
 
 
-  const jobIds =
-    jobs.map(job => job.id);
+  const filteredJobs = selectedJobId
+    ? jobs.filter(job => job.id === selectedJobId)
+    : jobs;
+
+const jobIds =
+    filteredJobs.map(job => job.id);
 
 
   // جلب الترشحات
