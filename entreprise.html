@@ -239,7 +239,11 @@ function viewApplications(jobId) {
 }
 
 
-loadCompany();
+loadCompany().catch(error => {
+  console.error(error);
+  document.getElementById("companyInfo").innerHTML =
+    "❌ صار خطأ أثناء تحميل المؤسسة: " + (error.message || error);
+});
 
 </script>
 
