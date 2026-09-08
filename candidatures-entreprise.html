@@ -207,6 +207,8 @@ const supabaseClient =
 
 
 let companyId = null;
+const params = new URLSearchParams(window.location.search);
+const selectedJobId = params.get("job_id");
 
 
 async function loadApplications() {
