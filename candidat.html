@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ras Jebel Jobs</title>
+  <title>Ras Jebel Jobs | فضاء الباحث عن عمل</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #f5f7fa;
@@ -22,6 +26,10 @@
       padding: 30px 15px;
     }
 
+    header h1 {
+      margin: 0 0 10px;
+    }
+
     main {
       max-width: 900px;
       margin: 30px auto;
@@ -30,8 +38,8 @@
 
     .job {
       background: white;
-      border-radius: 12px;
-      padding: 20px;
+      border-radius: 14px;
+      padding: 22px;
       margin-bottom: 20px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
@@ -39,13 +47,51 @@
     .job h3 {
       margin-top: 0;
       color: #17324d;
+      font-size: 22px;
     }
 
     .info {
       margin: 8px 0;
+      color: #444;
     }
 
-    button {
+    .job p {
+      line-height: 1.7;
+    }
+
+    .apply-area {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #eee;
+    }
+
+    .cv-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .cv-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fafafa;
+      margin-bottom: 12px;
+    }
+
+    .message-input {
+      width: 100%;
+      min-height: 90px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      resize: vertical;
+      font-family: Arial, sans-serif;
+      margin-bottom: 12px;
+    }
+
+    .apply-button {
       background: #17324d;
       color: white;
       border: none;
@@ -53,10 +99,47 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      font-weight: bold;
+      width: 100%;
     }
 
-    button:hover {
+    .apply-button:hover {
       opacity: 0.9;
+    }
+
+    .apply-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .success {
+      background: #ecfdf5;
+      color: #047857;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .warning {
+      background: #fff7ed;
+      color: #c2410c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .error {
+      background: #fef2f2;
+      color: #b91c1c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    #message {
+      text-align: center;
+      padding: 20px;
+      font-size: 18px;
     }
 
     footer {
@@ -65,12 +148,7 @@
       margin-top: 40px;
       background: #17324d;
       color: white;
-    }
-
-    #message {
-      text-align: center;
-      padding: 20px;
-      font-size: 18px;
+      line-height: 1.8;
     }
   </style>
 </head>
@@ -83,10 +161,15 @@
 </header>
 
 <main>
+
   <h2>💼 عروض الشغل المتاحة</h2>
 
-  <div id="message">جاري تحميل العروض...</div>
+  <div id="message">
+    جاري تحميل العروض...
+  </div>
+
   <div id="jobs"></div>
+
 </main>
 
 <footer>
@@ -96,7 +179,8 @@
 
 <script>
 
-const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
+const SUPABASE_URL =
+  "https://gkiynoqovpuzudzpnryn.supabase.co";
 
 const SUPABASE_KEY =
   "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
@@ -107,94 +191,366 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
+
 async function loadJobs() {
 
-  const message = document.getElementById("message");
-  const jobsContainer = document.getElementById("jobs");
+  const message =
+    document.getElementById("message");
 
-  const { data: jobs, error } = await supabaseClient
+  const jobsContainer =
+    document.getElementById("jobs");
+
+  const {
+    data: jobs,
+    error
+  } = await supabaseClient
     .from("jobs")
-    .select("id,title,description,location,contract_type,experience")
+    .select(
+      "id,title,description,location,contract_type,experience"
+    )
     .eq("status", "active")
-    .order("created_at", { ascending: false });
+    .order("created_at", {
+      ascending: false
+    });
 
   if (error) {
+
     console.error(error);
-    message.innerHTML = "❌ تعذر تحميل عروض الشغل";
+
+    message.innerHTML =
+      '<div class="error">❌ تعذر تحميل عروض الشغل</div>';
+
     return;
   }
 
   if (!jobs || jobs.length === 0) {
-    message.innerHTML = "📭 ما فماش عروض شغل متاحة حاليا";
+
+    message.innerHTML =
+      "📭 ما فماش عروض شغل متاحة حاليا";
+
     return;
   }
 
   message.innerHTML = "";
 
-  jobsContainer.innerHTML = jobs.map(job => `
-    <div class="job">
+  jobsContainer.innerHTML =
+    jobs.map(job => `
 
-      <h3>${job.title || ""}</h3>
+      <div class="job">
 
-      <div class="info">
-        📍 ${job.location || "غير محدد"}
+        <h3>
+          ${job.title || ""}
+        </h3>
+
+        <div class="info">
+          📍 ${job.location || "غير محدد"}
+        </div>
+
+        <div class="info">
+          📄 ${job.contract_type || "غير محدد"}
+        </div>
+
+        <div class="info">
+          🎓 ${job.experience || "غير محدد"}
+        </div>
+
+        <p>
+          ${job.description || ""}
+        </p>
+
+        <div class="apply-area">
+
+          <label class="cv-label">
+            📄 CV متاعك — PDF فقط
+          </label>
+
+          <input
+            type="file"
+            id="cv-${job.id}"
+            class="cv-input"
+            accept=".pdf,application/pdf"
+          >
+
+          <label class="cv-label">
+            💬 رسالة للمؤسسة — اختيارية
+          </label>
+
+          <textarea
+            id="message-${job.id}"
+            class="message-input"
+            placeholder="اكتب رسالة قصيرة للمؤسسة..."
+          ></textarea>
+
+          <button
+            class="apply-button"
+            id="button-${job.id}"
+            onclick="applyJob('${job.id}')"
+          >
+            📩 تقديم الترشح
+          </button>
+
+          <div id="result-${job.id}"></div>
+
+        </div>
+
       </div>
 
-      <div class="info">
-        📄 ${job.contract_type || "غير محدد"}
-      </div>
-
-      <div class="info">
-        🎓 ${job.experience || "غير محدد"}
-      </div>
-
-      <p>
-        ${job.description || ""}
-      </p>
-
-      <button onclick="applyJob('${job.id}')">
-        📩 تقديم الترشح
-      </button>
-
-    </div>
-  `).join("");
+    `).join("");
 }
 
+
 async function applyJob(jobId) {
+
+  const button =
+    document.getElementById(`button-${jobId}`);
+
+  const result =
+    document.getElementById(`result-${jobId}`);
+
+  const cvInput =
+    document.getElementById(`cv-${jobId}`);
+
+  const messageInput =
+    document.getElementById(`message-${jobId}`);
+
+
+  result.innerHTML = "";
+
+
+  // التأكد من تسجيل الدخول
 
   const {
     data: { user },
     error: userError
   } = await supabaseClient.auth.getUser();
 
+
   if (userError || !user) {
+
     alert("⚠️ يلزمك تسجيل الدخول أولا");
+
     window.location.href = "auth.html";
+
     return;
   }
 
-  const message = prompt(
-    "اكتب رسالة قصيرة للمؤسسة (اختياري):"
-  );
 
-  const { error } = await supabaseClient
-    .from("applications")
-    .insert({
-      job_id: jobId,
-      candidate_id: user.id,
-      cv_url: null,
-      message: message || "",
-      status: "pending"
-    });
+  // التأكد من اختيار CV
 
-  if (error) {
+  if (!cvInput.files || cvInput.files.length === 0) {
+
+    result.innerHTML =
+      '<div class="warning">⚠️ لازم تختار CV بصيغة PDF قبل تقديم الترشح.</div>';
+
+    return;
+  }
+
+
+  const cvFile =
+    cvInput.files[0];
+
+
+  // التثبت من نوع الملف
+
+  if (
+    cvFile.type !== "application/pdf" &&
+    !cvFile.name.toLowerCase().endsWith(".pdf")
+  ) {
+
+    result.innerHTML =
+      '<div class="error">❌ مسموح كان ملفات PDF.</div>';
+
+    return;
+  }
+
+
+  // الحد الأقصى 5 MB
+
+  if (cvFile.size > 5 * 1024 * 1024) {
+
+    result.innerHTML =
+      '<div class="error">❌ حجم الـCV لازم يكون أقل من 5 MB.</div>';
+
+    return;
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "⏳ جاري تقديم الترشح...";
+
+
+  try {
+
+    // منع الترشح المكرر
+
+    const {
+      data: existingApplication,
+      error: existingError
+    } = await supabaseClient
+      .from("applications")
+      .select("id")
+      .eq("job_id", jobId)
+      .eq("candidate_id", user.id)
+      .maybeSingle();
+
+
+    if (existingError) {
+
+      console.error(existingError);
+
+      throw new Error(
+        "تعذر التثبت من الترشح السابق."
+      );
+    }
+
+
+    if (existingApplication) {
+
+      result.innerHTML =
+        '<div class="warning">⚠️ إنتِ سبق وقدّمتِ ترشحك لهذا العرض.</div>';
+
+      button.disabled = false;
+
+      button.textContent =
+        "📩 تقديم الترشح";
+
+      return;
+    }
+
+
+    // اسم فريد للـCV
+
+    const fileExtension = "pdf";
+
+    const fileName =
+      `${user.id}/${jobId}-${Date.now()}.${fileExtension}`;
+
+
+    // رفع CV إلى Storage
+
+    const {
+      error: uploadError
+    } = await supabaseClient
+      .storage
+      .from("cvs")
+      .upload(
+        fileName,
+        cvFile,
+        {
+          contentType: "application/pdf",
+          upsert: false
+        }
+      );
+
+
+    if (uploadError) {
+
+      console.error(uploadError);
+
+      throw new Error(
+        "تعذر رفع الـCV. تأكدي من إعدادات Storage."
+      );
+    }
+
+
+    // إنشاء الرابط العمومي للـCV
+
+    const {
+      data: publicUrlData
+    } = supabaseClient
+      .storage
+      .from("cvs")
+      .getPublicUrl(fileName);
+
+
+    const cvUrl =
+      publicUrlData.publicUrl;
+
+
+    // الرسالة
+
+    const candidateMessage =
+      messageInput.value.trim();
+
+
+    // تسجيل الترشح
+
+    const {
+      error: applicationError
+    } = await supabaseClient
+      .from("applications")
+      .insert({
+
+        job_id: jobId,
+
+        candidate_id: user.id,
+
+        cv_url: cvUrl,
+
+        message: candidateMessage,
+
+        status: "pending"
+
+      });
+
+
+    if (applicationError) {
+
+      console.error(applicationError);
+
+      // محاولة حذف الملف إذا فشل إنشاء الترشح
+
+      await supabaseClient
+        .storage
+        .from("cvs")
+        .remove([fileName]);
+
+
+      if (
+        applicationError.code === "23505"
+      ) {
+
+        throw new Error(
+          "إنتِ سبق وقدّمتِ ترشحك لهذا العرض."
+        );
+      }
+
+      throw new Error(
+        applicationError.message
+      );
+    }
+
+
+    result.innerHTML =
+      '<div class="success">✅ تم تقديم ترشحك بنجاح ❤️<br>📄 تم رفع الـCV للمؤسسة.</div>';
+
+
+    button.textContent =
+      "✅ تم تقديم الترشح";
+
+
+    cvInput.disabled = true;
+
+    messageInput.disabled = true;
+
+
+  } catch (error) {
+
     console.error(error);
-    alert("❌ صار مشكل أثناء تقديم الترشح: " + error.message);
-    return;
-  }
 
-  alert("✅ تم تقديم ترشحك بنجاح ❤️");
+    result.innerHTML =
+      `<div class="error">❌ ${error.message}</div>`;
+
+
+    button.disabled = false;
+
+    button.textContent =
+      "📩 تقديم الترشح";
+  }
 }
+
 
 loadJobs();
 
