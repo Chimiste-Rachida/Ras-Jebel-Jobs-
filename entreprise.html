@@ -123,10 +123,20 @@ const supabaseClient =
 
 async function loadCompany() {
 
-  const {
-    data: { user },
-    error
-  } = await supabaseClient.auth.getUser();
+  const result = await Promise.race([
+  supabaseClient.auth.getUser(),
+  new Promise((_, reject) =>
+    setTimeout(
+      () => reject(new Error("Supabase لا يستجيب")),
+      10000
+    )
+  )
+]);
+
+const {
+  data: { user },
+  error
+} = result;
 
   if (error || !user) {
     companyInfo.innerHTML =
