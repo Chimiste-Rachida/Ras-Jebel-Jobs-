@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ترشحات المؤسسة | Ras Jebel Jobs</title>
+
+  <title>Ras Jebel Jobs | ترشحات المؤسسة</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -13,124 +15,150 @@
     }
 
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f7fa;
-      color: #1f2937;
+      margin: 0;
+      color: #222;
     }
 
     header {
-      background: linear-gradient(135deg, #111827, #374151);
+      background: #17324d;
       color: white;
-      padding: 30px 20px;
       text-align: center;
+      padding: 30px 15px;
     }
 
     header h1 {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
     }
 
     main {
-      max-width: 1000px;
+      max-width: 950px;
       margin: 30px auto;
-      padding: 0 16px;
+      padding: 0 15px;
     }
 
-    .card {
+    .company-box {
       background: white;
-      border-radius: 16px;
+      padding: 20px;
+      border-radius: 14px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .application {
+      background: white;
+      border-radius: 14px;
       padding: 22px;
       margin-bottom: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
-    .candidate-name {
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 12px;
+    .application h3 {
+      margin-top: 0;
+      color: #17324d;
     }
 
     .info {
       margin: 8px 0;
-      color: #4b5563;
-    }
-
-    .message {
-      background: #f9fafb;
-      border-right: 4px solid #374151;
-      padding: 12px;
-      margin: 15px 0;
-      border-radius: 8px;
+      line-height: 1.6;
     }
 
     .status {
       display: inline-block;
       padding: 7px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-      margin: 8px 0;
-    }
-
-    .pending {
+      border-radius: 8px;
       background: #fff7ed;
       color: #c2410c;
+      font-weight: bold;
+      margin-top: 8px;
     }
 
-    .accepted {
-      background: #ecfdf5;
-      color: #047857;
+    .message {
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      line-height: 1.7;
     }
 
-    .rejected {
-      background: #fef2f2;
-      color: #b91c1c;
+    .cv {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: #17324d;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .cv:hover {
+      opacity: 0.9;
     }
 
     .buttons {
       display: flex;
       gap: 10px;
-      flex-wrap: wrap;
       margin-top: 15px;
     }
 
-    button {
+    .buttons button {
+      flex: 1;
       border: none;
-      padding: 11px 18px;
-      border-radius: 9px;
+      padding: 12px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 15px;
       font-weight: bold;
+      font-size: 15px;
     }
 
     .accept {
-      background: #16a34a;
-      color: white;
+      background: #dcfce7;
+      color: #166534;
     }
 
     .reject {
-      background: #dc2626;
-      color: white;
+      background: #fee2e2;
+      color: #991b1b;
     }
 
-    .empty {
-      text-align: center;
-      padding: 40px;
-      color: #6b7280;
+    .success {
+      background: #ecfdf5;
+      color: #047857;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
     }
 
     .error {
+      background: #fef2f2;
       color: #b91c1c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    #message {
       text-align: center;
       padding: 20px;
-      font-weight: bold;
+      font-size: 18px;
     }
 
     footer {
       text-align: center;
-      padding: 30px 15px;
+      padding: 25px;
       margin-top: 40px;
-      color: #6b7280;
-      font-size: 14px;
+      background: #17324d;
+      color: white;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      .buttons {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -138,13 +166,24 @@
 <body>
 
 <header>
-  <h1>👥 ترشحات المؤسسة</h1>
-  <p>Ras Jebel Jobs</p>
+  <h1>🏢 فضاء المؤسسة</h1>
+  <p>إدارة الترشحات</p>
 </header>
 
 <main>
-  <div id="message"></div>
+
+  <div class="company-box">
+    <h2>🏢 المؤسسة</h2>
+    <div id="companyName">جاري التحميل...</div>
+    <div id="count"></div>
+  </div>
+
+  <div id="message">
+    جاري تحميل الترشحات...
+  </div>
+
   <div id="applications"></div>
+
 </main>
 
 <footer>
@@ -153,227 +192,426 @@
 </footer>
 
 <script>
-  const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-  const supabaseClient = window.supabase.createClient(
+const SUPABASE_URL =
+  "https://gkiynoqovpuzudzpnryn.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+const supabaseClient =
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
-  async function loadApplications() {
 
-    const messageBox = document.getElementById("message");
-    const container = document.getElementById("applications");
+let companyId = null;
 
-    const {
-      data: { user },
-      error: userError
-    } = await supabaseClient.auth.getUser();
 
-    if (userError || !user) {
-      messageBox.innerHTML =
-        '<div class="error">⚠️ يلزم تسجيل الدخول أولا.</div>';
-      return;
-    }
+async function loadApplications() {
 
-    // المؤسسة المرتبطة بالحساب الحالي
-    const { data: company, error: companyError } =
-      await supabaseClient
-        .from("companies")
-        .select("id, company_name")
-        .eq("owner_id", user.id)
-        .eq("id", "03b2aa14-850c-4ba4-8101-713c778070cc")
-        .maybeSingle();
+  const message =
+    document.getElementById("message");
 
-    if (companyError) {
-      console.error(companyError);
-      messageBox.innerHTML =
-        '<div class="error">❌ تعذر تحميل معلومات المؤسسة.</div>';
-      return;
-    }
+  const container =
+    document.getElementById("applications");
 
-    if (!company) {
-      messageBox.innerHTML =
-        '<div class="error">⚠️ المؤسسة غير مربوطة بهذا الحساب.</div>';
-      return;
-    }
+  const companyName =
+    document.getElementById("companyName");
 
-    // نجيب العروض متاع المؤسسة
-    const { data: jobs, error: jobsError } =
-      await supabaseClient
-        .from("jobs")
-        .select("id, title")
-        .eq("company_id", company.id);
+  const count =
+    document.getElementById("count");
 
-    if (jobsError) {
-      console.error(jobsError);
-      messageBox.innerHTML =
-        '<div class="error">❌ تعذر تحميل عروض العمل.</div>';
-      return;
-    }
 
-    if (!jobs || jobs.length === 0) {
-      messageBox.innerHTML =
-        '<div class="card empty">📭 ما فماش عروض عمل للمؤسسة.</div>';
-      return;
-    }
+  // التثبت من تسجيل الدخول
 
-    const jobIds = jobs.map(job => job.id);
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
 
-    // نجيب الترشحات
-    const { data: applications, error: applicationsError } =
-      await supabaseClient
-        .from("applications")
-        .select("id, job_id, candidate_id, message, status, created_at, cv_url")
-        .in("job_id", jobIds)
-        .order("created_at", { ascending: false });
 
-    if (applicationsError) {
-      console.error(applicationsError);
-      messageBox.innerHTML =
-        '<div class="error">❌ تعذر تحميل الترشحات.</div>';
-      return;
-    }
+  if (userError || !user) {
 
-    messageBox.innerHTML = `
-      <div class="card">
-        <strong>🏢 المؤسسة:</strong> ${company.company_name}
-        <br><br>
-        <strong>📊 عدد الترشحات:</strong> ${applications.length}
-      </div>
-    `;
+    message.innerHTML =
+      '<div class="error">❌ يلزم تسجيل الدخول أولا.</div>';
 
-    if (applications.length === 0) {
-      container.innerHTML =
-        '<div class="card empty">📭 ما فماش ترشحات حاليا.</div>';
-      return;
-    }
+    return;
+  }
 
-    // نجيب بيانات المترشحين
-    const candidateIds = [
-      ...new Set(applications.map(app => app.candidate_id))
-    ];
 
-    const { data: profiles, error: profilesError } =
-      await supabaseClient
-        .from("profiles")
-        .select("id, full_name, phone")
-        .in("id", candidateIds);
+  // جلب المؤسسة الخاصة بالمستخدم
 
-    if (profilesError) {
-      console.error(profilesError);
-      messageBox.innerHTML =
-        '<div class="error">❌ تعذر تحميل معلومات المترشحين.</div>';
-      return;
-    }
+  const {
+    data: company,
+    error: companyError
+  } = await supabaseClient
+    .from("companies")
+    .select("id, company_name")
+    .eq("owner_id", user.id)
+    .limit(1)
+    .maybeSingle();
 
-    const profileMap = {};
-    profiles.forEach(profile => {
-      profileMap[profile.id] = profile;
+
+  if (companyError || !company) {
+
+    console.error(companyError);
+
+    message.innerHTML =
+      '<div class="error">❌ ما لقيناش المؤسسة الخاصة بالحساب.</div>';
+
+    return;
+  }
+
+
+  companyId =
+    company.id;
+
+
+  companyName.textContent =
+    company.company_name || "المؤسسة";
+
+
+  // جلب عروض المؤسسة
+
+  const {
+    data: jobs,
+    error: jobsError
+  } = await supabaseClient
+    .from("jobs")
+    .select(
+      "id,title,location,contract_type,experience"
+    )
+    .eq("company_id", companyId);
+
+
+  if (jobsError) {
+
+    console.error(jobsError);
+
+    message.innerHTML =
+      '<div class="error">❌ تعذر تحميل عروض المؤسسة.</div>';
+
+    return;
+  }
+
+
+  if (!jobs || jobs.length === 0) {
+
+    message.innerHTML =
+      "📭 ما فماش عروض شغل للمؤسسة.";
+
+    count.textContent =
+      "📊 عدد الترشحات: 0";
+
+    return;
+  }
+
+
+  const jobIds =
+    jobs.map(job => job.id);
+
+
+  // جلب الترشحات
+
+  const {
+    data: applications,
+    error: applicationsError
+  } = await supabaseClient
+    .from("applications")
+    .select(
+      "id,job_id,candidate_id,cv_url,message,status,created_at"
+    )
+    .in("job_id", jobIds)
+    .order("created_at", {
+      ascending: false
     });
 
-    const jobMap = {};
-    jobs.forEach(job => {
-      jobMap[job.id] = job;
-    });
 
-    container.innerHTML = applications.map(app => {
+  if (applicationsError) {
 
-      const profile = profileMap[app.candidate_id] || {};
-      const job = jobMap[app.job_id] || {};
+    console.error(applicationsError);
 
-      let statusClass = "pending";
-      let statusText = "🟡 قيد الدراسة";
+    message.innerHTML =
+      '<div class="error">❌ تعذر تحميل الترشحات.</div>';
 
-      if (app.status === "accepted") {
-        statusClass = "accepted";
-        statusText = "🟢 مقبول";
+    return;
+  }
+
+
+  count.textContent =
+    `📊 عدد الترشحات: ${applications.length}`;
+
+
+  if (!applications || applications.length === 0) {
+
+    message.innerHTML =
+      "📭 ما فماش ترشحات حاليا.";
+
+    return;
+  }
+
+
+  // جلب ملفات المترشحين
+
+  const candidateIds =
+    [...new Set(
+      applications.map(app => app.candidate_id)
+    )];
+
+
+  const {
+    data: profiles,
+    error: profilesError
+  } = await supabaseClient
+    .from("profiles")
+    .select("id,full_name,phone")
+    .in("id", candidateIds);
+
+
+  if (profilesError) {
+
+    console.error(profilesError);
+
+    message.innerHTML =
+      '<div class="error">❌ تعذر تحميل معلومات المترشحين.</div>';
+
+    return;
+  }
+
+
+  const profileMap = {};
+
+
+  (profiles || []).forEach(profile => {
+
+    profileMap[profile.id] =
+      profile;
+
+  });
+
+
+  message.innerHTML = "";
+
+
+  container.innerHTML =
+    applications.map(app => {
+
+      const job =
+        jobs.find(
+          item => item.id === app.job_id
+        );
+
+
+      const profile =
+        profileMap[app.candidate_id];
+
+
+      const status =
+        app.status || "pending";
+
+
+      let statusText =
+        "🟡 قيد الدراسة";
+
+
+      if (status === "accepted") {
+
+        statusText =
+          "🟢 مقبول";
+
+      } else if (status === "rejected") {
+
+        statusText =
+          "🔴 مرفوض";
       }
 
-      if (app.status === "rejected") {
-        statusClass = "rejected";
-        statusText = "🔴 مرفوض";
-      }
 
-      const date = new Date(app.created_at)
-        .toLocaleDateString("fr-FR");
+      const date =
+        new Date(
+          app.created_at
+        ).toLocaleDateString(
+          "fr-FR"
+        );
+
 
       return `
-        <div class="card">
 
-          <div class="candidate-name">
-            👤 ${profile.full_name || "مترشح"}
+        <div class="application">
+
+          <h3>
+            👤 ${profile?.full_name || "مترشح"}
+          </h3>
+
+          <div class="info">
+            📱 ${
+              profile?.phone ||
+              "رقم الهاتف غير متوفر"
+            }
           </div>
 
           <div class="info">
-            📱 ${profile.phone || "رقم الهاتف غير متوفر"}
+            💼 ${
+              job?.title ||
+              "عرض شغل"
+            }
           </div>
 
           <div class="info">
-            💼 ${job.title || "عرض عمل"}
+            📍 ${
+              job?.location ||
+              "غير محدد"
+            }
+          </div>
+
+          <div class="info">
+            📄 ${
+              job?.contract_type ||
+              "غير محدد"
+            }
+          </div>
+
+          <div class="info">
+            🎓 ${
+              job?.experience ||
+              "غير محدد"
+            }
           </div>
 
           <div class="info">
             📅 تاريخ الترشح: ${date}
           </div>
 
-          <div>
-            <span class="status ${statusClass}">
-              ${statusText}
-            </span>
+          <div class="status">
+            ${statusText}
           </div>
 
+
           <div class="message">
-            💬 <strong>رسالة المترشح:</strong><br>
-            ${app.message || "ما فماش رسالة."}
+
+            💬 رسالة المترشح:
+
+            <br>
+
+            ${
+              app.message ||
+              "ما فماش رسالة."
+            }
+
           </div>
+
+
+          ${
+            app.cv_url
+            ?
+            `
+              <a
+                href="${app.cv_url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="cv"
+              >
+                📄 فتح CV
+              </a>
+            `
+            :
+            `
+              <div class="message">
+                📄 المترشح ما رفعش CV.
+              </div>
+            `
+          }
+
 
           <div class="buttons">
 
             <button
               class="accept"
-              onclick="updateStatus('${app.id}', 'accepted')">
+              onclick="updateStatus(
+                '${app.id}',
+                'accepted'
+              )"
+            >
               ✅ قبول
             </button>
 
             <button
               class="reject"
-              onclick="updateStatus('${app.id}', 'rejected')">
+              onclick="updateStatus(
+                '${app.id}',
+                'rejected'
+              )"
+            >
               ❌ رفض
             </button>
 
           </div>
 
+          <div
+            id="result-${app.id}"
+          ></div>
+
         </div>
+
       `;
 
     }).join("");
-  }
+}
 
-  async function updateStatus(applicationId, newStatus) {
 
-    const { error } = await supabaseClient
-      .from("applications")
-      .update({ status: newStatus })
-      .eq("id", applicationId);
+async function updateStatus(
+  applicationId,
+  newStatus
+) {
 
-    if (error) {
-      console.error(error);
-      alert("❌ صار مشكل في تحديث الحالة");
-      return;
-    }
-
-    alert(
-      newStatus === "accepted"
-        ? "✅ تم قبول الترشح"
-        : "❌ تم رفض الترشح"
+  const result =
+    document.getElementById(
+      `result-${applicationId}`
     );
 
-    loadApplications();
+
+  const {
+    error
+  } = await supabaseClient
+    .from("applications")
+    .update({
+      status: newStatus
+    })
+    .eq(
+      "id",
+      applicationId
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    result.innerHTML =
+      `<div class="error">
+        ❌ تعذر تحديث حالة الترشح.
+      </div>`;
+
+    return;
   }
 
-  loadApplications();
+
+  result.innerHTML =
+    `<div class="success">
+      ✅ تم تحديث حالة الترشح بنجاح.
+    </div>`;
+
+
+  setTimeout(
+    loadApplications,
+    700
+  );
+}
+
+
+loadApplications();
+
 </script>
 
 </body>
