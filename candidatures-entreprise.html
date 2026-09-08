@@ -28,12 +28,6 @@
 
     header h1 {
       margin: 0 0 8px;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 0;
-      opacity: 0.9;
     }
 
     main {
@@ -118,25 +112,17 @@
       color: white;
     }
 
-    .cv {
-      background: #374151;
-      color: white;
-      text-decoration: none;
-      padding: 11px 18px;
-      border-radius: 9px;
-      display: inline-block;
-      font-weight: bold;
-    }
-
-    button:hover,
-    .cv:hover {
-      opacity: 0.85;
-    }
-
     .empty {
       text-align: center;
       padding: 40px;
       color: #6b7280;
+    }
+
+    .error {
+      color: #b91c1c;
+      text-align: center;
+      padding: 20px;
+      font-weight: bold;
     }
 
     footer {
@@ -145,13 +131,6 @@
       margin-top: 40px;
       color: #6b7280;
       font-size: 14px;
-    }
-
-    .error {
-      color: #b91c1c;
-      text-align: center;
-      padding: 20px;
-      font-weight: bold;
     }
   </style>
 </head>
@@ -184,7 +163,7 @@
 
   async function loadApplications() {
 
-    const message = document.getElementById("message");
+    const messageBox = document.getElementById("message");
     const container = document.getElementById("applications");
 
     const {
@@ -193,75 +172,116 @@
     } = await supabaseClient.auth.getUser();
 
     if (userError || !user) {
-      message.innerHTML =
+      messageBox.innerHTML =
         '<div class="error">⚠️ يلزم تسجيل الدخول أولا.</div>';
       return;
     }
 
+    // المؤسسة المرتبطة بالحساب الحالي
     const { data: company, error: companyError } =
       await supabaseClient
         .from("companies")
         .select("id, company_name")
         .eq("owner_id", user.id)
-        .limit(1)
+        .eq("id", "03b2aa14-850c-4ba4-8101-713c778070cc")
         .maybeSingle();
 
     if (companyError) {
-      message.innerHTML =
-        '<div class="error">❌ تعذر تحميل المؤسسة.</div>';
       console.error(companyError);
+      messageBox.innerHTML =
+        '<div class="error">❌ تعذر تحميل معلومات المؤسسة.</div>';
       return;
     }
 
     if (!company) {
-      message.innerHTML =
-        '<div class="error">⚠️ ما فماش مؤسسة مربوطة بهذا الحساب.</div>';
+      messageBox.innerHTML =
+        '<div class="error">⚠️ المؤسسة غير مربوطة بهذا الحساب.</div>';
       return;
     }
 
-    const { data, error } = await supabaseClient
-      .from("applications")
-      .select(`
-        id,
-        message,
-        status,
-        created_at,
-        cv_url,
-        jobs!inner (
-          id,
-          title,
-          company_id
-        ),
-        profiles!inner (
-          id,
-          full_name,
-          email
-        )
-      `)
-      .eq("jobs.company_id", company.id)
-      .order("created_at", { ascending: false });
+    // نجيب العروض متاع المؤسسة
+    const { data: jobs, error: jobsError } =
+      await supabaseClient
+        .from("jobs")
+        .select("id, title")
+        .eq("company_id", company.id);
 
-    if (error) {
-      message.innerHTML =
+    if (jobsError) {
+      console.error(jobsError);
+      messageBox.innerHTML =
+        '<div class="error">❌ تعذر تحميل عروض العمل.</div>';
+      return;
+    }
+
+    if (!jobs || jobs.length === 0) {
+      messageBox.innerHTML =
+        '<div class="card empty">📭 ما فماش عروض عمل للمؤسسة.</div>';
+      return;
+    }
+
+    const jobIds = jobs.map(job => job.id);
+
+    // نجيب الترشحات
+    const { data: applications, error: applicationsError } =
+      await supabaseClient
+        .from("applications")
+        .select("id, job_id, candidate_id, message, status, created_at, cv_url")
+        .in("job_id", jobIds)
+        .order("created_at", { ascending: false });
+
+    if (applicationsError) {
+      console.error(applicationsError);
+      messageBox.innerHTML =
         '<div class="error">❌ تعذر تحميل الترشحات.</div>';
-      console.error(error);
       return;
     }
 
-    message.innerHTML =
-      `<div class="card">
+    messageBox.innerHTML = `
+      <div class="card">
         <strong>🏢 المؤسسة:</strong> ${company.company_name}
-        <br>
-        <strong>📊 عدد الترشحات:</strong> ${data.length}
-      </div>`;
+        <br><br>
+        <strong>📊 عدد الترشحات:</strong> ${applications.length}
+      </div>
+    `;
 
-    if (!data || data.length === 0) {
+    if (applications.length === 0) {
       container.innerHTML =
         '<div class="card empty">📭 ما فماش ترشحات حاليا.</div>';
       return;
     }
 
-    container.innerHTML = data.map(app => {
+    // نجيب بيانات المترشحين
+    const candidateIds = [
+      ...new Set(applications.map(app => app.candidate_id))
+    ];
+
+    const { data: profiles, error: profilesError } =
+      await supabaseClient
+        .from("profiles")
+        .select("id, full_name, phone")
+        .in("id", candidateIds);
+
+    if (profilesError) {
+      console.error(profilesError);
+      messageBox.innerHTML =
+        '<div class="error">❌ تعذر تحميل معلومات المترشحين.</div>';
+      return;
+    }
+
+    const profileMap = {};
+    profiles.forEach(profile => {
+      profileMap[profile.id] = profile;
+    });
+
+    const jobMap = {};
+    jobs.forEach(job => {
+      jobMap[job.id] = job;
+    });
+
+    container.innerHTML = applications.map(app => {
+
+      const profile = profileMap[app.candidate_id] || {};
+      const job = jobMap[app.job_id] || {};
 
       let statusClass = "pending";
       let statusText = "🟡 قيد الدراسة";
@@ -276,31 +296,22 @@
         statusText = "🔴 مرفوض";
       }
 
-      const candidateName =
-        app.profiles?.full_name || "مترشح";
-
-      const email =
-        app.profiles?.email || "";
-
-      const jobTitle =
-        app.jobs?.title || "عرض عمل";
-
-      const date =
-        new Date(app.created_at).toLocaleDateString("fr-FR");
+      const date = new Date(app.created_at)
+        .toLocaleDateString("fr-FR");
 
       return `
         <div class="card">
 
           <div class="candidate-name">
-            👤 ${candidateName}
+            👤 ${profile.full_name || "مترشح"}
           </div>
 
           <div class="info">
-            📧 ${email}
+            📱 ${profile.phone || "رقم الهاتف غير متوفر"}
           </div>
 
           <div class="info">
-            💼 ${jobTitle}
+            💼 ${job.title || "عرض عمل"}
           </div>
 
           <div class="info">
@@ -317,14 +328,6 @@
             💬 <strong>رسالة المترشح:</strong><br>
             ${app.message || "ما فماش رسالة."}
           </div>
-
-          ${
-            app.cv_url
-              ? `<a class="cv" href="${app.cv_url}" target="_blank">
-                   📄 فتح CV
-                 </a>`
-              : ""
-          }
 
           <div class="buttons">
 
@@ -344,6 +347,7 @@
 
         </div>
       `;
+
     }).join("");
   }
 
@@ -351,14 +355,12 @@
 
     const { error } = await supabaseClient
       .from("applications")
-      .update({
-        status: newStatus
-      })
+      .update({ status: newStatus })
       .eq("id", applicationId);
 
     if (error) {
-      alert("❌ صار مشكل في تحديث الحالة");
       console.error(error);
+      alert("❌ صار مشكل في تحديث الحالة");
       return;
     }
 
