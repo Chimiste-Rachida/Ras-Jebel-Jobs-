@@ -405,7 +405,7 @@ const jobIds =
     applications.map(app => {
 
       const job =
-        jobs.find(
+        filteredJobs.find(
           item => item.id === app.job_id
         );
 
