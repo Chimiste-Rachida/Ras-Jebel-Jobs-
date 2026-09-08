@@ -232,11 +232,10 @@ async function loadJobs(companyId) {
 
 
 function viewApplications(jobId) {
-
-  alert(
-    "📋 في الخطوة القادمة باش نعملوا صفحة الترشحات الخاصة بالمؤسسة."
-  );
-
+  window.location.href =
+    "candidatures-entreprise.html?job_id=" +
+    encodeURIComponent(jobId);
+}
 }
 
 
