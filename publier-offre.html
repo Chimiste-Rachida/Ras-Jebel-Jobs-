@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نشر عرض شغل — Ras Jebel Jobs</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fa;
+  color:#172033;
+}
+header{
+  background:#0b3d91;
+  color:white;
+  padding:22px;
+  text-align:center;
+}
+.container{
+  max-width:700px;
+  margin:35px auto;
+  padding:25px;
+}
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+h1{margin-top:0}
+label{
+  display:block;
+  margin-top:18px;
+  margin-bottom:7px;
+  font-weight:bold;
+}
+input,textarea,select{
+  width:100%;
+  padding:13px;
+  border:1px solid #ccd3df;
+  border-radius:10px;
+  font-size:16px;
+}
+textarea{
+  min-height:130px;
+  resize:vertical;
+}
+button{
+  width:100%;
+  margin-top:25px;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:#0b3d91;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+#message{
+  margin-top:18px;
+  text-align:center;
+  font-weight:bold;
+}
+.back{
+  display:block;
+  text-align:center;
+  margin-top:20px;
+  color:#0b3d91;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💼 نشر عرض شغل</h1>
+  <p>Ras Jebel Jobs</p>
+</header>
+
+<div class="container">
+  <div class="card">
+
+    <h2>إضافة عرض جديد</h2>
+
+    <label>عنوان الوظيفة</label>
+    <input id="title" type="text" placeholder="مثال: Technicienne de laboratoire">
+
+    <label>وصف الوظيفة</label>
+    <textarea id="description" placeholder="اكتب تفاصيل الوظيفة والمهام المطلوبة..."></textarea>
+
+    <label>المكان</label>
+    <input id="location" type="text" placeholder="مثال: رأس الجبل">
+
+    <label>نوع العقد</label>
+    <select id="contract_type">
+      <option value="">اختار نوع العقد</option>
+      <option value="CDI">CDI</option>
+      <option value="CDD">CDD</option>
+      <option value="SIVP">SIVP</option>
+      <option value="Stage">Stage</option>
+      <option value="Temps plein">Temps plein</option>
+      <option value="Temps partiel">Temps partiel</option>
+    </select>
+
+    <label>الخبرة المطلوبة</label>
+    <input id="experience" type="text" placeholder="مثال: Débutant accepté">
+
+    <button onclick="publishJob()">🚀 نشر العرض</button>
+
+    <div id="message"></div>
+
+    <a class="back" href="entreprise.html">← الرجوع إلى فضاء المؤسسة</a>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
+const SUPABASE_KEY = "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function publishJob(){
+
+  const message = document.getElementById("message");
+
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const location = document.getElementById("location").value.trim();
+  const contract_type = document.getElementById("contract_type").value;
+  const experience = document.getElementById("experience").value.trim();
+
+  if(!title || !description || !location){
+    message.textContent = "⚠️ عبي عنوان الوظيفة والوصف والمكان.";
+    return;
+  }
+
+  message.textContent = "⏳ جاري نشر العرض...";
+
+  try{
+
+    const { data:{ user }, error:userError } =
+      await supabaseClient.auth.getUser();
+
+    if(userError || !user){
+      message.textContent = "⚠️ لازمك تعمل تسجيل دخول كمؤسسة.";
+      return;
+    }
+
+    const { data:company, error:companyError } =
+      await supabaseClient
+        .from("companies")
+        .select("id")
+        .eq("owner_id", user.id)
+        .maybeSingle();
+
+    if(companyError){
+      console.error(companyError);
+      message.textContent = "❌ صار خطأ في البحث عن المؤسسة.";
+      return;
+    }
+
+    if(!company){
+      message.textContent =
+        "⚠️ الحساب هذا موش مربوط بمؤسسة في قاعدة البيانات.";
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from("jobs")
+      .insert([{
+        company_id: company.id,
+        title: title,
+        description: description,
+        location: location,
+        contract_type: contract_type || null,
+        experience: experience || null,
+        status: "active"
+      }]);
+
+    if(error){
+      console.error(error);
+      message.textContent = "❌ ما نجّمش ينشر العرض: " + error.message;
+      return;
+    }
+
+    message.textContent = "✅ تم نشر عرض الشغل بنجاح!";
+
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("contract_type").value = "";
+    document.getElementById("experience").value = "";
+
+  }catch(error){
+
+    console.error(error);
+    message.textContent = "❌ صار خطأ غير متوقع.";
+
+  }
+}
+</script>
+
+</body>
+</html>
