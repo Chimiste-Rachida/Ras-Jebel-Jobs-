@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>فضاء المؤسسة — Ras Jebel Jobs</title>
 
   <style>
@@ -59,6 +60,20 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 15px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .error {
+      color: #b00020;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #16803c;
+      font-weight: bold;
     }
 
     footer {
@@ -123,116 +138,218 @@ const supabaseClient =
 
 async function loadCompany() {
 
-  const result = await Promise.race([
-  supabaseClient.auth.getUser(),
-  new Promise((_, reject) =>
-    setTimeout(
-      () => reject(new Error("Supabase لا يستجيب")),
-      10000
-    )
-  )
-]);
+  const companyInfo =
+    document.getElementById("companyInfo");
 
-const {
-  data: { user },
-  error
-} = result;
+  const jobs =
+    document.getElementById("jobs");
 
-  if (error || !user) {
-    companyInfo.innerHTML =
-      "⚠️ يلزمك تسجيل الدخول أولا.";
-    return;
-  }
+  try {
 
-  const { data, error: companyError } =
-    await supabaseClient
+    const {
+      data: { user },
+      error: authError
+    } = await supabaseClient.auth.getUser();
+
+    if (authError) {
+      console.error(authError);
+
+      companyInfo.innerHTML =
+        '<p class="error">❌ تعذر التحقق من تسجيل الدخول.</p>';
+
+      return;
+    }
+
+    if (!user) {
+
+      companyInfo.innerHTML =
+        '<p class="error">⚠️ يلزمك تسجيل الدخول أولا.</p>';
+
+      jobs.innerHTML =
+        "سجّل الدخول كمسؤول مؤسسة لرؤية العروض.";
+
+      return;
+    }
+
+
+    const {
+      data: company,
+      error: companyError
+    } = await supabaseClient
       .from("companies")
-      .select("id, company_name")
+      .select(`
+        id,
+        company_name,
+        description,
+        phone,
+        email,
+        location
+      `)
       .eq("owner_id", user.id)
       .limit(1)
       .maybeSingle();
 
-  if (companyError) {
+
+    if (companyError) {
+
+      console.error(companyError);
+
+      companyInfo.innerHTML =
+        '<p class="error">❌ تعذر تحميل معلومات المؤسسة.</p>';
+
+      return;
+    }
+
+
+    if (!company) {
+
+      companyInfo.innerHTML =
+        '<p class="error">⚠️ ما فماش مؤسسة مربوطة بهذا الحساب.</p>';
+
+      jobs.innerHTML =
+        "ما فماش مؤسسة مرتبطة بحساب الدخول الحالي.";
+
+      return;
+    }
+
+
+    companyInfo.innerHTML = `
+
+      <p class="success">
+        ✅ تم تحميل معلومات المؤسسة بنجاح
+      </p>
+
+      <p>
+        <strong>🏢 اسم المؤسسة:</strong>
+        ${escapeHtml(company.company_name || "")}
+      </p>
+
+      ${
+        company.location
+          ? `<p>📍 <strong>الموقع:</strong> ${escapeHtml(company.location)}</p>`
+          : ""
+      }
+
+      ${
+        company.email
+          ? `<p>📧 <strong>Email:</strong> ${escapeHtml(company.email)}</p>`
+          : ""
+      }
+
+      ${
+        company.phone
+          ? `<p>📞 <strong>Téléphone:</strong> ${escapeHtml(company.phone)}</p>`
+          : ""
+      }
+
+    `;
+
+
+    await loadJobs(company.id);
+
+  } catch (error) {
+
+    console.error(error);
+
     companyInfo.innerHTML =
-      "❌ تعذر تحميل معلومات المؤسسة.";
-    console.error(companyError);
-    return;
+      '<p class="error">❌ صار خطأ أثناء تحميل البيانات.</p>';
+
+    jobs.innerHTML =
+      '<p class="error">❌ تعذر تحميل العروض.</p>';
   }
-
-  if (!data) {
-    companyInfo.innerHTML =
-      "⚠️ ما فماش مؤسسة مربوطة بهذا الحساب.";
-    return;
-  }
-
-  companyInfo.innerHTML =
-    "<strong>🏢 اسم المؤسسة:</strong> " +
-    data.company_name;
-
-  loadJobs(data.id);
 }
 
 
 async function loadJobs(companyId) {
 
-  const { data, error } =
-    await supabaseClient
-      .from("jobs")
-      .select(`
-        id,
-        title,
-        description,
-        location,
-        contract_type,
-        experience,
-        status,
-        created_at
-      `)
-      .eq("company_id", companyId)
-      .order("created_at", { ascending: false });
+  const jobsContainer =
+    document.getElementById("jobs");
+
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from("jobs")
+    .select(`
+      id,
+      title,
+      description,
+      location,
+      contract_type,
+      experience,
+      status,
+      created_at
+    `)
+    .eq("company_id", companyId)
+    .order("created_at", {
+      ascending: false
+    });
+
 
   if (error) {
-    jobs.innerHTML =
-      "❌ تعذر تحميل عروض العمل.";
+
     console.error(error);
+
+    jobsContainer.innerHTML =
+      '<p class="error">❌ تعذر تحميل عروض العمل.</p>';
+
     return;
   }
+
 
   if (!data || data.length === 0) {
-    jobs.innerHTML =
+
+    jobsContainer.innerHTML =
       "ما فماش عروض عمل منشورة حاليا.";
+
     return;
   }
 
-  jobs.innerHTML = data.map(job => `
+
+  jobsContainer.innerHTML = data.map(job => `
 
     <div class="job">
 
-      <h3>${job.title}</h3>
-
-      <p>📍 ${job.location || ""}</p>
-
-      <p>📄 ${job.contract_type || ""}</p>
-
-      <p>🎓 ${job.experience || ""}</p>
-
-      <p>${job.description || ""}</p>
+      <h3>
+        💼 ${escapeHtml(job.title || "بدون عنوان")}
+      </h3>
 
       <p>
-        الحالة:
-        <strong>
-          ${
-            job.status === "active"
-              ? "🟢 نشط"
-              : "🔴 مغلق"
-          }
-        </strong>
+        📍 <strong>المكان:</strong>
+        ${escapeHtml(job.location || "غير محدد")}
+      </p>
+
+      <p>
+        📄 <strong>نوع العقد:</strong>
+        ${escapeHtml(job.contract_type || "غير محدد")}
+      </p>
+
+      <p>
+        🎓 <strong>الخبرة:</strong>
+        ${escapeHtml(job.experience || "غير محدد")}
+      </p>
+
+      <p>
+        ${escapeHtml(job.description || "")}
+      </p>
+
+      <p>
+        <strong>الحالة:</strong>
+
+        ${
+          job.status === "active"
+            ? "🟢 نشط"
+            : "🔴 مغلق"
+        }
       </p>
 
       <button
         class="btn"
         onclick="viewApplications('${job.id}')">
+
         👥 الترشحات
+
       </button>
 
     </div>
@@ -242,18 +359,25 @@ async function loadJobs(companyId) {
 
 
 function viewApplications(jobId) {
+
   window.location.href =
     "candidatures-entreprise.html?job_id=" +
     encodeURIComponent(jobId);
 }
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 
-loadCompany().catch(error => {
-  console.error(error);
-  document.getElementById("companyInfo").innerHTML =
-    "❌ صار خطأ أثناء تحميل المؤسسة: " + (error.message || error);
-});
+loadCompany();
 
 </script>
 
