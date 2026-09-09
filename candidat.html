@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Ras Jebel Jobs | فضاء الباحث عن عمل</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -36,7 +38,14 @@
       padding: 0 15px;
     }
 
-    .job {
+    .section-title {
+      color: #17324d;
+      margin-top: 35px;
+      margin-bottom: 20px;
+    }
+
+    .job,
+    .application-card {
       background: white;
       border-radius: 14px;
       padding: 22px;
@@ -44,7 +53,8 @@
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
-    .job h3 {
+    .job h3,
+    .application-card h3 {
       margin-top: 0;
       color: #17324d;
       font-size: 22px;
@@ -53,6 +63,7 @@
     .info {
       margin: 8px 0;
       color: #444;
+      line-height: 1.6;
     }
 
     .job p {
@@ -103,10 +114,6 @@
       width: 100%;
     }
 
-    .apply-button:hover {
-      opacity: 0.9;
-    }
-
     .apply-button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -136,6 +143,50 @@
       margin-top: 12px;
     }
 
+    .status {
+      display: inline-block;
+      padding: 9px 14px;
+      border-radius: 9px;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .accepted {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .rejected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .cv-link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: #17324d;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .empty {
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+      color: #666;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
     #message {
       text-align: center;
       padding: 20px;
@@ -162,13 +213,19 @@
 
 <main>
 
-  <h2>💼 عروض الشغل المتاحة</h2>
+  <h2 class="section-title">💼 عروض الشغل المتاحة</h2>
 
   <div id="message">
     جاري تحميل العروض...
   </div>
 
   <div id="jobs"></div>
+
+  <h2 class="section-title">📋 ترشحـاتي</h2>
+
+  <div id="myApplications">
+    جاري تحميل ترشحاتك...
+  </div>
 
 </main>
 
@@ -313,11 +370,8 @@ async function applyJob(jobId) {
   const messageInput =
     document.getElementById(`message-${jobId}`);
 
-
   result.innerHTML = "";
 
-
-  // التأكد من تسجيل الدخول
 
   const {
     data: { user },
@@ -335,8 +389,6 @@ async function applyJob(jobId) {
   }
 
 
-  // التأكد من اختيار CV
-
   if (!cvInput.files || cvInput.files.length === 0) {
 
     result.innerHTML =
@@ -350,8 +402,6 @@ async function applyJob(jobId) {
     cvInput.files[0];
 
 
-  // التثبت من نوع الملف
-
   if (
     cvFile.type !== "application/pdf" &&
     !cvFile.name.toLowerCase().endsWith(".pdf")
@@ -363,8 +413,6 @@ async function applyJob(jobId) {
     return;
   }
 
-
-  // الحد الأقصى 5 MB
 
   if (cvFile.size > 5 * 1024 * 1024) {
 
@@ -382,8 +430,6 @@ async function applyJob(jobId) {
 
 
   try {
-
-    // منع الترشح المكرر
 
     const {
       data: existingApplication,
@@ -420,15 +466,9 @@ async function applyJob(jobId) {
     }
 
 
-    // اسم فريد للـCV
-
-    const fileExtension = "pdf";
-
     const fileName =
-      `${user.id}/${jobId}-${Date.now()}.${fileExtension}`;
+      `${user.id}/${jobId}-${Date.now()}.pdf`;
 
-
-    // رفع CV إلى Storage
 
     const {
       error: uploadError
@@ -455,8 +495,6 @@ async function applyJob(jobId) {
     }
 
 
-    // إنشاء الرابط العمومي للـCV
-
     const {
       data: publicUrlData
     } = supabaseClient
@@ -469,13 +507,9 @@ async function applyJob(jobId) {
       publicUrlData.publicUrl;
 
 
-    // الرسالة
-
     const candidateMessage =
       messageInput.value.trim();
 
-
-    // تسجيل الترشح
 
     const {
       error: applicationError
@@ -499,8 +533,6 @@ async function applyJob(jobId) {
     if (applicationError) {
 
       console.error(applicationError);
-
-      // محاولة حذف الملف إذا فشل إنشاء الترشح
 
       await supabaseClient
         .storage
@@ -530,11 +562,12 @@ async function applyJob(jobId) {
     button.textContent =
       "✅ تم تقديم الترشح";
 
-
     cvInput.disabled = true;
 
     messageInput.disabled = true;
 
+
+    loadMyApplications();
 
   } catch (error) {
 
@@ -542,7 +575,6 @@ async function applyJob(jobId) {
 
     result.innerHTML =
       `<div class="error">❌ ${error.message}</div>`;
-
 
     button.disabled = false;
 
@@ -552,7 +584,190 @@ async function applyJob(jobId) {
 }
 
 
+async function loadMyApplications() {
+
+  const container =
+    document.getElementById("myApplications");
+
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+
+  if (userError || !user) {
+
+    container.innerHTML =
+      '<div class="warning">🔐 سجّل الدخول باش تشوف ترشحاتك.</div>';
+
+    return;
+  }
+
+
+  const {
+    data: applications,
+    error: applicationsError
+  } = await supabaseClient
+    .from("applications")
+    .select(
+      "id,job_id,cv_url,message,status,created_at"
+    )
+    .eq("candidate_id", user.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (applicationsError) {
+
+    console.error(applicationsError);
+
+    container.innerHTML =
+      '<div class="error">❌ تعذر تحميل ترشحاتك.</div>';
+
+    return;
+  }
+
+
+  if (!applications || applications.length === 0) {
+
+    container.innerHTML =
+      '<div class="empty">📭 ما قدمتش على حتى عرض شغل توّا.</div>';
+
+    return;
+  }
+
+
+  const jobIds =
+    [...new Set(
+      applications.map(app => app.job_id)
+    )];
+
+
+  const {
+    data: jobs,
+    error: jobsError
+  } = await supabaseClient
+    .from("jobs")
+    .select(
+      "id,title,location,contract_type,experience"
+    )
+    .in("id", jobIds);
+
+
+  if (jobsError) {
+
+    console.error(jobsError);
+
+    container.innerHTML =
+      '<div class="error">❌ تعذر تحميل تفاصيل العروض.</div>';
+
+    return;
+  }
+
+
+  const jobMap = {};
+
+  (jobs || []).forEach(job => {
+    jobMap[job.id] = job;
+  });
+
+
+  container.innerHTML =
+    applications.map(app => {
+
+      const job =
+        jobMap[app.job_id];
+
+      let statusText =
+        "🟡 قيد الدراسة";
+
+      let statusClass =
+        "pending";
+
+
+      if (app.status === "accepted") {
+
+        statusText =
+          "🟢 مقبول";
+
+        statusClass =
+          "accepted";
+
+      } else if (app.status === "rejected") {
+
+        statusText =
+          "🔴 مرفوض";
+
+        statusClass =
+          "rejected";
+      }
+
+
+      const date =
+        new Date(
+          app.created_at
+        ).toLocaleDateString(
+          "fr-FR"
+        );
+
+
+      return `
+
+        <div class="application-card">
+
+          <h3>
+            💼 ${job?.title || "عرض شغل"}
+          </h3>
+
+          <div class="info">
+            📍 ${job?.location || "غير محدد"}
+          </div>
+
+          <div class="info">
+            📄 ${job?.contract_type || "غير محدد"}
+          </div>
+
+          <div class="info">
+            🎓 ${job?.experience || "غير محدد"}
+          </div>
+
+          <div class="info">
+            📅 تاريخ الترشح: ${date}
+          </div>
+
+          <div class="status ${statusClass}">
+            ${statusText}
+          </div>
+
+          ${
+            app.cv_url
+            ?
+            `
+              <a
+                href="${app.cv_url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="cv-link"
+              >
+                📄 فتح الـCV المرسل
+              </a>
+            `
+            :
+            ""
+          }
+
+        </div>
+
+      `;
+
+    }).join("");
+}
+
+
 loadJobs();
+loadMyApplications();
 
 </script>
 
