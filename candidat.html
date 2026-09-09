@@ -44,6 +44,53 @@
       margin-bottom: 20px;
     }
 
+    .notification-box {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .notification {
+      background: #f8fafc;
+      border-right: 5px solid #17324d;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .notification.unread {
+      background: #eff6ff;
+      border-right-color: #2563eb;
+    }
+
+    .notification h3 {
+      margin: 0 0 8px;
+      color: #17324d;
+    }
+
+    .notification p {
+      margin: 8px 0;
+      line-height: 1.7;
+    }
+
+    .notification-date {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .read-button {
+      margin-top: 10px;
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
     .job,
     .application-card {
       background: white;
@@ -213,7 +260,20 @@
 
 <main>
 
-  <h2 class="section-title">💼 عروض الشغل المتاحة</h2>
+  <h2 class="section-title">
+    🔔 إشعاراتي
+  </h2>
+
+  <div class="notification-box">
+    <div id="notifications">
+      جاري تحميل الإشعارات...
+    </div>
+  </div>
+
+
+  <h2 class="section-title">
+    💼 عروض الشغل المتاحة
+  </h2>
 
   <div id="message">
     جاري تحميل العروض...
@@ -221,7 +281,10 @@
 
   <div id="jobs"></div>
 
-  <h2 class="section-title">📋 ترشحـاتي</h2>
+
+  <h2 class="section-title">
+    📋 ترشحـاتي
+  </h2>
 
   <div id="myApplications">
     جاري تحميل ترشحاتك...
@@ -249,6 +312,154 @@ const supabaseClient =
   );
 
 
+async function loadNotifications() {
+
+  const container =
+    document.getElementById("notifications");
+
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+
+  if (userError || !user) {
+
+    container.innerHTML =
+      '<div class="warning">🔐 سجّل الدخول باش تشوف إشعاراتك.</div>';
+
+    return;
+  }
+
+
+  const {
+    data: notifications,
+    error
+  } = await supabaseClient
+    .from("notifications")
+    .select(
+      "id,title,message,is_read,created_at"
+    )
+    .eq("user_id", user.id)
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    container.innerHTML =
+      '<div class="error">❌ تعذر تحميل الإشعارات.</div>';
+
+    return;
+  }
+
+
+  if (!notifications || notifications.length === 0) {
+
+    container.innerHTML =
+      '<div class="empty">🔕 ما عندك حتى إشعار توّا.</div>';
+
+    return;
+  }
+
+
+  container.innerHTML =
+    notifications.map(notification => {
+
+      const date =
+        new Date(
+          notification.created_at
+        ).toLocaleString(
+          "fr-FR"
+        );
+
+
+      return `
+
+        <div
+          class="notification ${
+            notification.is_read
+              ? ""
+              : "unread"
+          }"
+        >
+
+          <h3>
+            ${notification.title || "🔔 إشعار"}
+          </h3>
+
+          <p>
+            ${notification.message || ""}
+          </p>
+
+          <div class="notification-date">
+            📅 ${date}
+          </div>
+
+          ${
+            !notification.is_read
+            ?
+            `
+              <button
+                class="read-button"
+                onclick="markNotificationRead('${notification.id}')"
+              >
+                ✓ تعليم كمقروء
+              </button>
+            `
+            :
+            `
+              <div class="notification-date">
+                ✓ تمت القراءة
+              </div>
+            `
+          }
+
+        </div>
+
+      `;
+
+    }).join("");
+}
+
+
+async function markNotificationRead(
+  notificationId
+) {
+
+  const {
+    error
+  } = await supabaseClient
+    .from("notifications")
+    .update({
+      is_read: true
+    })
+    .eq(
+      "id",
+      notificationId
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "❌ تعذر تحديث الإشعار."
+    );
+
+    return;
+  }
+
+
+  loadNotifications();
+}
+
+
 async function loadJobs() {
 
   const message =
@@ -256,6 +467,7 @@ async function loadJobs() {
 
   const jobsContainer =
     document.getElementById("jobs");
+
 
   const {
     data: jobs,
@@ -270,6 +482,7 @@ async function loadJobs() {
       ascending: false
     });
 
+
   if (error) {
 
     console.error(error);
@@ -280,6 +493,7 @@ async function loadJobs() {
     return;
   }
 
+
   if (!jobs || jobs.length === 0) {
 
     message.innerHTML =
@@ -288,7 +502,9 @@ async function loadJobs() {
     return;
   }
 
+
   message.innerHTML = "";
+
 
   jobsContainer.innerHTML =
     jobs.map(job => `
@@ -359,16 +575,25 @@ async function loadJobs() {
 async function applyJob(jobId) {
 
   const button =
-    document.getElementById(`button-${jobId}`);
+    document.getElementById(
+      `button-${jobId}`
+    );
 
   const result =
-    document.getElementById(`result-${jobId}`);
+    document.getElementById(
+      `result-${jobId}`
+    );
 
   const cvInput =
-    document.getElementById(`cv-${jobId}`);
+    document.getElementById(
+      `cv-${jobId}`
+    );
 
   const messageInput =
-    document.getElementById(`message-${jobId}`);
+    document.getElementById(
+      `message-${jobId}`
+    );
+
 
   result.innerHTML = "";
 
@@ -381,15 +606,21 @@ async function applyJob(jobId) {
 
   if (userError || !user) {
 
-    alert("⚠️ يلزمك تسجيل الدخول أولا");
+    alert(
+      "⚠️ يلزمك تسجيل الدخول أولا"
+    );
 
-    window.location.href = "auth.html";
+    window.location.href =
+      "auth.html";
 
     return;
   }
 
 
-  if (!cvInput.files || cvInput.files.length === 0) {
+  if (
+    !cvInput.files ||
+    cvInput.files.length === 0
+  ) {
 
     result.innerHTML =
       '<div class="warning">⚠️ لازم تختار CV بصيغة PDF قبل تقديم الترشح.</div>';
@@ -404,7 +635,9 @@ async function applyJob(jobId) {
 
   if (
     cvFile.type !== "application/pdf" &&
-    !cvFile.name.toLowerCase().endsWith(".pdf")
+    !cvFile.name
+      .toLowerCase()
+      .endsWith(".pdf")
   ) {
 
     result.innerHTML =
@@ -414,7 +647,10 @@ async function applyJob(jobId) {
   }
 
 
-  if (cvFile.size > 5 * 1024 * 1024) {
+  if (
+    cvFile.size >
+    5 * 1024 * 1024
+  ) {
 
     result.innerHTML =
       '<div class="error">❌ حجم الـCV لازم يكون أقل من 5 MB.</div>';
@@ -438,7 +674,10 @@ async function applyJob(jobId) {
       .from("applications")
       .select("id")
       .eq("job_id", jobId)
-      .eq("candidate_id", user.id)
+      .eq(
+        "candidate_id",
+        user.id
+      )
       .maybeSingle();
 
 
@@ -479,7 +718,8 @@ async function applyJob(jobId) {
         fileName,
         cvFile,
         {
-          contentType: "application/pdf",
+          contentType:
+            "application/pdf",
           upsert: false
         }
       );
@@ -500,7 +740,9 @@ async function applyJob(jobId) {
     } = supabaseClient
       .storage
       .from("cvs")
-      .getPublicUrl(fileName);
+      .getPublicUrl(
+        fileName
+      );
 
 
     const cvUrl =
@@ -532,22 +774,29 @@ async function applyJob(jobId) {
 
     if (applicationError) {
 
-      console.error(applicationError);
+      console.error(
+        applicationError
+      );
+
 
       await supabaseClient
         .storage
         .from("cvs")
-        .remove([fileName]);
+        .remove([
+          fileName
+        ]);
 
 
       if (
-        applicationError.code === "23505"
+        applicationError.code ===
+        "23505"
       ) {
 
         throw new Error(
           "إنتِ سبق وقدّمتِ ترشحك لهذا العرض."
         );
       }
+
 
       throw new Error(
         applicationError.message
@@ -556,220 +805,4 @@ async function applyJob(jobId) {
 
 
     result.innerHTML =
-      '<div class="success">✅ تم تقديم ترشحك بنجاح ❤️<br>📄 تم رفع الـCV للمؤسسة.</div>';
-
-
-    button.textContent =
-      "✅ تم تقديم الترشح";
-
-    cvInput.disabled = true;
-
-    messageInput.disabled = true;
-
-
-    loadMyApplications();
-
-  } catch (error) {
-
-    console.error(error);
-
-    result.innerHTML =
-      `<div class="error">❌ ${error.message}</div>`;
-
-    button.disabled = false;
-
-    button.textContent =
-      "📩 تقديم الترشح";
-  }
-}
-
-
-async function loadMyApplications() {
-
-  const container =
-    document.getElementById("myApplications");
-
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-
-  if (userError || !user) {
-
-    container.innerHTML =
-      '<div class="warning">🔐 سجّل الدخول باش تشوف ترشحاتك.</div>';
-
-    return;
-  }
-
-
-  const {
-    data: applications,
-    error: applicationsError
-  } = await supabaseClient
-    .from("applications")
-    .select(
-      "id,job_id,cv_url,message,status,created_at"
-    )
-    .eq("candidate_id", user.id)
-    .order("created_at", {
-      ascending: false
-    });
-
-
-  if (applicationsError) {
-
-    console.error(applicationsError);
-
-    container.innerHTML =
-      '<div class="error">❌ تعذر تحميل ترشحاتك.</div>';
-
-    return;
-  }
-
-
-  if (!applications || applications.length === 0) {
-
-    container.innerHTML =
-      '<div class="empty">📭 ما قدمتش على حتى عرض شغل توّا.</div>';
-
-    return;
-  }
-
-
-  const jobIds =
-    [...new Set(
-      applications.map(app => app.job_id)
-    )];
-
-
-  const {
-    data: jobs,
-    error: jobsError
-  } = await supabaseClient
-    .from("jobs")
-    .select(
-      "id,title,location,contract_type,experience"
-    )
-    .in("id", jobIds);
-
-
-  if (jobsError) {
-
-    console.error(jobsError);
-
-    container.innerHTML =
-      '<div class="error">❌ تعذر تحميل تفاصيل العروض.</div>';
-
-    return;
-  }
-
-
-  const jobMap = {};
-
-  (jobs || []).forEach(job => {
-    jobMap[job.id] = job;
-  });
-
-
-  container.innerHTML =
-    applications.map(app => {
-
-      const job =
-        jobMap[app.job_id];
-
-      let statusText =
-        "🟡 قيد الدراسة";
-
-      let statusClass =
-        "pending";
-
-
-      if (app.status === "accepted") {
-
-        statusText =
-          "🟢 مقبول";
-
-        statusClass =
-          "accepted";
-
-      } else if (app.status === "rejected") {
-
-        statusText =
-          "🔴 مرفوض";
-
-        statusClass =
-          "rejected";
-      }
-
-
-      const date =
-        new Date(
-          app.created_at
-        ).toLocaleDateString(
-          "fr-FR"
-        );
-
-
-      return `
-
-        <div class="application-card">
-
-          <h3>
-            💼 ${job?.title || "عرض شغل"}
-          </h3>
-
-          <div class="info">
-            📍 ${job?.location || "غير محدد"}
-          </div>
-
-          <div class="info">
-            📄 ${job?.contract_type || "غير محدد"}
-          </div>
-
-          <div class="info">
-            🎓 ${job?.experience || "غير محدد"}
-          </div>
-
-          <div class="info">
-            📅 تاريخ الترشح: ${date}
-          </div>
-
-          <div class="status ${statusClass}">
-            ${statusText}
-          </div>
-
-          ${
-            app.cv_url
-            ?
-            `
-              <a
-                href="${app.cv_url}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="cv-link"
-              >
-                📄 فتح الـCV المرسل
-              </a>
-            `
-            :
-            ""
-          }
-
-        </div>
-
-      `;
-
-    }).join("");
-}
-
-
-loadJobs();
-loadMyApplications();
-
-</script>
-
-</body>
-</html>
+      '<div class="success
