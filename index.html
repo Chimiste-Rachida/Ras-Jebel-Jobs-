@@ -50,4 +50,71 @@
     nav {
       display: flex;
       gap: 8px;
-     
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 9px 13px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.13);
+      font-size: 14px;
+    }
+
+    .hero {
+      min-height: 430px;
+      padding: 70px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background:
+        linear-gradient(
+          rgba(255,255,255,.78),
+          rgba(255,255,255,.84)
+        ),
+        url("ras-jebel-jobs-hero.jpg")
+        center center / cover no-repeat;
+    }
+
+    .hero h1 {
+      margin: 0 0 15px;
+      font-size: 38px;
+      color: #0b3d91;
+    }
+
+    .hero p {
+      font-size: 19px;
+      color: #526071;
+      margin-bottom: 28px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #0b3d91;
+      color: white;
+    }
+
+    .btn-company {
+      background: #16845b;
+      color:
