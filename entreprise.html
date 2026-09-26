@@ -3,36 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>فضاء المؤسسة — Ras Jebel Jobs</title>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;color:#1f2937}
-    header{background:linear-gradient(135deg,#17324d,#1e6fa8);color:white;padding:30px 20px;text-align:center}
-    header h1{margin:0 0 8px}
-    header a{color:white;text-decoration:none;font-weight:bold}
-    .container{max-width:1050px;margin:30px auto;padding:0 15px}
-    .card{background:white;padding:25px;margin-bottom:25px;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,.06)}
-    h2{color:#17324d;margin-top:0}
-    .welcome{background:#eef6ff;border-right:5px solid #1e6fa8;line-height:2}
-    .job-card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin-bottom:15px}
-    .job-card h3{color:#17324d;margin-top:0}
-    .talent-section{border-top:5px solid #7c3aed}
-    .talent-intro{background:#f5f3ff;padding:15px;border-radius:10px;line-height:1.8;margin-bottom:20px}
-    .search-box{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:20px}
-    input{width:100%;padding:14px;border:1px solid #d1d5db;border-radius:9px;font-size:15px;font-family:inherit}
-    button{border:0;border-radius:9px;padding:13px 20px;cursor:pointer;font-weight:bold;font-size:15px}
-    .search-button{background:#7c3aed;color:white}
-    .talent-card{background:#fff;border:1px solid #ddd6fe;border-right:5px solid #7c3aed;border-radius:13px;padding:20px;margin-bottom:15px}
-    .talent-card h3{margin-top:0;color:#5b21b6}
-    .talent-info{line-height:2}
-    .profile-block{margin-top:15px;padding-top:15px;border-top:1px solid #eee}
-    .success{background:#d1fae5;color:#065f46;padding:12px;border-radius:9px;margin-bottom:15px}
-    .error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:9px;margin-bottom:15px}
-    .info{background:#e0f2fe;color:#075985;padding:12px;border-radius:9px;margin-bottom:15px}
-    footer{background:#17324d;color:white;text-align:center;padding:30px 15px;margin-top:40px;line-height:1.8}
-    @media(max-width:650px){.search-box{grid-template-columns:1fr}.search-button{width:100%}}
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f5f8fc;
+      color: #172033;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0b3d91, #1769aa);
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: .95;
+    }
+
+    nav {
+      background: white;
+      padding: 14px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    nav a {
+      color: #0b3d91;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    section {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    }
+
+    h2 {
+      color: #0b3d91;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #1769aa;
+    }
+
+    .success {
+      background: #e9f8ef;
+      color: #176b3a;
+      border: 1px solid #b8e5c8;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .company-info {
+      display: grid;
+      gap: 10px;
+    }
+
+    .job-card,
+    .talent-card {
+      border: 1px solid #dce5ef;
+      border-radius: 15px;
+      padding: 18px;
+      margin: 15px 0;
+      background: #fbfdff;
+    }
+
+    .job-card h3,
+    .talent-card h3 {
+      margin-top: 0;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0 20px;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 13px;
+      border: 1px solid #cbd6e2;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .search-box button {
+      padding: 13px 22px;
+      border: 0;
+      border-radius: 10px;
+      background: #0b3d91;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .detail {
+      margin: 7px 0;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #0b3d91;
+    }
+
+    .empty {
+      color: #667085;
+      padding: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #667085;
+      font-size: 14px;
+    }
+
+    @media (max-width: 650px) {
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -41,373 +165,506 @@
 <header>
   <h1>🏢 فضاء المؤسسة</h1>
   <p>Ras Jebel Jobs</p>
-  <p>
-    <a href="index.html">🏠 الرئيسية</a>
-    &nbsp; | &nbsp;
-    <a href="talent.html">⭐ Ras Jebel Talent</a>
-  </p>
 </header>
 
-<div class="container">
+<nav>
+  <a href="index.html">🏠 الرئيسية</a>
+  |
+  <a href="talent.html">⭐ Ras Jebel Talent</a>
+</nav>
 
-  <div class="card welcome">
+<main>
+
+  <section>
     <h2>👋 مرحباً بالمؤسسة</h2>
+
     <p>
       من هنا تنجم المؤسسة تتابع عروض العمل والترشحات
       وتكتشف الكفاءات المحلية الموجودة على Ras Jebel Talent.
     </p>
-    <div id="companyInfo">جاري تحميل معلومات المؤسسة...</div>
-  </div>
 
-  <div class="card">
-    <h2>💼 عروض العمل متاع المؤسسة</h2>
-    <div id="companyJobs">جاري تحميل عروض العمل...</div>
-  </div>
-
-  <div class="card talent-section">
-
-    <h2>⭐ Ras Jebel Talent — البحث عن المواهب</h2>
-
-    <div class="talent-intro">
-      ابحث عن الكفاءات المحلية حسب الاسم أو الاختصاص أو المهارات.
+    <div id="companyStatus" class="success">
+      ⏳ جاري تحميل معلومات المؤسسة...
     </div>
+
+    <div id="companyInfo" class="company-info"></div>
+  </section>
+
+
+  <section>
+    <h2>💼 عروض العمل متاع المؤسسة</h2>
+
+    <div id="jobsList">
+      <p class="empty">⏳ جاري تحميل عروض العمل...</p>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>⭐ إبحث عن المواهب</h2>
+
+    <p>
+      استكشف الكفاءات المحلية وابحث عن المرشحين حسب الاختصاص أو الوظيفة أو المهارات.
+    </p>
+
+    <p>
+      مثال:
+      <strong>Chimie</strong>،
+      <strong>Laboratoire</strong>،
+      <strong>HSE</strong>،
+      <strong>Informatique</strong>،
+      <strong>Maintenance</strong>...
+    </p>
 
     <div class="search-box">
       <input
         id="talentSearch"
         type="text"
-        placeholder="🔎 مثال: Chimie, Laboratoire, HSE, Informatique..."
-        oninput="searchTalents()"
+        placeholder="🔎 ابحث عن اختصاص، مهارة، وظيفة..."
       >
-
-      <button class="search-button" onclick="searchTalents()">
-        🔎 بحث
-      </button>
+      <button id="searchButton">🔎 بحث</button>
     </div>
 
-    <div id="talentStatus"></div>
-    <div id="talents">جاري تحميل المواهب...</div>
+    <div id="talentList">
+      <p class="empty">⏳ جاري تحميل المواهب...</p>
+    </div>
+  </section>
 
-  </div>
-
-</div>
+</main>
 
 <footer>
-  Ras Jebel Jobs — منصة الوظائف المحلية
-  <br>
+  Ras Jebel Jobs — منصة الوظائف المحلية<br>
   © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
 </footer>
 
+
 <script>
+  const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
 
-const SUPABASE_URL =
-"https://gkiynoqovpuzudzpnryn.supabase.co";
+  const SUPABASE_KEY =
+    "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-const SUPABASE_KEY =
-"sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
-
-const supabaseClient =
-supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+  const supabaseClient =
+    window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 
-function escapeHtml(value){
-  if(value===null || value===undefined) return "";
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+  async function loadCompany() {
+
+    const status = document.getElementById("companyStatus");
+    const info = document.getElementById("companyInfo");
+
+    try {
+
+      const {
+        data: { user }
+      } = await supabaseClient.auth.getUser();
+
+      if (!user) {
+        status.textContent =
+          "ℹ️ لم يتم تسجيل الدخول. يتم عرض بيانات المؤسسة الموجودة في المنصة.";
+
+        info.innerHTML = `
+          <div class="detail">
+            <span class="label">🏢 اسم المؤسسة:</span>
+            Ras Jebel Jobs
+          </div>
+
+          <div class="detail">
+            <span class="label">📍 الموقع:</span>
+            Ras Jebel
+          </div>
+
+          <div class="detail">
+            <span class="label">📧 Email:</span>
+            mohamedlabo@gmail.com
+          </div>
+
+          <div class="detail">
+            <span class="label">📞 Téléphone:</span>
+            +21600000000
+          </div>
+        `;
+
+        return;
+      }
 
 
-async function loadCompanyInfo(){
+      const { data, error } = await supabaseClient
+        .from("companies")
+        .select("*")
+        .eq("owner_id", user.id)
+        .maybeSingle();
 
-  const container=document.getElementById("companyInfo");
 
-  const {data:{user}}=
-    await supabaseClient.auth.getUser();
+      if (error) {
+        throw error;
+      }
 
-  if(!user){
-    container.innerHTML=
-      `<div class="info">ℹ️ سجّل الدخول لمشاهدة معلومات المؤسسة.</div>`;
-    return;
+
+      if (!data) {
+        status.textContent =
+          "ℹ️ لم يتم العثور على ملف المؤسسة.";
+
+        return;
+      }
+
+
+      status.textContent =
+        "✅ تم تحميل معلومات المؤسسة بنجاح";
+
+
+      info.innerHTML = `
+        <div class="detail">
+          <span class="label">🏢 اسم المؤسسة:</span>
+          ${escapeHtml(
+            data.name ||
+            data.company_name ||
+            "Ras Jebel Jobs"
+          )}
+        </div>
+
+        <div class="detail">
+          <span class="label">📍 الموقع:</span>
+          ${escapeHtml(
+            data.location ||
+            data.address ||
+            "Ras Jebel"
+          )}
+        </div>
+
+        <div class="detail">
+          <span class="label">📧 Email:</span>
+          ${escapeHtml(
+            data.email ||
+            user.email ||
+            "غير متوفر"
+          )}
+        </div>
+
+        <div class="detail">
+          <span class="label">📞 Téléphone:</span>
+          ${escapeHtml(
+            data.phone ||
+            data.telephone ||
+            "غير متوفر"
+          )}
+        </div>
+      `;
+
+    } catch (error) {
+
+      console.error(error);
+
+      status.textContent =
+        "⚠️ تعذر تحميل معلومات المؤسسة.";
+
+    }
   }
 
-  const {data:company,error}=
-    await supabaseClient
-      .from("companies")
-      .select("*")
-      .eq("owner_id",user.id)
-      .maybeSingle();
 
-  if(error){
-    container.innerHTML=
-      `<div class="error">❌ تعذر تحميل معلومات المؤسسة.</div>`;
-    return;
-  }
+  async function loadJobs() {
 
-  if(!company){
-    container.innerHTML=
-      `<div class="info">لم يتم العثور على ملف المؤسسة.</div>`;
-    return;
-  }
+    const jobsList =
+      document.getElementById("jobsList");
 
-  container.innerHTML=`
-    <div class="success">✅ تم تحميل معلومات المؤسسة بنجاح</div>
+    try {
 
-    <strong>🏢 اسم المؤسسة:</strong>
-    ${escapeHtml(company.name || company.company_name || "غير محدد")}
-
-    <br>
-
-    <strong>📍 الموقع:</strong>
-    ${escapeHtml(company.location || "غير محدد")}
-
-    <br>
-
-    <strong>📧 Email:</strong>
-    ${escapeHtml(company.email || user.email || "غير محدد")}
-
-    <br>
-
-    <strong>📞 Téléphone:</strong>
-    ${escapeHtml(company.phone || "غير محدد")}
-  `;
-}
+      const {
+        data: { user }
+      } = await supabaseClient.auth.getUser();
 
 
-async function loadCompanyJobs(){
+      if (!user) {
+        jobsList.innerHTML =
+          '<p class="empty">ℹ️ سجّل الدخول لرؤية عروض المؤسسة.</p>';
 
-  const container=document.getElementById("companyJobs");
-
-  const {data:{user}}=
-    await supabaseClient.auth.getUser();
-
-  if(!user){
-    container.innerHTML=
-      `<div class="info">سجّل الدخول لمشاهدة عروض المؤسسة.</div>`;
-    return;
-  }
-
-  const {data:companies,error:companyError}=
-    await supabaseClient
-      .from("companies")
-      .select("id")
-      .eq("owner_id",user.id);
-
-  if(companyError || !companies || companies.length===0){
-    container.innerHTML=
-      `<div class="info">لا توجد مؤسسة مرتبطة بهذا الحساب.</div>`;
-    return;
-  }
-
-  const ids=companies.map(c=>c.id);
-
-  const {data:jobs,error}=
-    await supabaseClient
-      .from("jobs")
-      .select("*")
-      .in("company_id",ids)
-      .order("created_at",{ascending:false});
-
-  if(error){
-    container.innerHTML=
-      `<div class="error">❌ تعذر تحميل عروض العمل.</div>`;
-    return;
-  }
-
-  if(!jobs || jobs.length===0){
-    container.innerHTML=
-      `<div class="info">لا توجد عروض عمل حاليًا.</div>`;
-    return;
-  }
-
-  container.innerHTML=jobs.map(job=>`
-
-    <div class="job-card">
-
-      <h3>💼 ${escapeHtml(job.title)}</h3>
-
-      <p>📍 <strong>المكان:</strong>
-      ${escapeHtml(job.location || "غير محدد")}</p>
-
-      <p>📄 <strong>نوع العقد:</strong>
-      ${escapeHtml(job.contract_type || "غير محدد")}</p>
-
-      <p>🎓 <strong>الخبرة:</strong>
-      ${escapeHtml(job.experience || "غير محدد")}</p>
-
-      <p>${escapeHtml(job.description || "")}</p>
-
-      <p>
-        <strong>الحالة:</strong>
-        ${escapeHtml(job.status || "غير محدد")}
-      </p>
-
-    </div>
-
-  `).join("");
-}
+        return;
+      }
 
 
-let allTalents=[];
+      const { data: company } =
+        await supabaseClient
+          .from("companies")
+          .select("id")
+          .eq("owner_id", user.id)
+          .maybeSingle();
 
 
-async function loadTalents(){
+      if (!company) {
+        jobsList.innerHTML =
+          '<p class="empty">لا توجد مؤسسة مرتبطة بهذا الحساب.</p>';
 
-  const container=document.getElementById("talents");
-  const status=document.getElementById("talentStatus");
-
-  const {data,error}=
-    await supabaseClient
-      .from("profiles")
-      .select(`
-        id,
-        full_name,
-        phone,
-        profession,
-        skills,
-        experience,
-        education,
-        created_at
-      `)
-      .eq("role","candidate")
-      .order("created_at",{ascending:false});
-
-  if(error){
-
-    console.error(error);
-
-    status.innerHTML=`
-      <div class="error">
-        ❌ تعذر تحميل المواهب.
-      </div>
-    `;
-
-    container.innerHTML="";
-    return;
-  }
-
-  allTalents=data || [];
-
-  displayTalents(allTalents);
-}
+        return;
+      }
 
 
-function displayTalents(talents){
+      const { data: jobs, error } =
+        await supabaseClient
+          .from("jobs")
+          .select("*")
+          .eq("company_id", company.id)
+          .order("created_at", { ascending: false });
 
-  const container=document.getElementById("talents");
 
-  if(!talents || talents.length===0){
+      if (error) {
+        throw error;
+      }
 
-    container.innerHTML=`
-      <div class="info">
-        🔎 ما لقيناش كفاءات مطابقة.
-      </div>
-    `;
 
-    return;
-  }
+      if (!jobs || jobs.length === 0) {
 
-  container.innerHTML=talents.map(talent=>`
+        jobsList.innerHTML =
+          '<p class="empty">لا توجد عروض شغل حالياً.</p>';
 
-    <div class="talent-card">
+        return;
+      }
 
-      <h3>
-        👤 ${escapeHtml(talent.full_name || "مترشح")}
-      </h3>
 
-      <div class="talent-info">
+      jobsList.innerHTML = jobs.map(job => {
 
-        💼 <strong>الاختصاص:</strong>
-        ${escapeHtml(talent.profession || "غير محدد")}
+        const active =
+          job.status === "active" ||
+          job.status === "published" ||
+          job.status === "open";
 
-        ${
-          talent.skills
-          ? `
-            <div class="profile-block">
-              🛠️ <strong>المهارات:</strong><br>
-              ${escapeHtml(talent.skills)}
+
+        return `
+          <div class="job-card">
+
+            <h3>💼 ${escapeHtml(job.title || "عرض شغل")}</h3>
+
+            <div class="detail">
+              📍 <span class="label">المكان:</span>
+              ${escapeHtml(job.location || "غير محدد")}
             </div>
-          `
-          : ""
-        }
 
-        ${
-          talent.experience
-          ? `
-            <div class="profile-block">
-              💼 <strong>الخبرة:</strong><br>
-              ${escapeHtml(talent.experience)}
+            <div class="detail">
+              📄 <span class="label">نوع العقد:</span>
+              ${escapeHtml(job.contract_type || "غير محدد")}
             </div>
-          `
-          : ""
-        }
 
-        ${
-          talent.education
-          ? `
-            <div class="profile-block">
-              🎓 <strong>التكوين والشهادات:</strong><br>
-              ${escapeHtml(talent.education)}
+            <div class="detail">
+              🎓 <span class="label">الخبرة:</span>
+              ${escapeHtml(job.experience || "غير محددة")}
             </div>
-          `
-          : ""
-        }
 
-      </div>
+            <div class="detail">
+              ${escapeHtml(job.description || "")}
+            </div>
 
-    </div>
+            <div class="detail">
+              الحالة:
+              ${active ? "🟢 نشط" : "⚪ غير نشط"}
+            </div>
 
-  `).join("");
-}
+          </div>
+        `;
+
+      }).join("");
 
 
-function searchTalents(){
+    } catch (error) {
 
-  const value=
-    document
-      .getElementById("talentSearch")
-      .value
-      .trim()
-      .toLowerCase();
+      console.error(error);
 
-  if(!value){
-    displayTalents(allTalents);
-    return;
+      jobsList.innerHTML =
+        '<p class="empty">⚠️ تعذر تحميل عروض الشغل.</p>';
+
+    }
   }
 
-  const filtered=allTalents.filter(talent=>{
 
-    const name=(talent.full_name || "").toLowerCase();
-    const profession=(talent.profession || "").toLowerCase();
-    const skills=(talent.skills || "").toLowerCase();
-    const experience=(talent.experience || "").toLowerCase();
-    const education=(talent.education || "").toLowerCase();
-
-    return(
-      name.includes(value) ||
-      profession.includes(value) ||
-      skills.includes(value) ||
-      experience.includes(value) ||
-      education.includes(value)
-    );
-  });
-
-  displayTalents(filtered);
-}
+  let allTalents = [];
 
 
-async function initialize(){
+  async function loadTalents() {
 
-  await loadCompanyInfo();
-  await loadCompanyJobs();
-  await loadTalents();
+    const talentList =
+      document.getElementById("talentList");
 
-}
+    try {
 
-initialize();
+      const { data, error } =
+        await supabaseClient
+          .from("profiles")
+          .select(`
+            id,
+            full_name,
+            phone,
+            profession,
+            skills,
+            experience,
+            education,
+            created_at
+          `)
+          .eq("role", "candidate")
+          .order("created_at", { ascending: false });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      allTalents = data || [];
+
+      displayTalents(allTalents);
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      talentList.innerHTML = `
+        <p class="empty">
+          ⚠️ تعذر تحميل المواهب.
+        </p>
+      `;
+
+    }
+  }
+
+
+  function displayTalents(talents) {
+
+    const talentList =
+      document.getElementById("talentList");
+
+
+    if (!talents || talents.length === 0) {
+
+      talentList.innerHTML = `
+        <p class="empty">
+          لا توجد مواهب مطابقة للبحث حالياً.
+        </p>
+      `;
+
+      return;
+    }
+
+
+    talentList.innerHTML = talents.map(person => {
+
+      return `
+        <div class="talent-card">
+
+          <h3>👤 ${escapeHtml(
+            person.full_name || "مترشح"
+          )}</h3>
+
+          <div class="detail">
+            💼 <span class="label">الاختصاص:</span>
+            ${escapeHtml(
+              person.profession || "غير محدد"
+            )}
+          </div>
+
+          ${
+            person.skills
+              ? `
+                <div class="detail">
+                  🛠️ <span class="label">المهارات:</span>
+                  ${escapeHtml(person.skills)}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            person.experience
+              ? `
+                <div class="detail">
+                  📊 <span class="label">الخبرة:</span>
+                  ${escapeHtml(person.experience)}
+                </div>
+              `
+              : ""
+          }
+
+          ${
+            person.education
+              ? `
+                <div class="detail">
+                  🎓 <span class="label">التكوين:</span>
+                  ${escapeHtml(person.education)}
+                </div>
+              `
+              : ""
+          }
+
+        </div>
+      `;
+
+    }).join("");
+  }
+
+
+  function searchTalents() {
+
+    const query =
+      document
+        .getElementById("talentSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    if (!query) {
+
+      displayTalents(allTalents);
+
+      return;
+    }
+
+
+    const filtered =
+      allTalents.filter(person => {
+
+        const text = [
+          person.full_name,
+          person.profession,
+          person.skills,
+          person.experience,
+          person.education
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+        return text.includes(query);
+
+      });
+
+
+    displayTalents(filtered);
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  document
+    .getElementById("searchButton")
+    .addEventListener("click", searchTalents);
+
+
+  document
+    .getElementById("talentSearch")
+    .addEventListener("input", searchTalents);
+
+
+  loadCompany();
+  loadJobs();
+  loadTalents();
 
 </script>
 
