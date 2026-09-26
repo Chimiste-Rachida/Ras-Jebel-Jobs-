@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ras Jebel Talent — الملف المهني</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f8fc;
+      color: #17324d;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0b3d62, #176b9c);
+      color: white;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      display: block;
+      font-size: 13px;
+      font-weight: normal;
+      opacity: 0.9;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.12);
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 70px 20px;
+      background: white;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e8f3fa;
+      color: #176b9c;
+      padding: 7px 16px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+      color: #0b3d62;
+    }
+
+    .hero p {
+      max-width: 750px;
+      margin: auto;
+      font-size: 19px;
+      color: #536779;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .primary {
+      background: #176b9c;
+      color: white;
+    }
+
+    .secondary {
+      background: #e8f3fa;
+      color: #176b9c;
+    }
+
+    .section {
+      padding: 55px 7%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .section-title h2 {
+      font-size: 30px;
+      color: #0b3d62;
+    }
+
+    .section-title p {
+      color: #66798a;
+      margin-top: 8px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 28px 22px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+
+    .icon {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #176b9c;
+    }
+
+    .card p {
+      color: #647789;
+      font-size: 15px;
+    }
+
+    .categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .category {
+      background: white;
+      border: 1px solid #dce8f0;
+      padding: 12px 20px;
+      border-radius: 30px;
+      color: #176b9c;
+      font-weight: bold;
+    }
+
+    .cta {
+      margin: 20px 7% 60px;
+      background: linear-gradient(135deg, #0b3d62, #176b9c);
+      color: white;
+      border-radius: 22px;
+      padding: 45px 25px;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      margin-bottom: 25px;
+      opacity: 0.95;
+    }
+
+    footer {
+      background: #102b40;
+      color: white;
+      text-align: center;
+      padding: 25px 15px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      header {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    Ras Jebel Talent
+    <span>المواهب والكفاءات المحلية</span>
+  </div>
+
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="candidat.html">الباحث عن عمل</a>
+    <a href="entreprise.html">المؤسسة</a>
+  </nav>
+</header>
+
+<section class="hero">
+
+  <div class="badge">⭐ Ras Jebel Jobs • Talent</div>
+
+  <h1>أنشئ ملفك المهني وخلي المؤسسات تلقاك</h1>
+
+  <p>
+    فضاء مهني جديد يجمع الكفاءات المحلية بالمؤسسات،
+    ويساعد الباحثين عن عمل على إبراز مهاراتهم وخبراتهم بطريقة احترافية.
+  </p>
+
+  <div class="buttons">
+    <a href="candidat.html" class="btn primary">
+      👤 أنشئ ملفك المهني
+    </a>
+
+    <a href="entreprise.html" class="btn secondary">
+      🏢 إبحث عن المواهب
+    </a>
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>شنوة يعطيك Ras Jebel Talent؟</h2>
+    <p>أكثر من مجرد البحث عن عروض شغل</p>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="icon">👤</div>
+      <h3>ملفك المهني</h3>
+      <p>
+        اعرض تكوينك، اختصاصك، مهاراتك وخبرتك في ملف مهني واضح واحترافي.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏢</div>
+      <h3>المؤسسات تلقاك</h3>
+      <p>
+        خلي المؤسسات تبحث عن الكفاءات المناسبة حسب الاختصاص والمهارات.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎯</div>
+      <h3>مطابقة أفضل</h3>
+      <p>
+        ربط الكفاءات المناسبة بفرص العمل حسب الاختصاص والخبرة والمهارات.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">📍</div>
+      <h3>فرص محلية</h3>
+      <p>
+        اكتشف الكفاءات والفرص المهنية في رأس الجبل وبنزرت والمناطق القريبة.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section">
+
+  <div class="section-title">
+    <h2>اختصاصات ومجالات</h2>
+    <p>مجالات مختلفة للكفاءات المحلية</p>
+  </div>
+
+  <div class="categories">
+    <div class="category">🧪 الكيمياء والمختبرات</div>
+    <div class="category">🏭 الصناعة</div>
+    <div class="category">💻 Informatique</div>
+    <div class="category">📊 الإدارة</div>
+    <div class="category">⚙️ الصيانة</div>
+    <div class="category">🧰 التقنية</div>
+    <div class="category">🧴 الصناعات الدوائية والتجميلية</div>
+    <div class="category">🦺 HSE / QHSE</div>
+  </div>
+
+</section>
+
+<section class="cta">
+
+  <h2>الكفاءة المحلية تستحق فرصة</h2>
+
+  <p>
+    ابنِ حضورك المهني على Ras Jebel Talent
+    وخلي مسارك المهني يوصل للمؤسسات.
+  </p>
+
+  <a href="candidat.html" class="btn primary">
+    🚀 ابدأ الآن
+  </a>
+
+</section>
+
+<footer>
+
+  <div>Ras Jebel Jobs — منصة الوظائف المحلية</div>
+
+  <div>
+    © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
+  </div>
+
+</footer>
+
+</body>
+</html>
