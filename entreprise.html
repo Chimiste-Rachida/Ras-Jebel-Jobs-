@@ -1,1042 +1,1003 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ras Jebel Jobs — فضاء المؤسسة</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ras Jebel Jobs — فضاء المؤسسة</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: Arial, Tahoma, sans-serif;
-      background: #f5f7fb;
-      color: #172033;
-    }
+body{
+margin:0;
+font-family:Arial,Tahoma,sans-serif;
+background:#f5f7fb;
+color:#172033;
+}
 
-    header {
-      background: linear-gradient(135deg, #0f3d56, #176b87);
-      color: white;
-      padding: 22px 20px;
-      text-align: center;
-    }
+header{
+background:linear-gradient(135deg,#0f3d56,#176b87);
+color:white;
+padding:24px 20px;
+text-align:center;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
+header h1{margin:0;font-size:28px}
+header p{margin:8px 0 0;opacity:.9}
 
-    header p {
-      margin: 8px 0 0;
-      opacity: 0.9;
-    }
+nav{
+background:white;
+padding:13px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
 
-    nav {
-      background: white;
-      padding: 12px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+nav a{
+text-decoration:none;
+color:#176b87;
+font-weight:bold;
+margin:0 10px;
+}
 
-    nav a {
-      text-decoration: none;
-      color: #176b87;
-      font-weight: bold;
-      margin: 0 10px;
-    }
+main{
+max-width:1100px;
+margin:25px auto;
+padding:0 15px;
+}
 
-    main {
-      max-width: 1100px;
-      margin: 25px auto;
-      padding: 0 15px;
-    }
+.section{
+background:white;
+border-radius:16px;
+padding:22px;
+margin-bottom:22px;
+box-shadow:0 5px 18px rgba(0,0,0,.07);
+}
 
-    .section {
-      background: white;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 22px;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.07);
-    }
+.section h2{
+margin-top:0;
+color:#0f3d56;
+}
 
-    .section h2 {
-      margin-top: 0;
-      color: #0f3d56;
-    }
+.info-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+}
 
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-    }
+.info-box{
+background:#f3f7fa;
+padding:15px;
+border-radius:12px;
+}
 
-    .info-box {
-      background: #f3f7fa;
-      padding: 15px;
-      border-radius: 12px;
-    }
+.job-card{
+border:1px solid #e1e7ec;
+border-radius:14px;
+padding:18px;
+margin-bottom:15px;
+background:#fff;
+}
 
-    .job-card,
-    .talent-card {
-      border: 1px solid #e1e7ec;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 15px;
-      background: #fff;
-    }
+.job-card h3{
+margin-top:0;
+color:#176b87;
+}
 
-    .job-card h3,
-    .talent-card h3 {
-      margin-top: 0;
-      color: #176b87;
-    }
+.search-box{
+width:100%;
+padding:14px;
+border:1px solid #ccd6dd;
+border-radius:10px;
+font-size:16px;
+margin-bottom:18px;
+outline:none;
+}
 
-    .talent-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
+.search-box:focus{
+border-color:#176b87;
+}
 
-    .talent-card {
-      margin-bottom: 0;
-    }
+.talent-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:16px;
+}
 
-    .talent-card p {
-      margin: 8px 0;
-      line-height: 1.6;
-    }
+.talent-card{
+border:1px solid #e1e7ec;
+border-radius:14px;
+padding:18px;
+background:white;
+}
 
-    .search-box {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ccd6dd;
-      border-radius: 10px;
-      font-size: 16px;
-      margin-bottom: 18px;
-      outline: none;
-    }
+.talent-card h3{
+margin-top:0;
+color:#176b87;
+}
 
-    .search-box:focus {
-      border-color: #176b87;
-    }
+.talent-card p{
+margin:8px 0;
+line-height:1.6;
+}
 
-    button {
-      border: none;
-      border-radius: 9px;
-      padding: 11px 17px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-    }
+.profile-btn{
+width:100%;
+margin-top:10px;
+padding:12px;
+border:0;
+border-radius:9px;
+background:#176b87;
+color:white;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+}
 
-    .profile-btn {
-      background: #176b87;
-      color: white;
-      width: 100%;
-      margin-top: 10px;
-    }
+.profile-btn:hover{
+opacity:.9;
+}
 
-    .profile-btn:hover {
-      opacity: 0.9;
-    }
+.modal{
+display:none;
+position:fixed;
+z-index:1000;
+inset:0;
+background:rgba(0,0,0,.65);
+padding:20px;
+overflow-y:auto;
+}
 
-    .cv-btn {
-      display: inline-block;
-      background: #0f3d56;
-      color: white;
-      padding: 12px 18px;
-      border-radius: 9px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 15px;
-    }
+.modal-content{
+background:white;
+max-width:680px;
+margin:35px auto;
+border-radius:20px;
+padding:28px;
+position:relative;
+box-shadow:0 15px 45px rgba(0,0,0,.3);
+}
 
-    .cv-btn:hover {
-      opacity: 0.9;
-    }
+.close{
+position:absolute;
+left:18px;
+top:10px;
+font-size:30px;
+cursor:pointer;
+color:#777;
+}
 
-    .no-cv {
-      margin-top: 15px;
-      background: #fff7e6;
-      color: #8a5a00;
-      padding: 12px;
-      border-radius: 9px;
-    }
+.profile-header{
+text-align:center;
+padding-bottom:20px;
+border-bottom:1px solid #e5e5e5;
+margin-bottom:20px;
+}
 
-    .loading {
-      text-align: center;
-      padding: 25px;
-      color: #667;
-    }
+.profile-avatar{
+width:80px;
+height:80px;
+border-radius:50%;
+background:#176b87;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 12px;
+font-size:34px;
+}
 
-    .empty {
-      text-align: center;
-      padding: 25px;
-      color: #777;
-    }
+.profile-header h2{
+margin:5px 0;
+color:#0f3d56;
+}
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      overflow-y: auto;
-    }
+.profile-header p{
+margin:5px 0;
+color:#666;
+}
 
-    .modal-content {
-      background: white;
-      max-width: 650px;
-      margin: 40px auto;
-      border-radius: 18px;
-      padding: 25px;
-      position: relative;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    }
+.profile-item{
+background:#f5f8fa;
+padding:15px;
+border-radius:11px;
+margin-bottom:11px;
+line-height:1.7;
+}
 
-    .close {
-      position: absolute;
-      left: 18px;
-      top: 12px;
-      font-size: 28px;
-      cursor: pointer;
-      color: #777;
-    }
+.profile-item strong{
+color:#0f3d56;
+}
 
-    .profile-header {
-      text-align: center;
-      padding-bottom: 18px;
-      border-bottom: 1px solid #e5e5e5;
-      margin-bottom: 18px;
-    }
+.cv-box{
+margin-top:18px;
+padding:18px;
+background:#eef7fa;
+border:1px solid #cce4eb;
+border-radius:12px;
+text-align:center;
+}
 
-    .profile-avatar {
-      width: 75px;
-      height: 75px;
-      border-radius: 50%;
-      background: #176b87;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 12px;
-      font-size: 32px;
-    }
+.cv-btn{
+display:inline-block;
+margin-top:12px;
+padding:12px 22px;
+background:#0f3d56;
+color:white;
+text-decoration:none;
+border-radius:9px;
+font-weight:bold;
+}
 
-    .profile-header h2 {
-      margin: 5px 0;
-      color: #0f3d56;
-    }
+.cv-btn:hover{
+opacity:.9;
+}
 
-    .profile-header p {
-      margin: 5px 0;
-      color: #666;
-    }
+.no-cv{
+margin-top:18px;
+padding:14px;
+background:#fff7e6;
+color:#8a5a00;
+border-radius:10px;
+text-align:center;
+}
 
-    .profile-item {
-      background: #f5f8fa;
-      padding: 14px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
+.loading,.empty{
+text-align:center;
+padding:25px;
+color:#777;
+}
 
-    .profile-item strong {
-      color: #0f3d56;
-    }
+footer{
+text-align:center;
+padding:25px;
+color:#777;
+font-size:14px;
+}
 
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #777;
-      font-size: 14px;
-    }
+@media(max-width:600px){
+header h1{font-size:23px}
 
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 23px;
-      }
-
-      .modal-content {
-        margin: 15px auto;
-      }
-    }
-  </style>
+.modal-content{
+margin:10px auto;
+padding:22px;
+}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>🏢 فضاء المؤسسة</h1>
-  <p>اكتشف الكفاءات المحلية وابحث عن المترشحين المناسبين</p>
+<h1>🏢 فضاء المؤسسة</h1>
+<p>اكتشف الكفاءات المحلية وابحث عن المترشحين المناسبين</p>
 </header>
 
 <nav>
-  <a href="index.html">🏠 الرئيسية</a>
-  <a href="candidat.html">👤 المترشح</a>
-  <a href="talent.html">⭐ Ras Jebel Talent</a>
+<a href="index.html">🏠 الرئيسية</a>
+<a href="candidat.html">👤 المترشح</a>
+<a href="talent.html">⭐ Ras Jebel Talent</a>
 </nav>
 
 <main>
 
-  <section class="section">
-    <h2>🏢 معلومات المؤسسة</h2>
-    <div id="companyInfo" class="loading">
-      جاري تحميل معلومات المؤسسة...
-    </div>
-  </section>
+<section class="section">
+<h2>🏢 معلومات المؤسسة</h2>
+<div id="companyInfo" class="loading">
+جاري تحميل معلومات المؤسسة...
+</div>
+</section>
 
-  <section class="section">
-    <h2>💼 عروض الشغل الخاصة بالمؤسسة</h2>
-    <div id="companyJobs" class="loading">
-      جاري تحميل عروض الشغل...
-    </div>
-  </section>
+<section class="section">
+<h2>💼 عروض العمل متاع المؤسسة</h2>
+<div id="companyJobs" class="loading">
+جاري تحميل عروض الشغل...
+</div>
+</section>
 
-  <section class="section">
-    <h2>⭐ Ras Jebel Talent</h2>
+<section class="section">
+<h2>⭐ Ras Jebel Talent</h2>
 
-    <p>
-      ابحث عن الكفاءات والمترشحين الذين أنشؤوا ملفاتهم المهنية على المنصة.
-    </p>
+<p>
+استكشف الكفاءات المحلية وابحث عن المترشحين حسب الاختصاص أو المهارات أو الخبرة.
+</p>
 
-    <input
-      type="text"
-      id="talentSearch"
-      class="search-box"
-      placeholder="🔎 ابحث بالاسم، الاختصاص، المهارات، الخبرة أو التكوين..."
-      oninput="filterTalents()"
-    >
+<input
+id="talentSearch"
+class="search-box"
+type="text"
+placeholder="🔎 ابحث بالاسم، الاختصاص، المهارات، الخبرة أو التكوين..."
+oninput="filterTalents()"
+>
 
-    <div id="talentList" class="talent-grid">
-      <div class="loading">
-        جاري تحميل الكفاءات...
-      </div>
-    </div>
-  </section>
+<div id="talentList" class="talent-grid">
+<div class="loading">جاري تحميل الكفاءات...</div>
+</div>
+
+</section>
 
 </main>
 
-<!-- PROFILE MODAL -->
-
 <div id="profileModal" class="modal" onclick="closeModal(event)">
 
-  <div class="modal-content" onclick="event.stopPropagation()">
+<div class="modal-content" onclick="event.stopPropagation()">
 
-    <span class="close" onclick="closeProfile()">×</span>
+<span class="close" onclick="closeProfile()">×</span>
 
-    <div id="profileContent">
-      جاري تحميل الملف المهني...
-    </div>
+<div id="profileContent">
+جاري تحميل الملف المهني...
+</div>
 
-  </div>
+</div>
 
 </div>
 
 <footer>
-  Ras Jebel Jobs — © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
+Ras Jebel Jobs — © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
 </footer>
 
 <script>
 
-  const SUPABASE_URL =
-    "https://gkiynoqovpuzudzpnryn.supabase.co";
+const SUPABASE_URL =
+"https://gkiynoqovpuzudzpnryn.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+const SUPABASE_KEY =
+"sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-  let allTalents = [];
+let allTalents=[];
 
-  /* =========================
-     INITIALISATION
-  ========================= */
-
-  async function init() {
 
-    await loadCompanyInfo();
-    await loadCompanyJobs();
-    await loadTalents();
-
-  }
-
-
-  /* =========================
-     COMPANY INFO
-  ========================= */
+/* =========================
+   INITIALISATION
+========================= */
 
-  async function loadCompanyInfo() {
+async function init(){
 
-    const container =
-      document.getElementById("companyInfo");
+await loadCompanyInfo();
+await loadCompanyJobs();
+await loadTalents();
 
-    try {
-
-      const {
-        data: {
-          user
-        }
-      } = await supabaseClient.auth.getUser();
+}
 
-      if (!user) {
 
-        container.innerHTML = `
-          <div class="empty">
-            يرجى تسجيل الدخول لمشاهدة معلومات المؤسسة.
-          </div>
-        `;
+/* =========================
+   COMPANY
+========================= */
 
-        return;
-      }
+async function loadCompanyInfo(){
 
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from("companies")
-        .select("*")
-        .eq("owner_id", user.id)
-        .limit(1)
-        .maybeSingle();
+const container=
+document.getElementById("companyInfo");
 
-      if (error) {
-        throw error;
-      }
+try{
 
-      if (!data) {
+const {data:{user}}=
+await supabaseClient.auth.getUser();
 
-        container.innerHTML = `
-          <div class="empty">
-            لم يتم العثور على معلومات المؤسسة.
-          </div>
-        `;
+if(!user){
 
-        return;
-      }
+container.innerHTML=
+`<div class="empty">
+يرجى تسجيل الدخول لمشاهدة معلومات المؤسسة.
+</div>`;
 
-      const name =
-        data.name ||
-        data.company_name ||
-        "المؤسسة";
+return;
+}
 
-      const email =
-        data.email ||
-        user.email ||
-        "غير متوفر";
+const {data,error}=
+await supabaseClient
+.from("companies")
+.select("*")
+.eq("owner_id",user.id)
+.limit(1)
+.maybeSingle();
 
-      const phone =
-        data.phone ||
-        "غير متوفر";
-
-      const location =
-        data.location ||
-        "غير محدد";
-
-      container.innerHTML = `
-        <div class="info-grid">
-
-          <div class="info-box">
-            <strong>🏢 المؤسسة</strong>
-            <br>
-            ${escapeHtml(name)}
-          </div>
-
-          <div class="info-box">
-            <strong>📧 البريد الإلكتروني</strong>
-            <br>
-            ${escapeHtml(email)}
-          </div>
-
-          <div class="info-box">
-            <strong>📞 الهاتف</strong>
-            <br>
-            ${escapeHtml(phone)}
-          </div>
-
-          <div class="info-box">
-            <strong>📍 الموقع</strong>
-            <br>
-            ${escapeHtml(location)}
-          </div>
-
-        </div>
-      `;
-
-    } catch (error) {
-
-      console.error(error);
-
-      container.innerHTML = `
-        <div class="empty">
-          تعذر تحميل معلومات المؤسسة.
-        </div>
-      `;
-    }
-  }
-
-
-  /* =========================
-     COMPANY JOBS
-  ========================= */
-
-  async function loadCompanyJobs() {
-
-    const container =
-      document.getElementById("companyJobs");
-
-    try {
-
-      const {
-        data: {
-          user
-        }
-      } = await supabaseClient.auth.getUser();
-
-      if (!user) {
-
-        container.innerHTML = `
-          <div class="empty">
-            يرجى تسجيل الدخول.
-          </div>
-        `;
-
-        return;
-      }
+if(error) throw error;
 
-      const {
-        data: company
-      } = await supabaseClient
-        .from("companies")
-        .select("id")
-        .eq("owner_id", user.id)
-        .limit(1)
-        .maybeSingle();
+if(!data){
 
-      if (!company) {
+container.innerHTML=
+`<div class="empty">
+لم يتم العثور على معلومات المؤسسة.
+</div>`;
 
-        container.innerHTML = `
-          <div class="empty">
-            لم يتم العثور على المؤسسة.
-          </div>
-        `;
-
-        return;
-      }
-
-      const {
-        data: jobs,
-        error
-      } = await supabaseClient
-        .from("jobs")
-        .select("*")
-        .eq("company_id", company.id)
-        .order("created_at", {
-          ascending: false
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      if (!jobs || jobs.length === 0) {
-
-        container.innerHTML = `
-          <div class="empty">
-            لا توجد عروض شغل منشورة حاليًا.
-          </div>
-        `;
-
-        return;
-      }
-
-      container.innerHTML =
-        jobs.map(job => `
-
-          <div class="job-card">
-
-            <h3>
-              ${escapeHtml(job.title || "عرض شغل")}
-            </h3>
-
-            <p>
-              ${escapeHtml(job.description || "")}
-            </p>
+return;
+}
 
-            <p>
-              📍 ${escapeHtml(job.location || "غير محدد")}
-            </p>
-
-            <p>
-              📄 ${escapeHtml(job.contract_type || "غير محدد")}
-            </p>
+const name=
+data.name ||
+data.company_name ||
+"المؤسسة";
 
-            <p>
-              🎓 الخبرة:
-              ${escapeHtml(job.experience || "غير محددة")}
-            </p>
+const email=
+data.email ||
+user.email ||
+"غير متوفر";
 
-            <p>
-              📌 الحالة:
-              ${escapeHtml(job.status || "غير محددة")}
-            </p>
+const phone=
+data.phone ||
+"غير متوفر";
 
-          </div>
+const location=
+data.location ||
+"غير محدد";
 
-        `).join("");
-
-    } catch (error) {
-
-      console.error(error);
-
-      container.innerHTML = `
-        <div class="empty">
-          تعذر تحميل عروض الشغل.
-        </div>
-      `;
-    }
-  }
-
-
-  /* =========================
-     LOAD TALENTS
-  ========================= */
-
-  async function loadTalents() {
-
-    const container =
-      document.getElementById("talentList");
-
-    try {
-
-      const {
-        data,
-        error
-      } = await supabaseClient
-        .from("profiles")
-        .select(`
-          id,
-          full_name,
-          phone,
-          profession,
-          skills,
-          experience,
-          education,
-          created_at
-        `)
-        .eq("role", "candidate")
-        .order("created_at", {
-          ascending: false
-        });
-
-      if (error) {
-        throw error;
-      }
-
-      allTalents = data || [];
-
-      renderTalents(allTalents);
-
-    } catch (error) {
-
-      console.error(error);
-
-      container.innerHTML = `
-        <div class="empty">
-          تعذر تحميل الكفاءات.
-        </div>
-      `;
-    }
-  }
-
-
-  /* =========================
-     RENDER TALENTS
-  ========================= */
-
-  function renderTalents(talents) {
-
-    const container =
-      document.getElementById("talentList");
-
-    if (!talents.length) {
-
-      container.innerHTML = `
-        <div class="empty">
-          لا توجد نتائج مطابقة.
-        </div>
-      `;
-
-      return;
-    }
-
-    container.innerHTML =
-      talents.map(person => `
-
-        <div class="talent-card">
-
-          <h3>
-            👤 ${escapeHtml(person.full_name || "مترشح")}
-          </h3>
-
-          ${
-            person.profession
-            ? `
-              <p>
-                💼
-                <strong>الاختصاص:</strong>
-                ${escapeHtml(person.profession)}
-              </p>
-            `
-            : ""
-          }
-
-          ${
-            person.skills
-            ? `
-              <p>
-                🛠️
-                <strong>المهارات:</strong>
-                ${escapeHtml(person.skills)}
-              </p>
-            `
-            : ""
-          }
-
-          ${
-            person.experience
-            ? `
-              <p>
-                📊
-                <strong>الخبرة:</strong>
-                ${escapeHtml(person.experience)}
-              </p>
-            `
-            : ""
-          }
-
-          ${
-            person.education
-            ? `
-              <p>
-                🎓
-                <strong>التكوين:</strong>
-                ${escapeHtml(person.education)}
-              </p>
-            `
-            : ""
-          }
-
-          <button
-            class="profile-btn"
-            onclick="openProfile('${person.id}')"
-          >
-            👁️ عرض الملف المهني
-          </button>
-
-        </div>
-
-      `).join("");
-  }
-
-
-  /* =========================
-     SEARCH
-  ========================= */
-
-  function filterTalents() {
-
-    const search =
-      document
-        .getElementById("talentSearch")
-        .value
-        .toLowerCase()
-        .trim();
-
-    if (!search) {
-
-      renderTalents(allTalents);
-
-      return;
-    }
-
-    const filtered =
-      allTalents.filter(person => {
-
-        const text = [
-
-          person.full_name,
-          person.profession,
-          person.skills,
-          person.experience,
-          person.education
-
-        ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-        return text.includes(search);
-
-      });
-
-    renderTalents(filtered);
-  }
-
-
-  /* =========================
-     OPEN PROFILE + CV
-  ========================= */
-
-  async function openProfile(id) {
-
-    const modal =
-      document.getElementById("profileModal");
-
-    const content =
-      document.getElementById("profileContent");
-
-    modal.style.display = "block";
-
-    content.innerHTML = `
-      <div class="loading">
-        جاري تحميل الملف المهني والـCV...
-      </div>
-    `;
-
-    const person =
-      allTalents.find(
-        candidate => candidate.id === id
-      );
-
-    if (!person) {
-
-      content.innerHTML = `
-        <div class="empty">
-          لم يتم العثور على الملف المهني.
-        </div>
-      `;
-
-      return;
-    }
-
-    /* البحث عن آخر CV قدمه المترشح */
-
-    let cvUrl = null;
-
-    try {
-
-      const {
-        data: applications,
-        error: cvError
-      } = await supabaseClient
-        .from("applications")
-        .select("cv_url, created_at")
-        .eq("candidate_id", person.id)
-        .not("cv_url", "is", null)
-        .order("created_at", {
-          ascending: false
-        })
-        .limit(1);
-
-      if (!cvError &&
-          applications &&
-          applications.length > 0) {
-
-        cvUrl =
-          applications[0].cv_url;
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "CV loading error:",
-        error
-      );
-    }
-
-
-    content.innerHTML = `
-
-      <div class="profile-header">
-
-        <div class="profile-avatar">
-          👤
-        </div>
-
-        <h2>
-          ${escapeHtml(
-            person.full_name || "مترشح"
-          )}
-        </h2>
-
-        <p>
-          ${
-            escapeHtml(
-              person.profession ||
-              "Profession non renseignée"
-            )
-          }
-        </p>
-
-      </div>
-
-
-      ${
-        person.profession
-        ? `
-          <div class="profile-item">
-            💼
-            <strong>الاختصاص المهني</strong>
-            <br>
-            ${escapeHtml(person.profession)}
-          </div>
-        `
-        : ""
-      }
-
-
-      ${
-        person.skills
-        ? `
-          <div class="profile-item">
-            🛠️
-            <strong>المهارات</strong>
-            <br>
-            ${escapeHtml(person.skills)}
-          </div>
-        `
-        : ""
-      }
-
-
-      ${
-        person.experience
-        ? `
-          <div class="profile-item">
-            📊
-            <strong>الخبرة</strong>
-            <br>
-            ${escapeHtml(person.experience)}
-          </div>
-        `
-        : ""
-      }
-
-
-      ${
-        person.education
-        ? `
-          <div class="profile-item">
-            🎓
-            <strong>التكوين والشهادة</strong>
-            <br>
-            ${escapeHtml(person.education)}
-          </div>
-        `
-        : ""
-      }
-
-
-      ${
-        cvUrl
-        ? `
-          <div class="profile-item">
-
-            📄
-            <strong>السيرة الذاتية</strong>
-
-            <br>
-
-            <a
-              class="cv-btn"
-              href="${escapeAttribute(cvUrl)}"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              📄 مشاهدة الـCV
-            </a>
-
-          </div>
-        `
-        : `
-          <div class="no-cv">
-            📄 هذا المترشح لم يرفق CV متاحًا حاليًا.
-          </div>
-        `
-      }
-
-    `;
-  }
-
-
-  /* =========================
-     CLOSE MODAL
-  ========================= */
-
-  function closeProfile() {
-
-    document
-      .getElementById("profileModal")
-      .style.display = "none";
-  }
-
-
-  function closeModal(event) {
-
-    if (
-      event.target ===
-      document.getElementById("profileModal")
-    ) {
-
-      closeProfile();
-
-    }
-  }
-
-
-  /* =========================
-     SECURITY HELPERS
-  ========================= */
-
-  function escapeHtml(value) {
-
-    if (value === null ||
-        value === undefined) {
-
-      return "";
-    }
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
-
-
-  function escapeAttribute(value) {
-
-    return escapeHtml(value);
-  }
-
-
-  /* =========================
-     START
-  ========================= */
-
-  init();
+container.innerHTML=`
+
+<div class="info-grid">
+
+<div class="info-box">
+<strong>🏢 المؤسسة</strong><br>
+${escapeHtml(name)}
+</div>
+
+<div class="info-box">
+<strong>📧 البريد الإلكتروني</strong><br>
+${escapeHtml(email)}
+</div>
+
+<div class="info-box">
+<strong>📞 الهاتف</strong><br>
+${escapeHtml(phone)}
+</div>
+
+<div class="info-box">
+<strong>📍 الموقع</strong><br>
+${escapeHtml(location)}
+</div>
+
+</div>
+
+`;
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+`<div class="empty">
+تعذر تحميل معلومات المؤسسة.
+</div>`;
+
+}
+
+}
+
+
+/* =========================
+   JOBS
+========================= */
+
+async function loadCompanyJobs(){
+
+const container=
+document.getElementById("companyJobs");
+
+try{
+
+const {data:{user}}=
+await supabaseClient.auth.getUser();
+
+if(!user){
+
+container.innerHTML=
+`<div class="empty">يرجى تسجيل الدخول.</div>`;
+
+return;
+}
+
+const {data:company}=
+await supabaseClient
+.from("companies")
+.select("id")
+.eq("owner_id",user.id)
+.limit(1)
+.maybeSingle();
+
+if(!company){
+
+container.innerHTML=
+`<div class="empty">
+لم يتم العثور على المؤسسة.
+</div>`;
+
+return;
+}
+
+const {data:jobs,error}=
+await supabaseClient
+.from("jobs")
+.select("*")
+.eq("company_id",company.id)
+.order("created_at",{ascending:false});
+
+if(error) throw error;
+
+if(!jobs || jobs.length===0){
+
+container.innerHTML=
+`<div class="empty">
+لا توجد عروض شغل منشورة حاليًا.
+</div>`;
+
+return;
+}
+
+container.innerHTML=
+jobs.map(job=>`
+
+<div class="job-card">
+
+<h3>
+💼 ${escapeHtml(job.title||"عرض شغل")}
+</h3>
+
+<p>
+📍 المكان:
+${escapeHtml(job.location||"غير محدد")}
+</p>
+
+<p>
+📄 نوع العقد:
+${escapeHtml(job.contract_type||"غير محدد")}
+</p>
+
+<p>
+🎓 الخبرة:
+${escapeHtml(job.experience||"غير محددة")}
+</p>
+
+<p>
+${escapeHtml(job.description||"")}
+</p>
+
+<p>
+الحالة:
+🟢 ${escapeHtml(job.status||"غير محددة")}
+</p>
+
+</div>
+
+`).join("");
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+`<div class="empty">
+تعذر تحميل عروض الشغل.
+</div>`;
+
+}
+
+}
+
+
+/* =========================
+   TALENTS
+========================= */
+
+async function loadTalents(){
+
+const container=
+document.getElementById("talentList");
+
+try{
+
+const {data,error}=
+await supabaseClient
+.from("profiles")
+.select(`
+id,
+full_name,
+phone,
+profession,
+skills,
+experience,
+education,
+created_at
+`)
+.eq("role","candidate")
+.order("created_at",{ascending:false});
+
+if(error) throw error;
+
+allTalents=data||[];
+
+renderTalents(allTalents);
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML=
+`<div class="empty">
+تعذر تحميل الكفاءات.
+</div>`;
+
+}
+
+}
+
+
+/* =========================
+   TALENT CARDS
+========================= */
+
+function renderTalents(talents){
+
+const container=
+document.getElementById("talentList");
+
+if(!talents.length){
+
+container.innerHTML=
+`<div class="empty">
+لا توجد نتائج مطابقة.
+</div>`;
+
+return;
+}
+
+container.innerHTML=
+talents.map(person=>`
+
+<div class="talent-card">
+
+<h3>
+👤 ${escapeHtml(person.full_name||"مترشح")}
+</h3>
+
+<p>
+💼 <strong>الاختصاص:</strong>
+${escapeHtml(person.profession||"غير محدد")}
+</p>
+
+${
+person.skills
+?
+`<p>
+🛠️ <strong>المهارات:</strong>
+${escapeHtml(person.skills)}
+</p>`
+:""
+}
+
+${
+person.experience
+?
+`<p>
+📊 <strong>الخبرة:</strong>
+${escapeHtml(person.experience)}
+</p>`
+:""
+}
+
+${
+person.education
+?
+`<p>
+🎓 <strong>التكوين:</strong>
+${escapeHtml(person.education)}
+</p>`
+:""
+}
+
+<button
+class="profile-btn"
+onclick="openProfile('${person.id}')"
+>
+👁️ عرض الملف المهني
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function filterTalents(){
+
+const search=
+document
+.getElementById("talentSearch")
+.value
+.toLowerCase()
+.trim();
+
+if(!search){
+
+renderTalents(allTalents);
+return;
+
+}
+
+const filtered=
+allTalents.filter(person=>{
+
+const text=[
+person.full_name,
+person.profession,
+person.skills,
+person.experience,
+person.education
+]
+.filter(Boolean)
+.join(" ")
+.toLowerCase();
+
+return text.includes(search);
+
+});
+
+renderTalents(filtered);
+
+}
+
+
+/* =========================
+   OPEN PROFESSIONAL PROFILE
+========================= */
+
+async function openProfile(id){
+
+const modal=
+document.getElementById("profileModal");
+
+const content=
+document.getElementById("profileContent");
+
+modal.style.display="block";
+
+content.innerHTML=`
+<div class="loading">
+جاري تحميل الملف المهني والـCV...
+</div>
+`;
+
+const person=
+allTalents.find(
+candidate=>candidate.id===id
+);
+
+if(!person){
+
+content.innerHTML=
+`<div class="empty">
+لم يتم العثور على الملف المهني.
+</div>`;
+
+return;
+}
+
+
+/* =========================
+   GET LATEST CV
+========================= */
+
+let cvUrl=null;
+
+try{
+
+const {data,error}=
+await supabaseClient
+.from("applications")
+.select("cv_url,created_at")
+.eq("candidate_id",person.id)
+.not("cv_url","is",null)
+.order("created_at",{ascending:false})
+.limit(1);
+
+if(error){
+
+console.error(
+"Erreur récupération CV:",
+error
+);
+
+}else if(
+data &&
+data.length>0 &&
+data[0].cv_url
+){
+
+cvUrl=data[0].cv_url;
+
+}
+
+}catch(error){
+
+console.error(
+"Erreur CV:",
+error
+);
+
+}
+
+
+/* =========================
+   PROFILE DISPLAY
+========================= */
+
+content.innerHTML=`
+
+<div class="profile-header">
+
+<div class="profile-avatar">
+👤
+</div>
+
+<h2>
+${escapeHtml(
+person.full_name||"مترشح"
+)}
+</h2>
+
+<p>
+${escapeHtml(
+person.profession||
+"Profession non renseignée"
+)}
+</p>
+
+</div>
+
+
+${
+person.profession
+?
+`<div class="profile-item">
+💼 <strong>الاختصاص المهني</strong><br>
+${escapeHtml(person.profession)}
+</div>`
+:""
+}
+
+
+${
+person.skills
+?
+`<div class="profile-item">
+🛠️ <strong>المهارات</strong><br>
+${escapeHtml(person.skills)}
+</div>`
+:""
+}
+
+
+${
+person.experience
+?
+`<div class="profile-item">
+📊 <strong>الخبرة المهنية</strong><br>
+${escapeHtml(person.experience)}
+</div>`
+:""
+}
+
+
+${
+person.education
+?
+`<div class="profile-item">
+🎓 <strong>التكوين والشهادات</strong><br>
+${escapeHtml(person.education)}
+</div>`
+:""
+}
+
+
+${
+cvUrl
+?
+`
+<div class="cv-box">
+
+<div>
+📄 <strong>السيرة الذاتية</strong>
+</div>
+
+<a
+class="cv-btn"
+href="${escapeAttribute(cvUrl)}"
+target="_blank"
+rel="noopener noreferrer"
+>
+📄 مشاهدة الـCV
+</a>
+
+</div>
+`
+:
+`
+<div class="no-cv">
+📄 لا يوجد CV متاح حاليًا لهذا المترشح.
+</div>
+`
+}
+
+`;
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeProfile(){
+
+document
+.getElementById("profileModal")
+.style.display="none";
+
+}
+
+
+function closeModal(event){
+
+if(
+event.target===
+document.getElementById("profileModal")
+){
+
+closeProfile();
+
+}
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHtml(value){
+
+if(
+value===null ||
+value===undefined
+){
+
+return "";
+
+}
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function escapeAttribute(value){
+
+return escapeHtml(value);
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+init();
 
 </script>
 
