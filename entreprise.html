@@ -35,7 +35,6 @@
 
     header p {
       margin: 0;
-      opacity: .95;
     }
 
     nav {
@@ -117,14 +116,23 @@
       font-size: 16px;
     }
 
-    .search-box button {
-      padding: 13px 22px;
+    button {
       border: 0;
       border-radius: 10px;
-      background: #0b3d91;
-      color: white;
+      padding: 11px 18px;
       cursor: pointer;
       font-weight: bold;
+    }
+
+    .search-button {
+      background: #0b3d91;
+      color: white;
+    }
+
+    .profile-button {
+      background: #1769aa;
+      color: white;
+      margin-top: 12px;
     }
 
     .detail {
@@ -148,12 +156,57 @@
       font-size: 14px;
     }
 
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 650px;
+      margin: 60px auto;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.2);
+      position: relative;
+    }
+
+    .close-button {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      background: #f1f3f5;
+      color: #333;
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+    }
+
+    .profile-title {
+      text-align: center;
+      color: #0b3d91;
+      margin-bottom: 25px;
+    }
+
+    .profile-detail {
+      background: #f7faff;
+      border-radius: 12px;
+      padding: 13px;
+      margin: 10px 0;
+    }
+
     @media (max-width: 650px) {
       .search-box {
         flex-direction: column;
       }
 
-      .search-box button {
+      .search-button {
         width: 100%;
       }
     }
@@ -222,7 +275,12 @@
         type="text"
         placeholder="🔎 ابحث عن اختصاص، مهارة، وظيفة..."
       >
-      <button id="searchButton">🔎 بحث</button>
+
+      <button
+        class="search-button"
+        id="searchButton">
+        🔎 بحث
+      </button>
     </div>
 
     <div id="talentList">
@@ -232,6 +290,30 @@
 
 </main>
 
+
+<!-- نافذة الملف المهني -->
+
+<div id="profileModal" class="modal">
+
+  <div class="modal-content">
+
+    <button
+      class="close-button"
+      onclick="closeProfile()">
+      ×
+    </button>
+
+    <h2 class="profile-title">
+      ⭐ الملف المهني
+    </h2>
+
+    <div id="profileContent"></div>
+
+  </div>
+
+</div>
+
+
 <footer>
   Ras Jebel Jobs — منصة الوظائف المحلية<br>
   © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
@@ -239,19 +321,27 @@
 
 
 <script>
-  const SUPABASE_URL = "https://gkiynoqovpuzudzpnryn.supabase.co";
+
+  const SUPABASE_URL =
+    "https://gkiynoqovpuzudzpnryn.supabase.co";
 
   const SUPABASE_KEY =
     "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
   const supabaseClient =
-    window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
 
   async function loadCompany() {
 
-    const status = document.getElementById("companyStatus");
-    const info = document.getElementById("companyInfo");
+    const status =
+      document.getElementById("companyStatus");
+
+    const info =
+      document.getElementById("companyInfo");
 
     try {
 
@@ -260,6 +350,7 @@
       } = await supabaseClient.auth.getUser();
 
       if (!user) {
+
         status.textContent =
           "ℹ️ لم يتم تسجيل الدخول. يتم عرض بيانات المؤسسة الموجودة في المنصة.";
 
@@ -289,19 +380,19 @@
       }
 
 
-      const { data, error } = await supabaseClient
-        .from("companies")
-        .select("*")
-        .eq("owner_id", user.id)
-        .maybeSingle();
+      const { data, error } =
+        await supabaseClient
+          .from("companies")
+          .select("*")
+          .eq("owner_id", user.id)
+          .maybeSingle();
 
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
 
       if (!data) {
+
         status.textContent =
           "ℹ️ لم يتم العثور على ملف المؤسسة.";
 
@@ -357,7 +448,6 @@
 
       status.textContent =
         "⚠️ تعذر تحميل معلومات المؤسسة.";
-
     }
   }
 
@@ -375,6 +465,7 @@
 
 
       if (!user) {
+
         jobsList.innerHTML =
           '<p class="empty">ℹ️ سجّل الدخول لرؤية عروض المؤسسة.</p>';
 
@@ -391,6 +482,7 @@
 
 
       if (!company) {
+
         jobsList.innerHTML =
           '<p class="empty">لا توجد مؤسسة مرتبطة بهذا الحساب.</p>';
 
@@ -403,12 +495,12 @@
           .from("jobs")
           .select("*")
           .eq("company_id", company.id)
-          .order("created_at", { ascending: false });
+          .order("created_at", {
+            ascending: false
+          });
 
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
 
       if (!jobs || jobs.length === 0) {
@@ -420,47 +512,60 @@
       }
 
 
-      jobsList.innerHTML = jobs.map(job => {
+      jobsList.innerHTML =
+        jobs.map(job => {
 
-        const active =
-          job.status === "active" ||
-          job.status === "published" ||
-          job.status === "open";
+          const active =
+            job.status === "active" ||
+            job.status === "published" ||
+            job.status === "open";
 
 
-        return `
-          <div class="job-card">
+          return `
+            <div class="job-card">
 
-            <h3>💼 ${escapeHtml(job.title || "عرض شغل")}</h3>
+              <h3>
+                💼 ${escapeHtml(
+                  job.title || "عرض شغل"
+                )}
+              </h3>
 
-            <div class="detail">
-              📍 <span class="label">المكان:</span>
-              ${escapeHtml(job.location || "غير محدد")}
+              <div class="detail">
+                📍 <span class="label">المكان:</span>
+                ${escapeHtml(
+                  job.location || "غير محدد"
+                )}
+              </div>
+
+              <div class="detail">
+                📄 <span class="label">نوع العقد:</span>
+                ${escapeHtml(
+                  job.contract_type || "غير محدد"
+                )}
+              </div>
+
+              <div class="detail">
+                🎓 <span class="label">الخبرة:</span>
+                ${escapeHtml(
+                  job.experience || "غير محددة"
+                )}
+              </div>
+
+              <div class="detail">
+                ${escapeHtml(
+                  job.description || ""
+                )}
+              </div>
+
+              <div class="detail">
+                الحالة:
+                ${active ? "🟢 نشط" : "⚪ غير نشط"}
+              </div>
+
             </div>
+          `;
 
-            <div class="detail">
-              📄 <span class="label">نوع العقد:</span>
-              ${escapeHtml(job.contract_type || "غير محدد")}
-            </div>
-
-            <div class="detail">
-              🎓 <span class="label">الخبرة:</span>
-              ${escapeHtml(job.experience || "غير محددة")}
-            </div>
-
-            <div class="detail">
-              ${escapeHtml(job.description || "")}
-            </div>
-
-            <div class="detail">
-              الحالة:
-              ${active ? "🟢 نشط" : "⚪ غير نشط"}
-            </div>
-
-          </div>
-        `;
-
-      }).join("");
+        }).join("");
 
 
     } catch (error) {
@@ -469,7 +574,6 @@
 
       jobsList.innerHTML =
         '<p class="empty">⚠️ تعذر تحميل عروض الشغل.</p>';
-
     }
   }
 
@@ -498,12 +602,12 @@
             created_at
           `)
           .eq("role", "candidate")
-          .order("created_at", { ascending: false });
+          .order("created_at", {
+            ascending: false
+          });
 
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
 
       allTalents = data || [];
@@ -520,7 +624,6 @@
           ⚠️ تعذر تحميل المواهب.
         </p>
       `;
-
     }
   }
 
@@ -543,60 +646,147 @@
     }
 
 
-    talentList.innerHTML = talents.map(person => {
+    talentList.innerHTML =
+      talents.map(person => {
 
-      return `
-        <div class="talent-card">
+        return `
+          <div class="talent-card">
 
-          <h3>👤 ${escapeHtml(
-            person.full_name || "مترشح"
-          )}</h3>
+            <h3>
+              👤 ${escapeHtml(
+                person.full_name || "مترشح"
+              )}
+            </h3>
 
-          <div class="detail">
-            💼 <span class="label">الاختصاص:</span>
-            ${escapeHtml(
-              person.profession || "غير محدد"
-            )}
+            <div class="detail">
+              💼 <span class="label">الاختصاص:</span>
+              ${escapeHtml(
+                person.profession || "غير محدد"
+              )}
+            </div>
+
+            ${
+              person.skills
+                ? `
+                  <div class="detail">
+                    🛠️ <span class="label">المهارات:</span>
+                    ${escapeHtml(person.skills)}
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              person.experience
+                ? `
+                  <div class="detail">
+                    📊 <span class="label">الخبرة:</span>
+                    ${escapeHtml(person.experience)}
+                  </div>
+                `
+                : ""
+            }
+
+            ${
+              person.education
+                ? `
+                  <div class="detail">
+                    🎓 <span class="label">التكوين:</span>
+                    ${escapeHtml(person.education)}
+                  </div>
+                `
+                : ""
+            }
+
+            <button
+              class="profile-button"
+              onclick="openProfile('${person.id}')">
+              👁️ عرض الملف المهني
+            </button>
+
           </div>
+        `;
 
-          ${
-            person.skills
-              ? `
-                <div class="detail">
-                  🛠️ <span class="label">المهارات:</span>
-                  ${escapeHtml(person.skills)}
-                </div>
-              `
-              : ""
-          }
-
-          ${
-            person.experience
-              ? `
-                <div class="detail">
-                  📊 <span class="label">الخبرة:</span>
-                  ${escapeHtml(person.experience)}
-                </div>
-              `
-              : ""
-          }
-
-          ${
-            person.education
-              ? `
-                <div class="detail">
-                  🎓 <span class="label">التكوين:</span>
-                  ${escapeHtml(person.education)}
-                </div>
-              `
-              : ""
-          }
-
-        </div>
-      `;
-
-    }).join("");
+      }).join("");
   }
+
+
+  function openProfile(id) {
+
+    const person =
+      allTalents.find(
+        candidate => candidate.id === id
+      );
+
+
+    if (!person) return;
+
+
+    const content =
+      document.getElementById("profileContent");
+
+
+    content.innerHTML = `
+
+      <h3>
+        👤 ${escapeHtml(
+          person.full_name || "مترشح"
+        )}
+      </h3>
+
+      <div class="profile-detail">
+        💼 <span class="label">الاختصاص / الوظيفة:</span><br>
+        ${escapeHtml(
+          person.profession || "غير محدد"
+        )}
+      </div>
+
+      <div class="profile-detail">
+        🛠️ <span class="label">المهارات:</span><br>
+        ${escapeHtml(
+          person.skills || "غير محددة"
+        )}
+      </div>
+
+      <div class="profile-detail">
+        📊 <span class="label">الخبرة المهنية:</span><br>
+        ${escapeHtml(
+          person.experience || "غير محددة"
+        )}
+      </div>
+
+      <div class="profile-detail">
+        🎓 <span class="label">التكوين والشهادات:</span><br>
+        ${escapeHtml(
+          person.education || "غير محدد"
+        )}
+      </div>
+
+    `;
+
+
+    document.getElementById("profileModal").style.display =
+      "block";
+  }
+
+
+  function closeProfile() {
+
+    document.getElementById("profileModal").style.display =
+      "none";
+  }
+
+
+  window.addEventListener("click", function(event) {
+
+    const modal =
+      document.getElementById("profileModal");
+
+    if (event.target === modal) {
+      closeProfile();
+    }
+
+  });
 
 
   function searchTalents() {
@@ -621,11 +811,13 @@
       allTalents.filter(person => {
 
         const text = [
+
           person.full_name,
           person.profession,
           person.skills,
           person.experience,
           person.education
+
         ]
         .filter(Boolean)
         .join(" ")
@@ -654,12 +846,18 @@
 
   document
     .getElementById("searchButton")
-    .addEventListener("click", searchTalents);
+    .addEventListener(
+      "click",
+      searchTalents
+    );
 
 
   document
     .getElementById("talentSearch")
-    .addEventListener("input", searchTalents);
+    .addEventListener(
+      "input",
+      searchTalents
+    );
 
 
   loadCompany();
