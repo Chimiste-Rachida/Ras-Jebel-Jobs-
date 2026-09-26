@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Ras Jebel Jobs | فضاء الباحث عن عمل</title>
+  <title>فضاء الباحث عن عمل — Ras Jebel Jobs</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -14,259 +13,169 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f7fa;
       margin: 0;
-      color: #222;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
     }
 
     header {
-      background: #17324d;
+      background: linear-gradient(135deg, #0f4c81, #1976b8);
       color: white;
       text-align: center;
-      padding: 30px 15px;
+      padding: 35px 20px;
     }
 
     header h1 {
-      margin: 0 0 10px;
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    header p {
+      margin: 6px 0;
     }
 
     header a {
       color: white;
       text-decoration: none;
+      font-weight: bold;
     }
 
     main {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 30px auto;
       padding: 0 15px;
     }
 
     .section-title {
-      color: #17324d;
+      color: #0f4c81;
       margin-top: 35px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
-    .profile-box,
-    .notification-box,
-    .job,
-    .application-card {
+    .box {
       background: white;
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .profile-box {
+      border-top: 5px solid #1976b8;
     }
 
     .profile-intro {
-      background: #eff6ff;
-      border-right: 5px solid #2563eb;
+      background: #eef6ff;
       padding: 15px;
       border-radius: 10px;
-      line-height: 1.8;
       margin-bottom: 20px;
+      line-height: 1.8;
     }
 
-    .profile-form label {
+    label {
       display: block;
+      margin-top: 15px;
+      margin-bottom: 7px;
       font-weight: bold;
-      margin: 12px 0 7px;
     }
 
-    .profile-form input,
-    .profile-form select {
+    input,
+    textarea,
+    select {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-family: Arial, sans-serif;
-      background: #fafafa;
+      padding: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 13px 20px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 15px;
     }
 
     .profile-button {
-      width: 100%;
-      margin-top: 18px;
-      border: none;
-      background: #17324d;
+      background: #0f4c81;
       color: white;
-      padding: 13px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
+      width: 100%;
     }
 
-    .profile-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .profile-button:hover {
+      background: #0b3d68;
     }
 
-    .profile-display {
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 18px;
+    .job-card {
+      background: white;
+      border-radius: 15px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border-right: 5px solid #1976b8;
+    }
+
+    .job-card h3 {
+      margin-top: 0;
+      color: #0f4c81;
+    }
+
+    .job-meta {
+      color: #555;
       line-height: 1.9;
     }
 
-    .profile-name {
-      color: #17324d;
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .profile-role {
-      color: #2563eb;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .apply-button {
+      background: #1976b8;
+      color: white;
     }
 
     .notification {
-      background: #f8fafc;
-      border-right: 5px solid #17324d;
+      background: #fff8e1;
+      border-right: 4px solid #f59e0b;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 12px;
     }
 
-    .notification.unread {
-      background: #eff6ff;
-      border-right-color: #2563eb;
+    .notification.read {
+      opacity: 0.65;
     }
 
-    .notification h3 {
-      margin: 0 0 8px;
-      color: #17324d;
-    }
-
-    .notification p {
-      margin: 8px 0;
-      line-height: 1.7;
-    }
-
-    .notification-date {
-      font-size: 13px;
-      color: #777;
-    }
-
-    .read-button {
-      margin-top: 10px;
-      border: none;
-      background: #17324d;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .job h3,
-    .application-card h3 {
-      margin-top: 0;
-      color: #17324d;
-      font-size: 22px;
-    }
-
-    .info {
-      margin: 8px 0;
-      color: #444;
-      line-height: 1.6;
-    }
-
-    .job p {
-      line-height: 1.7;
-    }
-
-    .apply-area {
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px solid #eee;
-    }
-
-    .cv-label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    .cv-input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #fafafa;
-      margin-bottom: 12px;
-    }
-
-    .message-input {
-      width: 100%;
-      min-height: 90px;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      resize: vertical;
-      font-family: Arial, sans-serif;
-      margin-bottom: 12px;
-    }
-
-    .apply-button {
-      background: #17324d;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      width: 100%;
-    }
-
-    .apply-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .success {
-      background: #ecfdf5;
-      color: #047857;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
-    }
-
-    .warning {
-      background: #fff7ed;
-      color: #c2410c;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
-    }
-
-    .error {
-      background: #fef2f2;
-      color: #b91c1c;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
+    .application-card {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 15px;
     }
 
     .status {
       display: inline-block;
-      padding: 9px 14px;
-      border-radius: 9px;
+      padding: 7px 12px;
+      border-radius: 20px;
       font-weight: bold;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
     .pending {
-      background: #fff7ed;
-      color: #c2410c;
+      background: #fff3cd;
+      color: #856404;
     }
 
     .accepted {
-      background: #dcfce7;
-      color: #166534;
+      background: #d1fae5;
+      color: #065f46;
     }
 
     .rejected {
@@ -274,40 +183,60 @@
       color: #991b1b;
     }
 
-    .cv-link {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-      background: #17324d;
-      color: white;
+    .profile-display {
+      background: #f8fafc;
+      padding: 18px;
+      border-radius: 12px;
+      margin-top: 20px;
+      line-height: 2;
+    }
+
+    .success {
+      background: #d1fae5;
+      color: #065f46;
       padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
+      border-radius: 9px;
+      margin: 12px 0;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 9px;
+      margin: 12px 0;
+    }
+
+    .info {
+      background: #e0f2fe;
+      color: #075985;
+      padding: 12px;
+      border-radius: 9px;
+      margin: 12px 0;
+    }
+
+    a.cv-link {
+      color: #0f4c81;
       font-weight: bold;
-    }
-
-    .empty {
-      background: white;
-      padding: 20px;
-      border-radius: 14px;
-      text-align: center;
-      color: #666;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    }
-
-    #message {
-      text-align: center;
-      padding: 20px;
-      font-size: 18px;
+      text-decoration: none;
     }
 
     footer {
       text-align: center;
-      padding: 25px;
+      padding: 30px 15px;
       margin-top: 40px;
-      background: #17324d;
+      background: #0f4c81;
       color: white;
-      line-height: 1.8;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      .box {
+        padding: 18px;
+      }
     }
   </style>
 </head>
@@ -326,31 +255,21 @@
 
 <main>
 
-  <!-- ================================
-       ⭐ الملف المهني
-  ================================= -->
-
+  <!-- PROFIL PROFESSIONNEL -->
   <h2 class="section-title">⭐ ملفي المهني</h2>
 
-  <div class="profile-box">
+  <div class="box profile-box">
 
     <div class="profile-intro">
-      أنشئ ملفك المهني وخلي المؤسسات تتعرف على اختصاصك ومهاراتك.
-      المعلومات الأساسية متاعك تتخزن في حسابك على Ras Jebel Jobs.
+      أنشئ ملفك المهني وخلي المؤسسات تتعرف على اختصاصك وكفاءاتك.
+      معلوماتك الأساسية تتخزن في حسابك على Ras Jebel Jobs.
     </div>
 
     <div id="profileStatus"></div>
 
-    <form
-      id="profileForm"
-      class="profile-form"
-      onsubmit="saveProfile(event)"
-    >
+    <form id="profileForm" onsubmit="saveProfile(event)">
 
-      <label for="fullName">
-        👤 الاسم واللقب
-      </label>
-
+      <label for="fullName">👤 الاسم واللقب</label>
       <input
         type="text"
         id="fullName"
@@ -358,23 +277,17 @@
         required
       >
 
-      <label for="phone">
-        📱 رقم الهاتف
-      </label>
-
+      <label for="phone">📱 رقم الهاتف</label>
       <input
         type="tel"
         id="phone"
         placeholder="مثال: 20 000 000"
       >
 
-      <label for="role">
-        💼 الاختصاص / الوظيفة
-      </label>
-
+      <label for="profession">💼 الاختصاص / الوظيفة</label>
       <input
         type="text"
-        id="role"
+        id="profession"
         placeholder="مثال: Technicienne Supérieure en Chimie"
         required
       >
@@ -391,1099 +304,785 @@
 
     <div
       id="profileDisplay"
-      style="display:none; margin-top:20px;"
+      class="profile-display"
+      style="display:none;"
     ></div>
 
   </div>
 
 
-  <!-- ================================
-       🔔 الإشعارات
-  ================================= -->
+  <!-- NOTIFICATIONS -->
+  <h2 class="section-title">🔔 الإشعارات</h2>
 
-  <h2 class="section-title">🔔 إشعاراتي</h2>
-
-  <div class="notification-box">
+  <div class="box">
     <div id="notifications">
       جاري تحميل الإشعارات...
     </div>
   </div>
 
 
-  <!-- ================================
-       💼 عروض الشغل
-  ================================= -->
+  <!-- JOBS -->
+  <h2 class="section-title">💼 عروض الشغل</h2>
 
-  <h2 class="section-title">💼 عروض الشغل المتاحة</h2>
-
-  <div id="message">
-    جاري تحميل العروض...
+  <div id="jobs">
+    جاري تحميل عروض الشغل...
   </div>
 
-  <div id="jobs"></div>
 
+  <!-- APPLICATIONS -->
+  <h2 class="section-title">📄 ترشحاتي</h2>
 
-  <!-- ================================
-       📋 ترشحـاتي
-  ================================= -->
-
-  <h2 class="section-title">📋 ترشحـاتي</h2>
-
-  <div id="myApplications">
-    جاري تحميل ترشحاتك...
+  <div class="box">
+    <div id="applications">
+      جاري تحميل الترشحات...
+    </div>
   </div>
 
 </main>
 
 
 <footer>
-  © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés<br>
-  Ras Jebel Jobs — منصة الوظائف المحلية
+  © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
 </footer>
 
 
 <script>
 
-const SUPABASE_URL =
-  "https://gkiynoqovpuzudzpnryn.supabase.co";
+  const SUPABASE_URL =
+    "https://gkiynoqovpuzudzpnryn.supabase.co";
 
-const SUPABASE_KEY =
-  "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+  const SUPABASE_ANON_KEY =
+    "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* ================================
-   ⭐ الملف المهني
-================================ */
-
-async function loadProfile() {
-
-  const status =
-    document.getElementById("profileStatus");
-
-  const form =
-    document.getElementById("profileForm");
-
-  const display =
-    document.getElementById("profileDisplay");
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-
-    status.innerHTML =
-      '<div class="warning">🔐 سجّل الدخول باش تنجم تنشئ ملفك المهني.</div>';
-
-    form.style.display = "none";
-
-    return;
-  }
-
-  const {
-    data: profile,
-    error
-  } = await supabaseClient
-    .from("profiles")
-    .select(
-      "id,full_name,phone,role,created_at"
-    )
-    .eq(
-      "id",
-      user.id
-    )
-    .maybeSingle();
-
-  if (error) {
-
-    console.error(error);
-
-    status.innerHTML =
-      `<div class="error">
-        ❌ تعذر تحميل ملفك المهني.<br>
-        <small>${error.message}</small>
-      </div>`;
-
-    return;
-  }
-
-  if (profile) {
-
-    document.getElementById("fullName").value =
-      profile.full_name || "";
-
-    document.getElementById("phone").value =
-      profile.phone || "";
-
-    document.getElementById("role").value =
-      profile.role || "";
-
-    display.innerHTML = `
-      <div class="profile-display">
-        <div class="profile-name">
-          👤 ${escapeHtml(profile.full_name || "بدون اسم")}
-        </div>
-
-        <div class="profile-role">
-          💼 ${escapeHtml(profile.role || "اختصاص غير محدد")}
-        </div>
-
-        <div>
-          📱 ${escapeHtml(profile.phone || "رقم الهاتف غير مضاف")}
-        </div>
-
-        <div class="notification-date">
-          📅 تم إنشاء الملف: ${
-            new Date(profile.created_at)
-              .toLocaleDateString("fr-FR")
-          }
-        </div>
-      </div>
-    `;
-
-    display.style.display = "block";
-
-  }
-
-}
+  const supabaseClient =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
 
-/* ================================
-   💾 حفظ الملف المهني
-================================ */
+  function escapeHtml(value) {
 
-async function saveProfile(event) {
-
-  event.preventDefault();
-
-  const status =
-    document.getElementById("profileStatus");
-
-  const button =
-    document.getElementById("profileButton");
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-
-    status.innerHTML =
-      '<div class="warning">🔐 يلزمك تسجيل الدخول أولا.</div>';
-
-    return;
-  }
-
-  const fullName =
-    document.getElementById("fullName")
-      .value.trim();
-
-  const phone =
-    document.getElementById("phone")
-      .value.trim();
-
-  const role =
-    document.getElementById("role")
-      .value.trim();
-
-  if (!fullName || !role) {
-
-    status.innerHTML =
-      '<div class="warning">⚠️ الاسم والاختصاص إجباريين.</div>';
-
-    return;
-  }
-
-  button.disabled = true;
-
-  button.textContent =
-    "⏳ جاري حفظ الملف...";
-
-  try {
-
-    const {
-      data: existingProfile,
-      error: existingError
-    } = await supabaseClient
-      .from("profiles")
-      .select("id")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (existingError) {
-      throw existingError;
+    if (value === null || value === undefined) {
+      return "";
     }
 
-    let result;
-
-    if (existingProfile) {
-
-      result =
-        await supabaseClient
-          .from("profiles")
-          .update({
-            full_name: fullName,
-            phone: phone,
-            role: role
-          })
-          .eq(
-            "id",
-            user.id
-          );
-
-    } else {
-
-      result =
-        await supabaseClient
-          .from("profiles")
-          .insert({
-            id: user.id,
-            full_name: fullName,
-            phone: phone,
-            role: role
-          });
-    }
-
-    if (result.error) {
-      throw result.error;
-    }
-
-    status.innerHTML =
-      '<div class="success">✅ تم حفظ ملفك المهني بنجاح!</div>';
-
-    button.textContent =
-      "✅ تم الحفظ";
-
-    await loadProfile();
-
-  } catch (error) {
-
-    console.error(error);
-
-    status.innerHTML =
-      `<div class="error">
-        ❌ تعذر حفظ الملف المهني.<br>
-        <small>${escapeHtml(error.message || "خطأ غير معروف")}</small>
-      </div>`;
-
-    button.disabled = false;
-
-    button.textContent =
-      "💾 حفظ ملفي المهني";
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
-}
+
+  function showProfileMessage(message, type) {
+
+    const box = document.getElementById("profileStatus");
+
+    box.innerHTML =
+      `<div class="${type}">${escapeHtml(message)}</div>`;
+  }
 
 
-/* ================================
-   🔔 الإشعارات
-================================ */
-
-async function loadNotifications() {
-
-  const container =
-    document.getElementById("notifications");
-
-  try {
+  async function loadProfile() {
 
     const {
       data: { user },
       error: userError
     } = await supabaseClient.auth.getUser();
 
-    if (userError) {
-
-      console.error(userError);
-
-      container.innerHTML =
-        '<div class="error">❌ تعذر التحقق من تسجيل الدخول.</div>';
-
-      return;
-    }
-
-    if (!user) {
-
-      container.innerHTML =
-        '<div class="warning">🔐 سجّل الدخول باش تشوف إشعاراتك.</div>';
-
+    if (userError || !user) {
       return;
     }
 
     const {
-      data: notifications,
+      data,
       error
     } = await supabaseClient
-      .from("notifications")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", {
-        ascending: false
-      });
+      .from("profiles")
+      .select("id, full_name, phone, role, profession, created_at")
+      .eq("id", user.id)
+      .maybeSingle();
 
     if (error) {
 
-      console.error(
-        "Notifications error:",
-        error
+      console.error("Profile loading error:", error);
+
+      return;
+    }
+
+    if (!data) {
+      return;
+    }
+
+    document.getElementById("fullName").value =
+      data.full_name || "";
+
+    document.getElementById("phone").value =
+      data.phone || "";
+
+    document.getElementById("profession").value =
+      data.profession || "";
+
+    const display =
+      document.getElementById("profileDisplay");
+
+    display.style.display = "block";
+
+    display.innerHTML = `
+      <strong>👤 الاسم:</strong>
+      ${escapeHtml(data.full_name || "")}
+      <br>
+
+      <strong>📱 الهاتف:</strong>
+      ${escapeHtml(data.phone || "غير مضاف")}
+      <br>
+
+      <strong>💼 الاختصاص:</strong>
+      ${escapeHtml(data.profession || "")}
+    `;
+  }
+
+
+  async function saveProfile(event) {
+
+    event.preventDefault();
+
+    const button =
+      document.getElementById("profileButton");
+
+    const fullName =
+      document.getElementById("fullName").value.trim();
+
+    const phone =
+      document.getElementById("phone").value.trim();
+
+    const profession =
+      document.getElementById("profession").value.trim();
+
+    if (!fullName || !profession) {
+
+      showProfileMessage(
+        "⚠️ الرجاء إدخال الاسم والاختصاص.",
+        "error"
       );
 
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "⏳ جاري الحفظ...";
+
+    try {
+
+      const {
+        data: { user },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+
+      if (userError || !user) {
+
+        showProfileMessage(
+          "⚠️ لازم تعمل تسجيل دخول قبل حفظ الملف المهني.",
+          "error"
+        );
+
+        window.location.href = "auth.html";
+
+        return;
+      }
+
+
+      const {
+        data: existingProfile,
+        error: checkError
+      } = await supabaseClient
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
+
+
+      if (checkError) {
+        throw checkError;
+      }
+
+
+      let result;
+
+
+      if (existingProfile) {
+
+        result = await supabaseClient
+          .from("profiles")
+          .update({
+            full_name: fullName,
+            phone: phone,
+            profession: profession
+          })
+          .eq("id", user.id);
+
+      } else {
+
+        result = await supabaseClient
+          .from("profiles")
+          .insert({
+            id: user.id,
+            full_name: fullName,
+            phone: phone,
+            role: "candidate",
+            profession: profession
+          });
+      }
+
+
+      if (result.error) {
+        throw result.error;
+      }
+
+
+      showProfileMessage(
+        "✅ تم حفظ ملفك المهني بنجاح!",
+        "success"
+      );
+
+      await loadProfile();
+
+
+    } catch (error) {
+
+      console.error("Save profile error:", error);
+
+      showProfileMessage(
+        "❌ تعذر حفظ الملف المهني. " +
+        (error.message || ""),
+        "error"
+      );
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent = "💾 حفظ ملفي المهني";
+    }
+  }
+
+
+  async function loadNotifications() {
+
+    const container =
+      document.getElementById("notifications");
+
+    const {
+      data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
       container.innerHTML =
-        `<div class="error">
-          ❌ تعذر تحميل الإشعارات.<br>
-          <small>${escapeHtml(error.message)}</small>
+        `<div class="info">
+          سجّل الدخول لمشاهدة الإشعارات.
         </div>`;
 
       return;
     }
 
-    if (
-      !notifications ||
-      notifications.length === 0
-    ) {
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("notifications")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+
+      console.error(error);
 
       container.innerHTML =
-        '<div class="empty">🔕 ما عندك حتى إشعار توّا.</div>';
+        `<div class="error">
+          ❌ تعذر تحميل الإشعارات.
+        </div>`;
 
       return;
     }
 
+
+    if (!data || data.length === 0) {
+
+      container.innerHTML =
+        `<div class="info">
+          لا توجد إشعارات حاليًا.
+        </div>`;
+
+      return;
+    }
+
+
     container.innerHTML =
-      notifications.map(notification => {
+      data.map(notification => `
 
-        const date =
-          new Date(
-            notification.created_at
-          ).toLocaleString("fr-FR");
+        <div
+          class="notification ${notification.is_read ? "read" : ""}"
+        >
 
-        return `
-          <div class="notification ${
-            notification.is_read
-              ? ""
-              : "unread"
-          }">
+          <strong>
+            ${escapeHtml(notification.title || "إشعار")}
+          </strong>
 
-            <h3>
-              ${escapeHtml(notification.title || "🔔 إشعار")}
-            </h3>
+          <p>
+            ${escapeHtml(notification.message || "")}
+          </p>
 
-            <p>
-              ${escapeHtml(notification.message || "")}
-            </p>
+          <small>
+            ${notification.created_at
+              ? new Date(notification.created_at).toLocaleString("fr-FR")
+              : ""}
+          </small>
 
-            <div class="notification-date">
-              📅 ${date}
-            </div>
-
-            ${
-              !notification.is_read
-              ?
-              `
+          ${
+            !notification.is_read
+              ? `
+                <br>
                 <button
-                  class="read-button"
                   onclick="markNotificationRead('${notification.id}')"
                 >
-                  ✓ تعليم كمقروء
+                  ✓ تحديد كمقروء
                 </button>
               `
-              :
-              `
-                <div class="notification-date">
-                  ✓ تمت القراءة
-                </div>
-              `
-            }
+              : ""
+          }
 
-          </div>
-        `;
+        </div>
 
-      }).join("");
+      `).join("");
+  }
 
-  } catch (error) {
 
-    console.error(
-      "Notification error:",
+  async function markNotificationRead(notificationId) {
+
+    const {
       error
-    );
+    } = await supabaseClient
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("id", notificationId);
+
+
+    if (error) {
+
+      console.error(error);
+
+      return;
+    }
+
+
+    await loadNotifications();
+  }
+
+
+  async function loadJobs() {
+
+    const container =
+      document.getElementById("jobs");
+
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+      .from("jobs")
+      .select(`
+        id,
+        title,
+        description,
+        location,
+        contract_type,
+        experience,
+        status,
+        created_at
+      `)
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+
+
+    if (error) {
+
+      console.error(error);
+
+      container.innerHTML =
+        `<div class="box error">
+          ❌ تعذر تحميل عروض الشغل.
+        </div>`;
+
+      return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+      container.innerHTML =
+        `<div class="box info">
+          لا توجد عروض شغل منشورة حاليًا.
+        </div>`;
+
+      return;
+    }
+
 
     container.innerHTML =
-      `<div class="error">
-        ❌ صار خطأ في تحميل الإشعارات.<br>
-        <small>${escapeHtml(error.message || "خطأ غير معروف")}</small>
-      </div>`;
-  }
-}
+      data.map(job => `
 
+        <div class="job-card">
 
-/* ================================
-   ✓ تعليم الإشعار كمقروء
-================================ */
+          <h3>
+            💼 ${escapeHtml(job.title)}
+          </h3>
 
-async function markNotificationRead(
-  notificationId
-) {
+          <div class="job-meta">
 
-  const {
-    error
-  } = await supabaseClient
-    .from("notifications")
-    .update({
-      is_read: true
-    })
-    .eq(
-      "id",
-      notificationId
-    );
+            📍
+            <strong>المكان:</strong>
+            ${escapeHtml(job.location || "غير محدد")}
 
-  if (error) {
+            <br>
 
-    console.error(error);
+            📑
+            <strong>العقد:</strong>
+            ${escapeHtml(job.contract_type || "غير محدد")}
 
-    alert(
-      "❌ تعذر تحديث الإشعار."
-    );
+            <br>
 
-    return;
-  }
+            🎓
+            <strong>الخبرة:</strong>
+            ${escapeHtml(job.experience || "غير محدد")}
 
-  await loadNotifications();
-}
+          </div>
 
-
-/* ================================
-   💼 عروض الشغل
-================================ */
-
-async function loadJobs() {
-
-  const message =
-    document.getElementById("message");
-
-  const jobsContainer =
-    document.getElementById("jobs");
-
-  const {
-    data: jobs,
-    error
-  } = await supabaseClient
-    .from("jobs")
-    .select(
-      "id,title,description,location,contract_type,experience"
-    )
-    .eq(
-      "status",
-      "active"
-    )
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    );
-
-  if (error) {
-
-    console.error(error);
-
-    message.innerHTML =
-      '<div class="error">❌ تعذر تحميل عروض الشغل</div>';
-
-    return;
-  }
-
-  if (
-    !jobs ||
-    jobs.length === 0
-  ) {
-
-    message.innerHTML =
-      "📭 ما فماش عروض شغل متاحة حاليا";
-
-    return;
-  }
-
-  message.innerHTML = "";
-
-  jobsContainer.innerHTML =
-    jobs.map(job => `
-
-      <div class="job">
-
-        <h3>
-          ${escapeHtml(job.title || "")}
-        </h3>
-
-        <div class="info">
-          📍 ${escapeHtml(job.location || "غير محدد")}
-        </div>
-
-        <div class="info">
-          📄 ${escapeHtml(job.contract_type || "غير محدد")}
-        </div>
-
-        <div class="info">
-          🎓 ${escapeHtml(job.experience || "غير محدد")}
-        </div>
-
-        <p>
-          ${escapeHtml(job.description || "")}
-        </p>
-
-        <div class="apply-area">
-
-          <label class="cv-label">
-            📄 CV متاعك — PDF فقط
-          </label>
-
-          <input
-            type="file"
-            id="cv-${job.id}"
-            class="cv-input"
-            accept=".pdf,application/pdf"
-          >
-
-          <label class="cv-label">
-            💬 رسالة للمؤسسة — اختيارية
-          </label>
-
-          <textarea
-            id="message-${job.id}"
-            class="message-input"
-            placeholder="اكتب رسالة قصيرة للمؤسسة..."
-          ></textarea>
+          <p>
+            ${escapeHtml(job.description || "")}
+          </p>
 
           <button
             class="apply-button"
-            id="button-${job.id}"
             onclick="applyJob('${job.id}')"
           >
-            📩 تقديم الترشح
+            📩 الترشح لهذا العرض
           </button>
-
-          <div id="result-${job.id}"></div>
 
         </div>
 
-      </div>
-
-    `).join("");
-}
-
-
-/* ================================
-   📩 تقديم الترشح
-================================ */
-
-async function applyJob(jobId) {
-
-  const button =
-    document.getElementById(
-      `button-${jobId}`
-    );
-
-  const result =
-    document.getElementById(
-      `result-${jobId}`
-    );
-
-  const cvInput =
-    document.getElementById(
-      `cv-${jobId}`
-    );
-
-  const messageInput =
-    document.getElementById(
-      `message-${jobId}`
-    );
-
-  result.innerHTML = "";
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-
-    alert(
-      "⚠️ يلزمك تسجيل الدخول أولا"
-    );
-
-    window.location.href =
-      "auth.html";
-
-    return;
+      `).join("");
   }
 
-  if (
-    !cvInput.files ||
-    cvInput.files.length === 0
-  ) {
 
-    result.innerHTML =
-      '<div class="warning">⚠️ لازم تختار CV بصيغة PDF قبل تقديم الترشح.</div>';
-
-    return;
-  }
-
-  const cvFile =
-    cvInput.files[0];
-
-  if (
-    cvFile.type !== "application/pdf" &&
-    !cvFile.name
-      .toLowerCase()
-      .endsWith(".pdf")
-  ) {
-
-    result.innerHTML =
-      '<div class="error">❌ مسموح كان ملفات PDF.</div>';
-
-    return;
-  }
-
-  if (
-    cvFile.size >
-    5 * 1024 * 1024
-  ) {
-
-    result.innerHTML =
-      '<div class="error">❌ حجم الـCV لازم يكون أقل من 5 MB.</div>';
-
-    return;
-  }
-
-  button.disabled = true;
-
-  button.textContent =
-    "⏳ جاري تقديم الترشح...";
-
-  try {
+  async function applyJob(jobId) {
 
     const {
-      data: existingApplication,
+      data: { user }
+    } = await supabaseClient.auth.getUser();
+
+
+    if (!user) {
+
+      alert("الرجاء تسجيل الدخول أولًا.");
+
+      window.location.href = "auth.html";
+
+      return;
+    }
+
+
+    const {
+      data: existing,
       error: existingError
     } = await supabaseClient
       .from("applications")
       .select("id")
-      .eq(
-        "job_id",
-        jobId
-      )
-      .eq(
-        "candidate_id",
-        user.id
-      )
+      .eq("job_id", jobId)
+      .eq("candidate_id", user.id)
       .maybeSingle();
+
 
     if (existingError) {
 
-      console.error(existingError);
-
-      throw new Error(
-        "تعذر التثبت من الترشح السابق."
+      alert(
+        "❌ تعذر التحقق من الترشح: " +
+        existingError.message
       );
-    }
-
-    if (existingApplication) {
-
-      result.innerHTML =
-        '<div class="warning">⚠️ إنتِ سبق وقدّمتِ ترشحك لهذا العرض.</div>';
-
-      button.disabled = false;
-
-      button.textContent =
-        "📩 تقديم الترشح";
 
       return;
     }
 
-    const fileName =
-      `${user.id}/${jobId}-${Date.now()}.pdf`;
 
-    const {
-      error: uploadError
-    } = await supabaseClient
-      .storage
-      .from("cvs")
-      .upload(
-        fileName,
-        cvFile,
-        {
-          contentType:
-            "application/pdf",
-          upsert: false
-        }
-      );
+    if (existing) {
 
-    if (uploadError) {
+      alert("⚠️ سبق لك الترشح لهذا العرض.");
 
-      console.error(uploadError);
-
-      throw new Error(
-        "تعذر رفع الـCV. تأكدي من إعدادات Storage."
-      );
+      return;
     }
 
+
+    const cvInput =
+      document.createElement("input");
+
+    cvInput.type = "file";
+    cvInput.accept = ".pdf,application/pdf";
+
+
+    cvInput.onchange = async function() {
+
+      const file = cvInput.files[0];
+
+      if (!file) {
+        return;
+      }
+
+
+      if (file.type !== "application/pdf") {
+
+        alert("❌ يجب اختيار ملف PDF فقط.");
+
+        return;
+      }
+
+
+      if (file.size > 5 * 1024 * 1024) {
+
+        alert("❌ حجم الملف يجب ألا يتجاوز 5 MB.");
+
+        return;
+      }
+
+
+      const filePath =
+        `${user.id}/${jobId}-${Date.now()}.pdf`;
+
+
+      const {
+        error: uploadError
+      } = await supabaseClient.storage
+        .from("cvs")
+        .upload(filePath, file, {
+          upsert: false
+        });
+
+
+      if (uploadError) {
+
+        alert(
+          "❌ تعذر رفع السيرة الذاتية: " +
+          uploadError.message
+        );
+
+        return;
+      }
+
+
+      const {
+        data: publicUrlData
+      } = supabaseClient.storage
+        .from("cvs")
+        .getPublicUrl(filePath);
+
+
+      const cvUrl =
+        publicUrlData.publicUrl;
+
+
+      const {
+        error: applicationError
+      } = await supabaseClient
+        .from("applications")
+        .insert({
+          job_id: jobId,
+          candidate_id: user.id,
+          cv_url: cvUrl,
+          message: null,
+          status: "pending"
+        });
+
+
+      if (applicationError) {
+
+        alert(
+          "❌ تعذر إرسال الترشح: " +
+          applicationError.message
+        );
+
+        return;
+      }
+
+
+      alert("✅ تم إرسال الترشح بنجاح!");
+
+      await loadApplications();
+    };
+
+
+    cvInput.click();
+  }
+
+
+  async function loadApplications() {
+
+    const container =
+      document.getElementById("applications");
+
+
     const {
-      data: publicUrlData
-    } = supabaseClient
-      .storage
-      .from("cvs")
-      .getPublicUrl(
-        fileName
-      );
+      data: { user }
+    } = await supabaseClient.auth.getUser();
 
-    const cvUrl =
-      publicUrlData.publicUrl;
 
-    const candidateMessage =
-      messageInput.value.trim();
+    if (!user) {
+
+      container.innerHTML =
+        `<div class="info">
+          سجّل الدخول لمشاهدة ترشحاتك.
+        </div>`;
+
+      return;
+    }
+
 
     const {
-      error: applicationError
+      data,
+      error
     } = await supabaseClient
       .from("applications")
-      .insert({
+      .select(`
+        id,
+        job_id,
+        candidate_id,
+        cv_url,
+        message,
+        status,
+        created_at,
+        jobs (
+          title,
+          location,
+          contract_type
+        )
+      `)
+      .eq("candidate_id", user.id)
+      .order("created_at", { ascending: false });
 
-        job_id:
-          jobId,
 
-        candidate_id:
-          user.id,
+    if (error) {
 
-        cv_url:
-          cvUrl,
+      console.error(error);
 
-        message:
-          candidateMessage,
+      container.innerHTML =
+        `<div class="error">
+          ❌ تعذر تحميل الترشحات.
+        </div>`;
 
-        status:
-          "pending"
-      });
-
-    if (applicationError) {
-
-      console.error(
-        applicationError
-      );
-
-      await supabaseClient
-        .storage
-        .from("cvs")
-        .remove([
-          fileName
-        ]);
-
-      if (
-        applicationError.code ===
-        "23505"
-      ) {
-
-        throw new Error(
-          "إنتِ سبق وقدّمتِ ترشحك لهذا العرض."
-        );
-      }
-
-      throw new Error(
-        applicationError.message
-      );
+      return;
     }
 
-    result.innerHTML =
-      '<div class="success">✅ تم تقديم ترشحك بنجاح!</div>';
 
-    button.disabled = true;
+    if (!data || data.length === 0) {
 
-    button.textContent =
-      "✅ تم التقديم";
+      container.innerHTML =
+        `<div class="info">
+          لم تقم بأي ترشح بعد.
+        </div>`;
 
-    cvInput.disabled = true;
+      return;
+    }
 
-    messageInput.disabled = true;
-
-    await loadApplications();
-
-  } catch (error) {
-
-    console.error(error);
-
-    result.innerHTML =
-      `<div class="error">
-        ❌ ${escapeHtml(error.message || "خطأ غير معروف")}
-      </div>`;
-
-    button.disabled = false;
-
-    button.textContent =
-      "📩 تقديم الترشح";
-  }
-}
-
-
-/* ================================
-   📋 ترشحـاتي
-================================ */
-
-async function loadApplications() {
-
-  const container =
-    document.getElementById(
-      "myApplications"
-    );
-
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
 
     container.innerHTML =
-      '<div class="warning">🔐 سجّل الدخول باش تشوف ترشحاتك.</div>';
+      data.map(application => {
 
-    return;
-  }
+        let statusClass = "pending";
+        let statusText = "🟡 قيد الدراسة";
 
-  const {
-    data: applications,
-    error
-  } = await supabaseClient
-    .from("applications")
-    .select(
-      "id,job_id,cv_url,message,status,created_at"
-    )
-    .eq(
-      "candidate_id",
-      user.id
-    )
-    .order(
-      "created_at",
-      {
-        ascending: false
-      }
-    );
 
-  if (error) {
+        if (application.status === "accepted") {
 
-    console.error(error);
+          statusClass = "accepted";
+          statusText = "🟢 مقبول";
 
-    container.innerHTML =
-      '<div class="error">❌ تعذر تحميل ترشحاتك.</div>';
+        } else if (application.status === "rejected") {
 
-    return;
-  }
+          statusClass = "rejected";
+          statusText = "🔴 مرفوض";
+        }
 
-  if (
-    !applications ||
-    applications.length === 0
-  ) {
 
-    container.innerHTML =
-      '<div class="empty">📭 ما قدمتش على حتى عرض شغل توّا.</div>';
+        return `
 
-    return;
-  }
+          <div class="application-card">
 
-  const jobIds =
-    applications.map(
-      application =>
-        application.job_id
-    );
+            <h3>
+              💼
+              ${escapeHtml(
+                application.jobs?.title ||
+                "عرض شغل"
+              )}
+            </h3>
 
-  const {
-    data: jobs,
-    error: jobsError
-  } = await supabaseClient
-    .from("jobs")
-    .select(
-      "id,title,location,contract_type"
-    )
-    .in(
-      "id",
-      jobIds
-    );
+            <p>
+              📍
+              ${escapeHtml(
+                application.jobs?.location ||
+                "غير محدد"
+              )}
+            </p>
 
-  if (jobsError) {
+            <span class="status ${statusClass}">
+              ${statusText}
+            </span>
 
-    console.error(jobsError);
+            <p>
+              📅
+              ${
+                application.created_at
+                  ? new Date(
+                      application.created_at
+                    ).toLocaleString("fr-FR")
+                  : ""
+              }
+            </p>
 
-    container.innerHTML =
-      '<div class="error">❌ تعذر تحميل معلومات عروض الشغل.</div>';
-
-    return;
-  }
-
-  const jobsMap = {};
-
-  (jobs || []).forEach(job => {
-
-    jobsMap[job.id] =
-      job;
-
-  });
-
-  container.innerHTML =
-    applications.map(application => {
-
-      const job =
-        jobsMap[
-          application.job_id
-        ];
-
-      let statusText =
-        "🟡 قيد الدراسة";
-
-      let statusClass =
-        "pending";
-
-      if (
-        application.status ===
-        "accepted"
-      ) {
-
-        statusText =
-          "🟢 مقبول";
-
-        statusClass =
-          "accepted";
-
-      } else if (
-        application.status ===
-        "rejected"
-      ) {
-
-        statusText =
-          "🔴 مرفوض";
-
-        statusClass =
-          "rejected";
-      }
-
-      const date =
-        new Date(
-          application.created_at
-        ).toLocaleString(
-          "fr-FR"
-        );
-
-      return `
-
-        <div class="application-card">
-
-          <h3>
             ${
-              job
-                ? escapeHtml(job.title)
-                : "عرض شغل"
+              application.cv_url
+                ? `
+                  <a
+                    class="cv-link"
+                    href="${escapeHtml(application.cv_url)}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    📄 مشاهدة CV
+                  </a>
+                `
+                : ""
             }
-          </h3>
 
-          ${
-            job
-            ?
-            `
-              <div class="info">
-                📍 ${escapeHtml(job.location || "غير محدد")}
-              </div>
-
-              <div class="info">
-                📄 ${escapeHtml(job.contract_type || "غير محدد")}
-              </div>
-            `
-            :
-            ""
-          }
-
-          <div class="info">
-            📅 تاريخ الترشح: ${date}
           </div>
 
-          <div class="status ${statusClass}">
-            ${statusText}
-          </div>
+        `;
 
-          ${
-            application.message
-            ?
-            `
-              <div class="info">
-                💬 رسالتك:
-                <br>
-                ${escapeHtml(application.message)}
-              </div>
-            `
-            :
-            ""
-          }
-
-          ${
-            application.cv_url
-            ?
-            `
-              <a
-                class="cv-link"
-                href="${application.cv_url}"
-                target="_blank"
-                rel="noopener"
-              >
-                📄 فتح الـCV
-              </a>
-            `
-            :
-            ""
-          }
-
-        </div>
-
-      `;
-
-    }).join("");
-}
+      }).join("");
+  }
 
 
-/* ================================
-   🛡️ حماية النصوص
-================================ */
+  async function initializePage() {
 
-function escapeHtml(value) {
-
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
+    await loadProfile();
+    await loadNotifications();
+    await loadJobs();
+    await loadApplications();
+  }
 
 
-/* ================================
-   🚀 تشغيل الصفحة
-================================ */
-
-async function initializePage() {
-
-  await loadProfile();
-
-  await loadNotifications();
-
-  await loadJobs();
-
-  await loadApplications();
-
-}
-
-document.addEventListener(
-  "DOMContentLoaded",
-  initializePage
-);
+  initializePage();
 
 </script>
 
