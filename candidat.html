@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Ras Jebel Jobs | فضاء الباحث عن عمل</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -30,6 +31,11 @@
       margin: 0 0 10px;
     }
 
+    header a {
+      color: white;
+      text-decoration: none;
+    }
+
     main {
       max-width: 900px;
       margin: 30px auto;
@@ -42,12 +48,78 @@
       margin-bottom: 20px;
     }
 
-    .notification-box {
+    .profile-box,
+    .notification-box,
+    .job,
+    .application-card {
       background: white;
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 25px;
+      padding: 22px;
+      margin-bottom: 20px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .profile-intro {
+      background: #eff6ff;
+      border-right: 5px solid #2563eb;
+      padding: 15px;
+      border-radius: 10px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .profile-form label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 7px;
+    }
+
+    .profile-form input,
+    .profile-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+    }
+
+    .profile-button {
+      width: 100%;
+      margin-top: 18px;
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .profile-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .profile-display {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px;
+      line-height: 1.9;
+    }
+
+    .profile-name {
+      color: #17324d;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .profile-role {
+      color: #2563eb;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .notification {
@@ -87,15 +159,6 @@
       border-radius: 7px;
       cursor: pointer;
       font-weight: bold;
-    }
-
-    .job,
-    .application-card {
-      background: white;
-      border-radius: 14px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     }
 
     .job h3,
@@ -254,9 +317,89 @@
 <header>
   <h1>👤 فضاء الباحث عن عمل</h1>
   <p>Ras Jebel Jobs</p>
+  <p>
+    <a href="index.html">🏠 الرئيسية</a>
+    &nbsp; | &nbsp;
+    <a href="talent.html">⭐ Ras Jebel Talent</a>
+  </p>
 </header>
 
 <main>
+
+  <!-- ================================
+       ⭐ الملف المهني
+  ================================= -->
+
+  <h2 class="section-title">⭐ ملفي المهني</h2>
+
+  <div class="profile-box">
+
+    <div class="profile-intro">
+      أنشئ ملفك المهني وخلي المؤسسات تتعرف على اختصاصك ومهاراتك.
+      المعلومات الأساسية متاعك تتخزن في حسابك على Ras Jebel Jobs.
+    </div>
+
+    <div id="profileStatus"></div>
+
+    <form
+      id="profileForm"
+      class="profile-form"
+      onsubmit="saveProfile(event)"
+    >
+
+      <label for="fullName">
+        👤 الاسم واللقب
+      </label>
+
+      <input
+        type="text"
+        id="fullName"
+        placeholder="مثال: Rachida BOUJEMÂA"
+        required
+      >
+
+      <label for="phone">
+        📱 رقم الهاتف
+      </label>
+
+      <input
+        type="tel"
+        id="phone"
+        placeholder="مثال: 20 000 000"
+      >
+
+      <label for="role">
+        💼 الاختصاص / الوظيفة
+      </label>
+
+      <input
+        type="text"
+        id="role"
+        placeholder="مثال: Technicienne Supérieure en Chimie"
+        required
+      >
+
+      <button
+        type="submit"
+        class="profile-button"
+        id="profileButton"
+      >
+        💾 حفظ ملفي المهني
+      </button>
+
+    </form>
+
+    <div
+      id="profileDisplay"
+      style="display:none; margin-top:20px;"
+    ></div>
+
+  </div>
+
+
+  <!-- ================================
+       🔔 الإشعارات
+  ================================= -->
 
   <h2 class="section-title">🔔 إشعاراتي</h2>
 
@@ -266,6 +409,11 @@
     </div>
   </div>
 
+
+  <!-- ================================
+       💼 عروض الشغل
+  ================================= -->
+
   <h2 class="section-title">💼 عروض الشغل المتاحة</h2>
 
   <div id="message">
@@ -273,6 +421,11 @@
   </div>
 
   <div id="jobs"></div>
+
+
+  <!-- ================================
+       📋 ترشحـاتي
+  ================================= -->
 
   <h2 class="section-title">📋 ترشحـاتي</h2>
 
@@ -282,10 +435,12 @@
 
 </main>
 
+
 <footer>
-  © 2026 Chimiste BOUJEMÂA Rachida — Tous droits réservés<br>
+  © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés<br>
   Ras Jebel Jobs — منصة الوظائف المحلية
 </footer>
+
 
 <script>
 
@@ -300,6 +455,232 @@ const supabaseClient =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
+
+/* ================================
+   ⭐ الملف المهني
+================================ */
+
+async function loadProfile() {
+
+  const status =
+    document.getElementById("profileStatus");
+
+  const form =
+    document.getElementById("profileForm");
+
+  const display =
+    document.getElementById("profileDisplay");
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+
+    status.innerHTML =
+      '<div class="warning">🔐 سجّل الدخول باش تنجم تنشئ ملفك المهني.</div>';
+
+    form.style.display = "none";
+
+    return;
+  }
+
+  const {
+    data: profile,
+    error
+  } = await supabaseClient
+    .from("profiles")
+    .select(
+      "id,full_name,phone,role,created_at"
+    )
+    .eq(
+      "id",
+      user.id
+    )
+    .maybeSingle();
+
+  if (error) {
+
+    console.error(error);
+
+    status.innerHTML =
+      `<div class="error">
+        ❌ تعذر تحميل ملفك المهني.<br>
+        <small>${error.message}</small>
+      </div>`;
+
+    return;
+  }
+
+  if (profile) {
+
+    document.getElementById("fullName").value =
+      profile.full_name || "";
+
+    document.getElementById("phone").value =
+      profile.phone || "";
+
+    document.getElementById("role").value =
+      profile.role || "";
+
+    display.innerHTML = `
+      <div class="profile-display">
+        <div class="profile-name">
+          👤 ${escapeHtml(profile.full_name || "بدون اسم")}
+        </div>
+
+        <div class="profile-role">
+          💼 ${escapeHtml(profile.role || "اختصاص غير محدد")}
+        </div>
+
+        <div>
+          📱 ${escapeHtml(profile.phone || "رقم الهاتف غير مضاف")}
+        </div>
+
+        <div class="notification-date">
+          📅 تم إنشاء الملف: ${
+            new Date(profile.created_at)
+              .toLocaleDateString("fr-FR")
+          }
+        </div>
+      </div>
+    `;
+
+    display.style.display = "block";
+
+  }
+
+}
+
+
+/* ================================
+   💾 حفظ الملف المهني
+================================ */
+
+async function saveProfile(event) {
+
+  event.preventDefault();
+
+  const status =
+    document.getElementById("profileStatus");
+
+  const button =
+    document.getElementById("profileButton");
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+
+    status.innerHTML =
+      '<div class="warning">🔐 يلزمك تسجيل الدخول أولا.</div>';
+
+    return;
+  }
+
+  const fullName =
+    document.getElementById("fullName")
+      .value.trim();
+
+  const phone =
+    document.getElementById("phone")
+      .value.trim();
+
+  const role =
+    document.getElementById("role")
+      .value.trim();
+
+  if (!fullName || !role) {
+
+    status.innerHTML =
+      '<div class="warning">⚠️ الاسم والاختصاص إجباريين.</div>';
+
+    return;
+  }
+
+  button.disabled = true;
+
+  button.textContent =
+    "⏳ جاري حفظ الملف...";
+
+  try {
+
+    const {
+      data: existingProfile,
+      error: existingError
+    } = await supabaseClient
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (existingError) {
+      throw existingError;
+    }
+
+    let result;
+
+    if (existingProfile) {
+
+      result =
+        await supabaseClient
+          .from("profiles")
+          .update({
+            full_name: fullName,
+            phone: phone,
+            role: role
+          })
+          .eq(
+            "id",
+            user.id
+          );
+
+    } else {
+
+      result =
+        await supabaseClient
+          .from("profiles")
+          .insert({
+            id: user.id,
+            full_name: fullName,
+            phone: phone,
+            role: role
+          });
+    }
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    status.innerHTML =
+      '<div class="success">✅ تم حفظ ملفك المهني بنجاح!</div>';
+
+    button.textContent =
+      "✅ تم الحفظ";
+
+    await loadProfile();
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.innerHTML =
+      `<div class="error">
+        ❌ تعذر حفظ الملف المهني.<br>
+        <small>${escapeHtml(error.message || "خطأ غير معروف")}</small>
+      </div>`;
+
+    button.disabled = false;
+
+    button.textContent =
+      "💾 حفظ ملفي المهني";
+  }
+
+}
 
 
 /* ================================
@@ -319,6 +700,7 @@ async function loadNotifications() {
     } = await supabaseClient.auth.getUser();
 
     if (userError) {
+
       console.error(userError);
 
       container.innerHTML =
@@ -356,7 +738,7 @@ async function loadNotifications() {
       container.innerHTML =
         `<div class="error">
           ❌ تعذر تحميل الإشعارات.<br>
-          <small>${error.message}</small>
+          <small>${escapeHtml(error.message)}</small>
         </div>`;
 
       return;
@@ -389,11 +771,11 @@ async function loadNotifications() {
           }">
 
             <h3>
-              ${notification.title || "🔔 إشعار"}
+              ${escapeHtml(notification.title || "🔔 إشعار")}
             </h3>
 
             <p>
-              ${notification.message || ""}
+              ${escapeHtml(notification.message || "")}
             </p>
 
             <div class="notification-date">
@@ -434,7 +816,7 @@ async function loadNotifications() {
     container.innerHTML =
       `<div class="error">
         ❌ صار خطأ في تحميل الإشعارات.<br>
-        <small>${error.message || "خطأ غير معروف"}</small>
+        <small>${escapeHtml(error.message || "خطأ غير معروف")}</small>
       </div>`;
   }
 }
@@ -535,23 +917,23 @@ async function loadJobs() {
       <div class="job">
 
         <h3>
-          ${job.title || ""}
+          ${escapeHtml(job.title || "")}
         </h3>
 
         <div class="info">
-          📍 ${job.location || "غير محدد"}
+          📍 ${escapeHtml(job.location || "غير محدد")}
         </div>
 
         <div class="info">
-          📄 ${job.contract_type || "غير محدد"}
+          📄 ${escapeHtml(job.contract_type || "غير محدد")}
         </div>
 
         <div class="info">
-          🎓 ${job.experience || "غير محدد"}
+          🎓 ${escapeHtml(job.experience || "غير محدد")}
         </div>
 
         <p>
-          ${job.description || ""}
+          ${escapeHtml(job.description || "")}
         </p>
 
         <div class="apply-area">
@@ -835,7 +1217,7 @@ async function applyJob(jobId) {
 
     result.innerHTML =
       `<div class="error">
-        ❌ ${error.message}
+        ❌ ${escapeHtml(error.message || "خطأ غير معروف")}
       </div>`;
 
     button.disabled = false;
@@ -999,7 +1381,7 @@ async function loadApplications() {
           <h3>
             ${
               job
-                ? job.title
+                ? escapeHtml(job.title)
                 : "عرض شغل"
             }
           </h3>
@@ -1009,11 +1391,11 @@ async function loadApplications() {
             ?
             `
               <div class="info">
-                📍 ${job.location || "غير محدد"}
+                📍 ${escapeHtml(job.location || "غير محدد")}
               </div>
 
               <div class="info">
-                📄 ${job.contract_type || "غير محدد"}
+                📄 ${escapeHtml(job.contract_type || "غير محدد")}
               </div>
             `
             :
@@ -1035,7 +1417,7 @@ async function loadApplications() {
               <div class="info">
                 💬 رسالتك:
                 <br>
-                ${application.message}
+                ${escapeHtml(application.message)}
               </div>
             `
             :
@@ -1068,10 +1450,27 @@ async function loadApplications() {
 
 
 /* ================================
+   🛡️ حماية النصوص
+================================ */
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* ================================
    🚀 تشغيل الصفحة
 ================================ */
 
 async function initializePage() {
+
+  await loadProfile();
 
   await loadNotifications();
 
