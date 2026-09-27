@@ -36,6 +36,41 @@
       font-weight: bold;
     }
 
+    .header-links {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-links a,
+    .logout-btn {
+      display: inline-block;
+      padding: 9px 15px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.14);
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .logout-btn {
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .user-box {
+      margin: 18px auto 0;
+      max-width: 700px;
+      background: rgba(255,255,255,.12);
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
     .container {
       max-width: 1050px;
       margin: 30px auto;
@@ -109,6 +144,14 @@
       margin-top: 15px;
     }
 
+    .info {
+      background: #eaf4ff;
+      color: #174a70;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 15px;
+    }
+
     .job-card {
       background: #f8fafc;
       border: 1px solid #e5e7eb;
@@ -143,6 +186,12 @@
       margin-top: 20px;
     }
 
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #687386;
+    }
+
     footer {
       background: #17324d;
       color: white;
@@ -151,24 +200,61 @@
       margin-top: 40px;
       line-height: 1.8;
     }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media(max-width:600px) {
+      .card {
+        padding: 20px;
+      }
+
+      .header-links {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .header-links a,
+      .logout-btn {
+        width: 90%;
+      }
+    }
   </style>
 </head>
 
 <body>
 
 <header>
+
   <h1>👤 فضاء الباحث عن عمل</h1>
+
   <p>Ras Jebel Jobs</p>
 
-  <p>
-    <a href="index.html">🏠 الرئيسية</a>
-    &nbsp; | &nbsp;
-    <a href="talent.html">⭐ Ras Jebel Talent</a>
-  </p>
+  <div class="user-box">
+    مرحبًا بك في فضاءك المهني على Ras Jebel Jobs
+  </div>
+
+  <div class="header-links">
+
+    <a href="index.html">
+      🏠 الرئيسية
+    </a>
+
+    <a href="talent.html">
+      ⭐ Ras Jebel Talent
+    </a>
+
+    <button class="logout-btn" onclick="logout()">
+      🚪 تسجيل الخروج
+    </button>
+
+  </div>
+
 </header>
 
 
-<div class="container">
+<div class="container" id="mainContent">
 
   <!-- PROFIL PROFESSIONNEL -->
 
@@ -181,12 +267,23 @@
     </p>
 
     <label>👤 الاسم واللقب</label>
-    <input id="fullName" type="text" placeholder="الاسم واللقب">
+
+    <input
+      id="fullName"
+      type="text"
+      placeholder="الاسم واللقب"
+    >
 
     <label>📱 رقم الهاتف</label>
-    <input id="phone" type="text" placeholder="رقم الهاتف">
+
+    <input
+      id="phone"
+      type="text"
+      placeholder="رقم الهاتف"
+    >
 
     <label>💼 الاختصاص / الوظيفة</label>
+
     <input
       id="profession"
       type="text"
@@ -194,18 +291,21 @@
     >
 
     <label>🛠️ المهارات</label>
+
     <textarea
       id="skills"
       placeholder="مثال: Contrôle qualité, analyses physico-chimiques, HPLC..."
     ></textarea>
 
     <label>💼 الخبرة المهنية</label>
+
     <textarea
       id="experience"
       placeholder="اذكر خبراتك المهنية أو التربصات أو المشاريع..."
     ></textarea>
 
     <label>🎓 التكوين والشهادات</label>
+
     <textarea
       id="education"
       placeholder="مثال: Licence, Mastère, formations professionnelles..."
@@ -229,7 +329,9 @@
     <h2>🔔 الإشعارات</h2>
 
     <div id="notifications">
-      جاري تحميل الإشعارات...
+      <div class="loading">
+        جاري تحميل الإشعارات...
+      </div>
     </div>
 
   </div>
@@ -242,7 +344,9 @@
     <h2>💼 عروض الشغل</h2>
 
     <div id="jobs">
-      جاري تحميل عروض الشغل...
+      <div class="loading">
+        جاري تحميل عروض الشغل...
+      </div>
     </div>
 
   </div>
@@ -255,7 +359,9 @@
     <h2>📄 ترشحاتي</h2>
 
     <div id="applications">
-      جاري تحميل الترشحات...
+      <div class="loading">
+        جاري تحميل الترشحات...
+      </div>
     </div>
 
   </div>
@@ -283,11 +389,15 @@ const SUPABASE_KEY =
   "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
 const supabaseClient =
-  supabase.createClient(
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
+
+/* =========================
+   UTILITIES
+========================= */
 
 function escapeHtml(value) {
 
@@ -302,15 +412,62 @@ function escapeHtml(value) {
 }
 
 
+/* =========================
+   AUTHENTICATION
+========================= */
+
 async function getUser() {
 
   const {
-    data: { user }
+    data: { user },
+    error
   } = await supabaseClient.auth.getUser();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return user;
 }
 
+
+async function checkAuthentication() {
+
+  const user = await getUser();
+
+  if (!user) {
+
+    window.location.href = "auth.html";
+
+    return false;
+  }
+
+  return true;
+}
+
+
+async function logout() {
+
+  const { error } =
+    await supabaseClient.auth.signOut();
+
+  if (error) {
+
+    alert(
+      "❌ تعذر تسجيل الخروج. حاول مرة أخرى."
+    );
+
+    return;
+  }
+
+  window.location.href = "auth.html";
+}
+
+
+/* =========================
+   PROFILE
+========================= */
 
 async function loadProfile() {
 
@@ -384,11 +541,7 @@ async function saveProfile() {
 
   if (!user) {
 
-    message.innerHTML = `
-      <div class="error">
-        ❌ يجب تسجيل الدخول أولاً.
-      </div>
-    `;
+    window.location.href = "auth.html";
 
     return;
   }
@@ -473,16 +626,19 @@ async function saveProfile() {
 
   if (existing) {
 
-    result = await supabaseClient
-      .from("profiles")
-      .update(profileData)
-      .eq("id", user.id);
+    result =
+      await supabaseClient
+        .from("profiles")
+        .update(profileData)
+        .eq("id", user.id);
 
   } else {
 
-    result = await supabaseClient
-      .from("profiles")
-      .insert(profileData);
+    result =
+      await supabaseClient
+        .from("profiles")
+        .insert(profileData);
+
   }
 
 
@@ -571,6 +727,10 @@ function showProfilePreview(data) {
 }
 
 
+/* =========================
+   JOBS
+========================= */
+
 async function loadJobs() {
 
   const container =
@@ -642,6 +802,10 @@ async function loadJobs() {
 }
 
 
+/* =========================
+   APPLICATIONS
+========================= */
+
 async function loadApplications() {
 
   const container =
@@ -653,8 +817,7 @@ async function loadApplications() {
 
   if (!user) {
 
-    container.innerHTML =
-      "يجب تسجيل الدخول لمشاهدة ترشحاتك.";
+    window.location.href = "auth.html";
 
     return;
   }
@@ -696,24 +859,39 @@ async function loadApplications() {
   container.innerHTML =
     data.map(application => {
 
-      let statusText = "قيد الدراسة";
+      let statusText =
+        "🟡 قيد الدراسة";
+
       let statusClass = "";
 
+
       if (application.status === "accepted") {
-        statusText = "🟢 مقبول";
-        statusClass = "status";
+
+        statusText =
+          "🟢 مقبول";
+
+        statusClass =
+          "status";
       }
 
+
       if (application.status === "rejected") {
-        statusText = "🔴 مرفوض";
-        statusClass = "status";
+
+        statusText =
+          "🔴 مرفوض";
+
+        statusClass =
+          "status";
       }
+
 
       if (
         application.status === "submitted" ||
         application.status === "pending"
       ) {
-        statusText = "🟡 قيد الدراسة";
+
+        statusText =
+          "🟡 قيد الدراسة";
       }
 
 
@@ -725,7 +903,7 @@ async function loadApplications() {
             💼 الترشح
           </strong>
 
-          <br>
+          <br><br>
 
           <span class="${statusClass}">
             ${statusText}
@@ -742,9 +920,11 @@ async function loadApplications() {
             application.cv_url
             ? `
               <br><br>
+
               <a
                 href="${escapeHtml(application.cv_url)}"
                 target="_blank"
+                rel="noopener"
               >
                 📄 مشاهدة CV
               </a>
@@ -760,6 +940,10 @@ async function loadApplications() {
 }
 
 
+/* =========================
+   NOTIFICATIONS
+========================= */
+
 async function loadNotifications() {
 
   const container =
@@ -771,8 +955,7 @@ async function loadNotifications() {
 
   if (!user) {
 
-    container.innerHTML =
-      "يجب تسجيل الدخول لمشاهدة الإشعارات.";
+    window.location.href = "auth.html";
 
     return;
   }
@@ -814,25 +997,31 @@ async function loadNotifications() {
       <div class="application">
 
         <strong>
-          📢 ${escapeHtml(
-            notification.title ||
-            "إشعار"
-          )}
+          📢 ${
+            escapeHtml(
+              notification.title ||
+              "إشعار"
+            )
+          }
         </strong>
 
         <br>
 
-        ${escapeHtml(
-          notification.message ||
-          ""
-        )}
+        ${
+          escapeHtml(
+            notification.message ||
+            ""
+          )
+        }
 
         <br>
 
         📅
-        ${new Date(
-          notification.created_at
-        ).toLocaleString("fr-FR")}
+        ${
+          new Date(
+            notification.created_at
+          ).toLocaleString("fr-FR")
+        }
 
       </div>
 
@@ -840,7 +1029,20 @@ async function loadNotifications() {
 }
 
 
+/* =========================
+   INITIALIZATION
+========================= */
+
 async function initialize() {
+
+  const authenticated =
+    await checkAuthentication();
+
+
+  if (!authenticated) {
+    return;
+  }
+
 
   await loadProfile();
 
