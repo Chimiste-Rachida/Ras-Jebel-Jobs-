@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
   <title>Ras Jebel Jobs — منصة الوظائف المحلية</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -88,6 +93,7 @@
           rgba(255,255,255,.97),
           rgba(235,244,253,.97)
         );
+
       padding: 70px 20px 65px;
       text-align: center;
     }
@@ -181,8 +187,6 @@
       margin: 0;
     }
 
-    /* STATS */
-
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -204,8 +208,6 @@
       color: #0b3d91;
       margin-bottom: 5px;
     }
-
-    /* PLATFORM BRANCHES */
 
     .platform-section {
       margin-bottom: 55px;
@@ -286,8 +288,6 @@
       font-weight: bold;
     }
 
-    /* TALENT CTA */
-
     .talent-section {
       margin: 15px 0 55px;
       background: linear-gradient(135deg, #3e2672, #6c42b8);
@@ -336,8 +336,6 @@
       border: 1px solid rgba(255,255,255,.3);
     }
 
-    /* FILTERS */
-
     .filters {
       background: white;
       padding: 18px;
@@ -365,8 +363,6 @@
       outline: 2px solid #bcd7f1;
       border-color: #0b3d91;
     }
-
-    /* JOBS */
 
     .jobs {
       display: grid;
@@ -444,8 +440,6 @@
       color: #b42318;
     }
 
-    /* SPACES */
-
     .spaces {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -476,8 +470,6 @@
       min-height: 70px;
     }
 
-    /* FINAL CTA */
-
     .final-cta {
       background: white;
       margin-top: 55px;
@@ -497,8 +489,6 @@
       margin-bottom: 22px;
     }
 
-    /* FOOTER */
-
     footer {
       margin-top: 55px;
       background: #10233f;
@@ -511,8 +501,6 @@
     footer small {
       opacity: .8;
     }
-
-    /* RESPONSIVE */
 
     @media (max-width: 900px) {
 
@@ -563,20 +551,29 @@
     }
 
   </style>
+
 </head>
+
 
 <body>
 
-<!-- HEADER -->
 
 <header>
 
   <div class="header-inner">
 
     <div>
-      <div class="logo">Ras Jebel Jobs</div>
-      <div class="tunisia">🇹🇳 تونس</div>
+
+      <div class="logo">
+        Ras Jebel Jobs
+      </div>
+
+      <div class="tunisia">
+        🇹🇳 تونس
+      </div>
+
     </div>
+
 
     <nav>
 
@@ -584,7 +581,7 @@
         💼 عروض الشغل
       </a>
 
-      <a href="candidat.html">
+      <a href="auth.html">
         👤 المترشح
       </a>
 
@@ -592,7 +589,8 @@
         🏢 المؤسسة
       </a>
 
-      <a href="talent.html" class="talent-nav">
+      <a href="talent.html"
+         class="talent-nav">
         ⭐ Ras Jebel Talent
       </a>
 
@@ -603,17 +601,17 @@
 </header>
 
 
-<!-- HERO -->
-
 <section class="hero">
 
   <div class="hero-badge">
     🇹🇳 منصة مهنية محلية متكاملة
   </div>
 
+
   <h1>
     Ras Jebel Jobs
   </h1>
+
 
   <p>
     إلقى خدمتك في رأس الجبل والمناطق القريبة،
@@ -621,22 +619,38 @@
     الكفاءات والتكوين.
   </p>
 
+
   <div class="hero-buttons">
 
-    <a href="candidat.html" class="btn btn-primary">
+    <a href="auth.html"
+       class="btn btn-primary">
+
       👤 أنا باحث عن عمل
+
     </a>
 
-    <a href="entreprise.html" class="btn btn-company">
+
+    <a href="entreprise.html"
+       class="btn btn-company">
+
       🏢 أنا مؤسسة
+
     </a>
 
-    <a href="talent.html" class="btn btn-talent">
+
+    <a href="talent.html"
+       class="btn btn-talent">
+
       ⭐ Ras Jebel Talent
+
     </a>
 
-    <a href="#jobs" class="btn btn-light">
+
+    <a href="#jobs"
+       class="btn btn-light">
+
       🔎 شوف عروض الشغل
+
     </a>
 
   </div>
@@ -646,8 +660,6 @@
 
 <main class="container">
 
-
-  <!-- STATS -->
 
   <div class="stats">
 
@@ -661,6 +673,7 @@
 
     </div>
 
+
     <div class="stat">
 
       <strong>
@@ -670,6 +683,7 @@
       مناطق
 
     </div>
+
 
     <div class="stat">
 
@@ -683,8 +697,6 @@
 
   </div>
 
-
-  <!-- PLATFORM BRANCHES -->
 
   <section class="platform-section">
 
@@ -704,8 +716,6 @@
     <div class="branches">
 
 
-      <!-- JOBS -->
-
       <div class="branch">
 
         <div class="branch-icon">
@@ -721,14 +731,15 @@
           قدّم ترشحك وتابع مسارك المهني.
         </p>
 
-        <a href="#jobs" class="branch-link">
+        <a href="#jobs"
+           class="branch-link">
+
           إكتشف العروض ←
+
         </a>
 
       </div>
 
-
-      <!-- TALENT -->
 
       <div class="branch talent">
 
@@ -745,14 +756,15 @@
           أبرز مهاراتك وخلي المؤسسات تلقاك.
         </p>
 
-        <a href="talent.html" class="branch-link">
+        <a href="talent.html"
+           class="branch-link">
+
           إفتح Ras Jebel Talent ←
+
         </a>
 
       </div>
 
-
-      <!-- ACADEMY -->
 
       <div class="branch academy">
 
@@ -775,13 +787,10 @@
 
       </div>
 
-
     </div>
 
   </section>
 
-
-  <!-- TALENT PROMOTION -->
 
   <section class="talent-section">
 
@@ -799,22 +808,28 @@
       وخلي حضورك المهني ظاهر للمؤسسات المحلية.
     </p>
 
+
     <div class="talent-actions">
 
-      <a href="talent.html" class="btn btn-primary">
+      <a href="talent.html"
+         class="btn btn-primary">
+
         🚀 أنشئ ملفك المهني
+
       </a>
 
-      <a href="entreprise.html" class="btn btn-light">
+
+      <a href="entreprise.html"
+         class="btn btn-light">
+
         🏢 إبحث عن المواهب
+
       </a>
 
     </div>
 
   </section>
 
-
-  <!-- JOBS -->
 
   <section id="jobs">
 
@@ -867,7 +882,8 @@
     </div>
 
 
-    <div id="jobsContainer" class="jobs">
+    <div id="jobsContainer"
+         class="jobs">
 
       <div class="loading">
         جاري تحميل عروض الشغل...
@@ -877,8 +893,6 @@
 
   </section>
 
-
-  <!-- CANDIDATE / COMPANY -->
 
   <section class="spaces">
 
@@ -899,8 +913,12 @@
         وتابع حالة ترشحاتك والإشعارات.
       </p>
 
-      <a href="candidat.html" class="btn btn-primary">
-        دخول فضاء المترشح
+
+      <a href="auth.html"
+         class="btn btn-primary">
+
+        إنشاء حساب / تسجيل الدخول
+
       </a>
 
     </div>
@@ -923,8 +941,12 @@
         وتابع المترشحين.
       </p>
 
-      <a href="entreprise.html" class="btn btn-company">
+
+      <a href="entreprise.html"
+         class="btn btn-company">
+
         دخول فضاء المؤسسة
+
       </a>
 
     </div>
@@ -932,8 +954,6 @@
 
   </section>
 
-
-  <!-- FINAL CTA -->
 
   <section class="final-cta">
 
@@ -946,18 +966,30 @@
       في منظومة محلية واحدة.
     </p>
 
+
     <div class="hero-buttons">
 
-      <a href="talent.html" class="btn btn-talent">
+      <a href="talent.html"
+         class="btn btn-talent">
+
         ⭐ أنشئ ملفك المهني
+
       </a>
 
-      <a href="candidat.html" class="btn btn-primary">
-        👤 شوف فضاء المترشح
+
+      <a href="auth.html"
+         class="btn btn-primary">
+
+        👤 فضاء المترشح
+
       </a>
 
-      <a href="entreprise.html" class="btn btn-company">
+
+      <a href="entreprise.html"
+         class="btn btn-company">
+
         🏢 فضاء المؤسسة
+
       </a>
 
     </div>
@@ -967,8 +999,6 @@
 
 </main>
 
-
-<!-- FOOTER -->
 
 <footer>
 
@@ -983,15 +1013,15 @@
 </footer>
 
 
-<!-- SUPABASE -->
-
 <script>
 
   const SUPABASE_URL =
     "https://gkiynoqovpuzudzpnryn.supabase.co";
 
+
   const SUPABASE_KEY =
     "sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
+
 
   const supabaseClient =
     window.supabase.createClient(
@@ -1006,12 +1036,17 @@
   async function loadJobs() {
 
     const container =
-      document.getElementById("jobsContainer");
+      document.getElementById(
+        "jobsContainer"
+      );
 
 
     try {
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabaseClient
           .from("jobs")
           .select(`
@@ -1024,9 +1059,12 @@
             status
           `)
           .eq("status", "active")
-          .order("created_at", {
-            ascending: false
-          });
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          );
 
 
       if (error) {
@@ -1037,7 +1075,9 @@
       allJobs = data || [];
 
 
-      document.getElementById("jobsCount").textContent =
+      document.getElementById(
+        "jobsCount"
+      ).textContent =
         allJobs.length;
 
 
@@ -1057,14 +1097,18 @@
 
           <br>
 
-          ${escapeHtml(error.message)}
+          ${escapeHtml(
+            error.message
+          )}
 
         </div>
 
       `;
 
 
-      document.getElementById("jobsCount").textContent =
+      document.getElementById(
+        "jobsCount"
+      ).textContent =
         "0";
 
     }
@@ -1075,7 +1119,9 @@
   function displayJobs(jobs) {
 
     const container =
-      document.getElementById("jobsContainer");
+      document.getElementById(
+        "jobsContainer"
+      );
 
 
     if (!jobs.length) {
@@ -1111,7 +1157,8 @@
           <h3>
 
             ${escapeHtml(
-              job.title || "عرض شغل"
+              job.title ||
+              "عرض شغل"
             )}
 
           </h3>
@@ -1121,21 +1168,24 @@
 
             📍
             ${escapeHtml(
-              job.location || "غير محدد"
+              job.location ||
+              "غير محدد"
             )}
 
             <br>
 
             💼
             ${escapeHtml(
-              job.contract_type || "غير محدد"
+              job.contract_type ||
+              "غير محدد"
             )}
 
             <br>
 
             🎓
             ${escapeHtml(
-              job.experience || "غير محدد"
+              job.experience ||
+              "غير محدد"
             )}
 
           </div>
@@ -1146,7 +1196,7 @@
             ${
               escapeHtml(
                 (job.description || "")
-                  .substring(0, 120)
+                  .substring(0,120)
               )
             }
 
@@ -1154,11 +1204,11 @@
 
 
           <a
-            href="candidat.html"
+            href="auth.html"
             class="job-button"
           >
 
-            شوف العرض والتـرشح
+            شوف العرض والترشح
 
           </a>
 
@@ -1172,13 +1222,36 @@
 
   function escapeHtml(value) {
 
+    if (!value) {
+      return "";
+    }
+
     return String(value)
 
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+
+      .replace(
+        /</g,
+        "&lt;"
+      )
+
+      .replace(
+        />/g,
+        "&gt;"
+      )
+
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+
+      .replace(
+        /'/g,
+        "&#039;"
+      );
 
   }
 
@@ -1188,7 +1261,9 @@
     const search =
 
       document
-        .getElementById("searchInput")
+        .getElementById(
+          "searchInput"
+        )
         .value
         .trim()
         .toLowerCase();
@@ -1197,50 +1272,57 @@
     const location =
 
       document
-        .getElementById("locationFilter")
+        .getElementById(
+          "locationFilter"
+        )
         .value;
 
 
     const filtered =
 
-      allJobs.filter(job => {
+      allJobs.filter(
+        job => {
+
+          const title =
+
+            (
+              job.title || ""
+            ).toLowerCase();
 
 
-        const title =
+          const description =
 
-          (job.title || "")
-            .toLowerCase();
-
-
-        const description =
-
-          (job.description || "")
-            .toLowerCase();
+            (
+              job.description || ""
+            ).toLowerCase();
 
 
-        const jobLocation =
-          job.location || "";
+          const jobLocation =
+            job.location || "";
 
 
-        const matchesSearch =
+          const matchesSearch =
 
-          !search ||
-          title.includes(search) ||
-          description.includes(search);
-
-
-        const matchesLocation =
-
-          !location ||
-          jobLocation.includes(location);
+            !search ||
+            title.includes(search) ||
+            description.includes(search);
 
 
-        return (
-          matchesSearch &&
-          matchesLocation
-        );
+          const matchesLocation =
 
-      });
+            !location ||
+            jobLocation.includes(
+              location
+            );
+
+
+          return (
+            matchesSearch &&
+            matchesLocation
+          );
+
+        }
+      );
 
 
     displayJobs(filtered);
@@ -1249,7 +1331,9 @@
 
 
   document
-    .getElementById("searchInput")
+    .getElementById(
+      "searchInput"
+    )
     .addEventListener(
       "input",
       filterJobs
@@ -1257,7 +1341,9 @@
 
 
   document
-    .getElementById("locationFilter")
+    .getElementById(
+      "locationFilter"
+    )
     .addEventListener(
       "change",
       filterJobs
@@ -1267,6 +1353,7 @@
   loadJobs();
 
 </script>
+
 
 </body>
 </html>
