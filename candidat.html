@@ -3,22 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ras Jebel Jobs — فضاء الباحث عن عمل</title>
+<title>فضاء الباحث عن عمل — Ras Jebel Jobs</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
 
 body{
 margin:0;
-font-family:Arial,sans-serif;
-background:#f5f7fb;
-color:#172033;
+font-family:Arial,Tahoma,sans-serif;
+background:#f4f7fb;
+color:#1f2937;
+line-height:1.7;
 }
 
 header{
-background:#123b5d;
+background:linear-gradient(135deg,#17324d,#1e6fa8);
 color:white;
-padding:18px 20px;
+padding:22px 18px;
 }
 
 .header-inner{
@@ -32,7 +35,7 @@ flex-wrap:wrap;
 }
 
 .logo{
-font-size:23px;
+font-size:24px;
 font-weight:800;
 }
 
@@ -47,16 +50,12 @@ nav button{
 color:white;
 text-decoration:none;
 border:0;
-background:transparent;
-padding:9px 12px;
+background:rgba(255,255,255,.12);
+padding:9px 13px;
 border-radius:8px;
 cursor:pointer;
-font-weight:700;
-}
-
-nav a:hover,
-nav button:hover{
-background:#ffffff18;
+font-weight:bold;
+font-family:inherit;
 }
 
 .container{
@@ -67,244 +66,228 @@ padding:25px 18px 45px;
 
 .hero{
 background:white;
-border-radius:20px;
+border-radius:18px;
 padding:28px;
-box-shadow:0 8px 30px #123b5d12;
 margin-bottom:22px;
+box-shadow:0 5px 20px rgba(0,0,0,.06);
 }
 
 .hero h1{
-margin:0 0 10px;
-color:#123b5d;
+margin:0 0 8px;
+color:#17324d;
 }
 
 .hero p{
-margin:0;
-line-height:1.8;
 color:#667085;
+margin:0;
 }
 
 .card{
 background:white;
-border-radius:18px;
-padding:22px;
-box-shadow:0 8px 28px #123b5d12;
+padding:25px;
 margin-bottom:22px;
+border-radius:16px;
+box-shadow:0 5px 20px rgba(0,0,0,.06);
 }
 
-.card h2{
+h2{
+color:#17324d;
 margin-top:0;
-color:#123b5d;
 }
 
-.field{
-margin:13px 0;
+.profile-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
 }
 
-.field label{
+label{
 display:block;
-font-weight:700;
+margin-top:12px;
 margin-bottom:7px;
+font-weight:bold;
 }
 
-.field input,
-.field textarea{
+input,
+textarea{
 width:100%;
-padding:12px;
-border:1px solid #d8dee8;
-border-radius:10px;
-font-size:15px;
+padding:13px;
+border:1px solid #d1d5db;
+border-radius:9px;
 font-family:inherit;
+font-size:15px;
 }
 
-.field textarea{
-min-height:100px;
+textarea{
+min-height:105px;
 resize:vertical;
 }
 
-.main-btn{
+button{
+border:0;
+border-radius:9px;
+padding:13px 18px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+font-family:inherit;
+}
+
+.save-btn{
 width:100%;
-padding:13px;
-border:0;
-border-radius:10px;
-background:#123b5d;
+margin-top:18px;
+background:#1e6fa8;
 color:white;
-font-weight:800;
-font-size:16px;
-cursor:pointer;
 }
 
-.main-btn:hover{
-opacity:.92;
-}
-
-.secondary-btn{
-padding:11px 15px;
-border:0;
-border-radius:9px;
-background:#f5a623;
-color:white;
-font-weight:800;
-cursor:pointer;
-}
-
-.danger-btn{
-padding:10px 14px;
-border:0;
-border-radius:9px;
-background:#b42318;
-color:white;
-font-weight:700;
-cursor:pointer;
-}
-
-.msg{
-margin-top:12px;
-padding:12px;
-border-radius:10px;
-display:none;
-line-height:1.6;
-}
-
-.ok{
-display:block;
-background:#e9f8ef;
-color:#146c36;
-}
-
-.err{
-display:block;
-background:#fff0f0;
-color:#a11;
-}
-
-.profile-box{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
-}
-
-.profile-full{
-grid-column:1/-1;
-}
-
-.jobs-grid{
+.job-grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:16px;
+gap:18px;
 }
 
-.job{
-border:1px solid #e4e8ef;
-border-radius:15px;
-padding:18px;
+.job-card{
+border:1px solid #e1e6ed;
+border-radius:14px;
+padding:20px;
 background:#fff;
 }
 
-.job h3{
+.job-card h3{
 margin-top:0;
-color:#123b5d;
+color:#17324d;
 }
 
-.job p{
-line-height:1.7;
-color:#596579;
-}
-
-.meta{
+.job-meta{
 display:flex;
 gap:8px;
 flex-wrap:wrap;
 margin:10px 0;
 }
 
-.meta span{
+.job-meta span{
 background:#f1f5f9;
-padding:6px 9px;
+padding:5px 9px;
 border-radius:8px;
 font-size:13px;
 }
 
+.job-description{
+color:#596579;
+margin-bottom:15px;
+}
+
+.apply-btn{
+background:#1e6fa8;
+color:white;
+width:100%;
+}
+
 .apply-box{
+display:none;
 margin-top:15px;
 padding:16px;
 background:#f8fafc;
 border-radius:12px;
-display:none;
 }
 
 .apply-box h4{
 margin-top:0;
-color:#123b5d;
+color:#17324d;
 }
 
-.file-note{
-font-size:13px;
-color:#667085;
-margin-top:6px;
+.submit-btn{
+width:100%;
+background:#16845b;
+color:white;
+margin-top:12px;
+}
+
+.message{
+display:none;
+padding:12px;
+border-radius:9px;
+margin-top:12px;
+line-height:1.6;
+}
+
+.success{
+display:block;
+background:#d1fae5;
+color:#065f46;
+}
+
+.error{
+display:block;
+background:#fee2e2;
+color:#991b1b;
 }
 
 .application{
-border:1px solid #e4e8ef;
-border-radius:14px;
-padding:15px;
-margin-bottom:12px;
+background:#fafafa;
+border-right:4px solid #1e6fa8;
+padding:17px;
+margin-bottom:13px;
+border-radius:10px;
 }
 
 .status{
 display:inline-block;
+font-weight:bold;
 padding:5px 10px;
 border-radius:20px;
-font-size:13px;
-font-weight:700;
 }
 
-.status.pending{
+.pending{
 background:#fff4cc;
 color:#8a6200;
 }
 
-.status.accepted{
-background:#e8f7ee;
-color:#146c36;
+.accepted{
+background:#d1fae5;
+color:#065f46;
 }
 
-.status.rejected{
-background:#ffe8e8;
-color:#a11;
+.rejected{
+background:#fee2e2;
+color:#991b1b;
 }
 
 .notification{
-border-right:4px solid #f5a623;
-padding:12px;
 background:#fafafa;
+border-right:4px solid #f5a623;
+padding:15px;
+margin-bottom:12px;
 border-radius:10px;
-margin-bottom:10px;
 }
 
 .empty{
 text-align:center;
-padding:25px;
+padding:20px;
 color:#667085;
 }
 
+.profile-preview{
+background:#f5f9ff;
+border-right:5px solid #1e6fa8;
+padding:17px;
+border-radius:10px;
+margin-top:18px;
+line-height:2;
+}
+
 footer{
+background:#17324d;
+color:white;
 text-align:center;
-padding:25px;
-color:#687386;
-font-size:13px;
+padding:25px 15px;
+line-height:1.8;
 }
 
 @media(max-width:700px){
-.profile-box{
-grid-template-columns:1fr;
-}
 
-.profile-full{
-grid-column:auto;
-}
-
-.jobs-grid{
+.profile-grid,
+.job-grid{
 grid-template-columns:1fr;
 }
 
@@ -318,28 +301,48 @@ align-items:flex-start;
 <body>
 
 <header>
+
 <div class="header-inner">
 
-<div class="logo">🇹🇳 Ras Jebel Jobs</div>
+<div class="logo">
+👤 فضاء الباحث عن عمل
+</div>
 
 <nav>
-<a href="index.html">🏠 الرئيسية</a>
-<a href="talent.html">⭐ Ras Jebel Talent</a>
-<button onclick="logout()">🚪 تسجيل الخروج</button>
+
+<a href="index.html">
+🏠 الرئيسية
+</a>
+
+<a href="talent.html">
+⭐ Ras Jebel Talent
+</a>
+
+<button onclick="logout()">
+🚪 تسجيل الخروج
+</button>
+
 </nav>
 
 </div>
+
 </header>
+
 
 <div class="container">
 
 <div class="hero">
-<h1>👤 فضاء الباحث عن عمل</h1>
+
+<h1>
+مرحبًا بك في فضاءك المهني
+</h1>
+
 <p>
-مرحبًا بك في فضاءك المهني على Ras Jebel Jobs.
-أنشئ ملفك، اكتشف عروض الشغل وقدّم ترشحاتك مباشرة للمؤسسات.
+Ras Jebel Jobs — اكتشف عروض الشغل، أنشئ ملفك المهني وقدّم ترشحاتك مباشرة.
 </p>
+
 </div>
+
 
 <!-- PROFILE -->
 
@@ -351,47 +354,50 @@ align-items:flex-start;
 أنشئ ملفك المهني وخلي المؤسسات تتعرف على اختصاصك وكفاءاتك.
 </p>
 
-<div class="profile-box">
+<div class="profile-grid">
 
-<div class="field">
-<label>👤 الاسم</label>
+<div>
+<label>👤 الاسم واللقب</label>
 <input id="fullName" type="text" placeholder="الاسم واللقب">
 </div>
 
-<div class="field">
+<div>
 <label>📱 رقم الهاتف</label>
-<input id="phone" type="tel" placeholder="رقم الهاتف">
+<input id="phone" type="text" placeholder="رقم الهاتف">
 </div>
 
-<div class="field">
+<div>
 <label>💼 الاختصاص / الوظيفة</label>
-<input id="speciality" type="text" placeholder="مثال: Technicienne Supérieure de Laboratoire">
+<input id="profession" type="text" placeholder="مثال: Technicienne Supérieure de Laboratoire">
 </div>
 
-<div class="field">
+<div>
 <label>🛠️ المهارات</label>
-<input id="skills" type="text" placeholder="مثال: HPLC, UV-Visible, Excel">
+<input id="skills" type="text" placeholder="مثال: HPLC, analyses physico-chimiques">
 </div>
 
-<div class="field">
+<div>
 <label>💼 الخبرة المهنية</label>
 <input id="experience" type="text" placeholder="مثال: Plusieurs stages">
 </div>
 
-<div class="field">
+<div>
 <label>🎓 التكوين والشهادات</label>
 <input id="education" type="text" placeholder="Licence et deux mastères">
 </div>
 
 </div>
 
-<button class="main-btn" onclick="saveProfile()">
+<button class="save-btn" onclick="saveProfile()">
 💾 حفظ ملفي المهني
 </button>
 
-<div id="profileMsg" class="msg"></div>
+<div id="profileMessage" class="message"></div>
+
+<div id="profilePreview"></div>
 
 </div>
+
 
 <!-- NOTIFICATIONS -->
 
@@ -405,6 +411,7 @@ align-items:flex-start;
 
 </div>
 
+
 <!-- JOBS -->
 
 <div class="card">
@@ -412,14 +419,11 @@ align-items:flex-start;
 <h2>💼 عروض الشغل</h2>
 
 <div id="jobs">
-
-<div class="empty">
-جاري تحميل عروض الشغل...
+<div class="empty">جاري تحميل عروض الشغل...</div>
 </div>
 
 </div>
 
-</div>
 
 <!-- APPLICATIONS -->
 
@@ -428,48 +432,52 @@ align-items:flex-start;
 <h2>📄 ترشحاتي</h2>
 
 <div id="applications">
-
-<div class="empty">
-جاري تحميل الترشحات...
+<div class="empty">جاري تحميل الترشحات...</div>
 </div>
 
 </div>
 
 </div>
 
-</div>
 
 <footer>
-Ras Jebel Jobs — منصة الوظائف المحلية<br>
+
+Ras Jebel Jobs — منصة الوظائف المحلية
+
+<br>
+
 © 2026 Chimiste | BOUJEMÂA Rachida — Tous droits réservés
+
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-const SUPABASE_URL='https://gkiynoqovpuzudzpnryn.supabase.co';
+const SUPABASE_URL =
+"https://gkiynoqovpuzudzpnryn.supabase.co";
 
-const SUPABASE_KEY='sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw';
+const SUPABASE_KEY =
+"sb_publishable_cUc4p8AVQ6pHfI0oQT-PLA_Kt-5dhdw";
 
-const supabaseClient=
+const supabaseClient =
 window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
-let currentUser=null;
+let currentUser = null;
+
 
 /* =========================
-AUTHENTICATION
+   AUTH
 ========================= */
 
 async function getUser(){
 
 const {
-data:{user},
+data,
 error
-}=await supabaseClient.auth.getUser();
+} = await supabaseClient.auth.getUser();
 
 if(error){
 
@@ -478,54 +486,49 @@ console.error(error);
 return null;
 }
 
-return user;
+return data.user;
 }
 
-async function checkAuthentication(){
 
-const user=await getUser();
+async function initialize(){
 
-if(!user){
+currentUser = await getUser();
+
+if(!currentUser){
 
 window.location.href="auth.html";
-
-return false;
-}
-
-currentUser=user;
-
-return true;
-}
-
-async function logout(){
-
-const {error}=await supabaseClient.auth.signOut();
-
-if(error){
-
-alert("❌ تعذر تسجيل الخروج. حاول مرة أخرى.");
 
 return;
 }
 
+await loadProfile();
+await loadNotifications();
+await loadJobs();
+await loadApplications();
+}
+
+
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
 window.location.href="auth.html";
 }
 
+
 /* =========================
-PROFILE
+   PROFILE
 ========================= */
 
 async function loadProfile(){
 
-if(!currentUser)return;
-
 const {
 data,
 error
-}=await supabaseClient
-.from('profiles')
-.select('*')
-.eq('id',currentUser.id)
+} = await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
 .maybeSingle();
 
 if(error){
@@ -537,64 +540,62 @@ return;
 
 if(!data)return;
 
-document.getElementById('fullName').value=
-data.full_name||currentUser.user_metadata?.full_name||'';
+document.getElementById("fullName").value =
+data.full_name || "";
 
-document.getElementById('phone').value=
-data.phone||'';
+document.getElementById("phone").value =
+data.phone || "";
 
-document.getElementById('speciality').value=
-data.speciality||data.job_title||'';
+document.getElementById("profession").value =
+data.profession || "";
 
-document.getElementById('skills').value=
-data.skills||'';
+document.getElementById("skills").value =
+data.skills || "";
 
-document.getElementById('experience').value=
-data.experience||'';
+document.getElementById("experience").value =
+data.experience || "";
 
-document.getElementById('education').value=
-data.education||data.training||'';
+document.getElementById("education").value =
+data.education || "";
+
+showProfilePreview(data);
 }
+
 
 async function saveProfile(){
 
-if(!currentUser){
-
-alert("يجب تسجيل الدخول.");
-
-return;
-}
-
-const profile={
+const profile = {
 
 id:currentUser.id,
 
 full_name:
-document.getElementById('fullName').value.trim(),
+document.getElementById("fullName").value.trim(),
 
 phone:
-document.getElementById('phone').value.trim(),
+document.getElementById("phone").value.trim(),
 
-speciality:
-document.getElementById('speciality').value.trim(),
+role:"candidate",
+
+profession:
+document.getElementById("profession").value.trim(),
 
 skills:
-document.getElementById('skills').value.trim(),
+document.getElementById("skills").value.trim(),
 
 experience:
-document.getElementById('experience').value.trim(),
+document.getElementById("experience").value.trim(),
 
 education:
-document.getElementById('education').value.trim(),
+document.getElementById("education").value.trim()
 
-role:'candidate'
 };
 
-if(!profile.full_name){
+if(!profile.full_name ||
+!profile.profession){
 
 showMessage(
-'profileMsg',
-'اكتب الاسم واللقب.',
+"profileMessage",
+"❌ الاسم والاختصاص إجباريان.",
 false
 );
 
@@ -603,17 +604,17 @@ return;
 
 const {
 error
-}=await supabaseClient
-.from('profiles')
-.upsert(profile,{onConflict:'id'});
+} = await supabaseClient
+.from("profiles")
+.upsert(profile,{onConflict:"id"});
 
 if(error){
 
 console.error(error);
 
 showMessage(
-'profileMsg',
-'❌ تعذر حفظ الملف المهني: '+error.message,
+"profileMessage",
+"❌ تعذر حفظ الملف: "+error.message,
 false
 );
 
@@ -621,14 +622,57 @@ return;
 }
 
 showMessage(
-'profileMsg',
-'تم حفظ ملفك المهني بنجاح ✅',
+"profileMessage",
+"✅ تم حفظ ملفك المهني بنجاح!",
 true
 );
+
+showProfilePreview(profile);
 }
 
+
+function showProfilePreview(data){
+
+document.getElementById("profilePreview").innerHTML = `
+
+<div class="profile-preview">
+
+<strong>👤 الاسم:</strong>
+${escapeHtml(data.full_name || "")}
+
+<br>
+
+<strong>📱 الهاتف:</strong>
+${escapeHtml(data.phone || "غير محدد")}
+
+<br>
+
+<strong>💼 الاختصاص:</strong>
+${escapeHtml(data.profession || "غير محدد")}
+
+<br>
+
+<strong>🛠️ المهارات:</strong>
+${escapeHtml(data.skills || "غير محدد")}
+
+<br>
+
+<strong>💼 الخبرة:</strong>
+${escapeHtml(data.experience || "غير محدد")}
+
+<br>
+
+<strong>🎓 التكوين:</strong>
+${escapeHtml(data.education || "غير محدد")}
+
+</div>
+
+`;
+}
+
+
 /* =========================
-JOBS
+   JOBS
 ========================= */
 
 async function loadJobs(){
@@ -636,112 +680,128 @@ async function loadJobs(){
 const {
 data,
 error
-}=await supabaseClient
-.from('jobs')
-.select('*')
-.eq('status','active')
-.order('created_at',{ascending:false});
+} = await supabaseClient
+.from("jobs")
+.select("*")
+.eq("status","active")
+.order("created_at",{ascending:false});
 
-const container=
-document.getElementById('jobs');
+const container =
+document.getElementById("jobs");
 
 if(error){
 
 console.error(error);
 
-container.innerHTML=
+container.innerHTML =
 '<div class="empty">❌ تعذر تحميل عروض الشغل.</div>';
 
 return;
 }
 
-if(!data||data.length===0){
+if(!data || data.length===0){
 
-container.innerHTML=
+container.innerHTML =
 '<div class="empty">لا توجد عروض شغل منشورة حاليًا.</div>';
 
 return;
 }
 
-container.innerHTML=
-'<div class="jobs-grid">'+
-data.map(job=>createJobCard(job)).join('')+
+container.innerHTML =
+'<div class="job-grid">'+
+data.map(job=>createJobCard(job)).join("")+
 '</div>';
 }
+
 
 function createJobCard(job){
 
 return `
 
-<div class="job">
+<div class="job-card">
 
-<h3>💼 ${escapeHtml(job.title||'عرض شغل')}</h3>
+<h3>
+💼 ${escapeHtml(job.title || "عرض شغل")}
+</h3>
 
-<div class="meta">
+<div class="job-meta">
 
-<span>📍 ${escapeHtml(job.location||'غير محدد')}</span>
+<span>
+📍 ${escapeHtml(job.location || "غير محدد")}
+</span>
 
-<span>📄 ${escapeHtml(job.contract_type||'غير محدد')}</span>
+<span>
+📄 ${escapeHtml(job.contract_type || "غير محدد")}
+</span>
 
-<span>🎓 ${escapeHtml(job.experience||'غير محدد')}</span>
+<span>
+🎓 ${escapeHtml(job.experience || "غير محدد")}
+</span>
 
 </div>
 
-<p>
-${escapeHtml(job.description||'لا يوجد وصف لهذا العرض.')}
-</p>
+<div class="job-description">
+
+${escapeHtml(job.description || "لا يوجد وصف.")}
+
+</div>
 
 <button
-class="secondary-btn"
-onclick="toggleApply('${job.id}')"
+class="apply-btn"
+onclick="toggleApply('${escapeAttribute(job.id)}')"
 >
+
 📄 شوف العرض والتـرشح
+
 </button>
 
+
 <div
-id="apply-${job.id}"
+id="apply-${escapeAttribute(job.id)}"
 class="apply-box"
 >
 
-<h4>📄 تقديم الترشح</h4>
+<h4>
+📄 تقديم الترشح
+</h4>
 
-<div class="field">
-
-<label>📎 السيرة الذاتية CV — PDF فقط</label>
+<label>
+📎 السيرة الذاتية CV — PDF فقط
+</label>
 
 <input
-id="cv-${job.id}"
+id="cv-${escapeAttribute(job.id)}"
 type="file"
-accept=".pdf,application/pdf"
+accept="application/pdf,.pdf"
 >
 
-<div class="file-note">
-الحد الأقصى المقترح: 5 MB
-</div>
+<small>
+الحد الأقصى: 5 MB
+</small>
 
-</div>
 
-<div class="field">
-
-<label>💬 رسالة اختيارية</label>
+<label>
+💬 رسالة اختيارية
+</label>
 
 <textarea
-id="message-${job.id}"
+id="message-${escapeAttribute(job.id)}"
 placeholder="اكتب رسالة قصيرة للمؤسسة..."
 ></textarea>
 
-</div>
 
 <button
-class="main-btn"
-onclick="submitApplication('${job.id}')"
+class="submit-btn"
+onclick="submitApplication('${escapeAttribute(job.id)}')"
 >
+
 🚀 تقديم الترشح
+
 </button>
 
 <div
-id="applyMsg-${job.id}"
-class="msg"
+id="applyMsg-${escapeAttribute(job.id)}"
+class="message"
 ></div>
 
 </div>
@@ -751,143 +811,157 @@ class="msg"
 `;
 }
 
+
 function toggleApply(jobId){
 
-const box=
-document.getElementById('apply-'+jobId);
+const box =
+document.getElementById("apply-"+jobId);
 
 if(!box)return;
 
-box.style.display=
-box.style.display==='block'
-?'none'
-:'block';
+box.style.display =
+box.style.display==="block"
+? "none"
+: "block";
 }
 
+
 /* =========================
-APPLICATION
+   SUBMIT APPLICATION
 ========================= */
 
 async function submitApplication(jobId){
 
-if(!currentUser){
+const msg =
+document.getElementById("applyMsg-"+jobId);
 
-window.location.href='auth.html';
+const fileInput =
+document.getElementById("cv-"+jobId);
 
-return;
-}
+const messageInput =
+document.getElementById("message-"+jobId);
 
-const fileInput=
-document.getElementById('cv-'+jobId);
-
-const messageInput=
-document.getElementById('message-'+jobId);
-
-const msg=
-document.getElementById('applyMsg-'+jobId);
-
-const file=
+const file =
 fileInput.files[0];
+
 
 if(!file){
 
 showElementMessage(
 msg,
-'📎 لازم تختار CV بصيغة PDF.',
+"📎 لازم تختار CV بصيغة PDF.",
 false
 );
 
 return;
 }
 
-if(file.type!=='application/pdf' &&
-!file.name.toLowerCase().endsWith('.pdf')){
+
+if(
+file.type !== "application/pdf" &&
+!file.name.toLowerCase().endsWith(".pdf")
+){
 
 showElementMessage(
 msg,
-'❌ الملف لازم يكون PDF.',
+"❌ الملف لازم يكون PDF.",
 false
 );
 
 return;
 }
 
-if(file.size>5*1024*1024){
+
+if(file.size > 5 * 1024 * 1024){
 
 showElementMessage(
 msg,
-'❌ حجم الـCV لازم ما يفوتش 5 MB.',
+"❌ حجم الـCV لازم ما يفوتش 5 MB.",
 false
 );
 
 return;
 }
 
-/* منع الترشح مرتين لنفس العرض */
+
+/*
+   مهم:
+   نبحث فقط عن application
+   لنفس المستخدم + نفس job_id
+*/
 
 const {
-data:existing,
-error:existingError
-}=await supabaseClient
-.from('applications')
-.select('id')
-.eq('job_id',jobId)
-.eq('candidate_id',currentUser.id)
-.maybeSingle();
+data:existingApplications,
+error:checkError
+} = await supabaseClient
+.from("applications")
+.select("id,job_id,candidate_id")
+.eq("job_id",jobId)
+.eq("candidate_id",currentUser.id);
 
-if(existingError &&
-existingError.code!=='PGRST116'){
 
-console.error(existingError);
+if(checkError){
+
+console.error(checkError);
 
 showElementMessage(
 msg,
-'❌ تعذر التحقق من الترشح السابق.',
+"❌ تعذر التحقق من الترشح السابق: "+
+checkError.message,
 false
 );
 
 return;
 }
 
-if(existing){
+
+if(
+existingApplications &&
+existingApplications.length > 0
+){
 
 showElementMessage(
 msg,
-'⚠️ سبق وقدّمت ترشحك لهذا العرض.',
+"⚠️ سبق وقدّمت ترشحك لهذا العرض.",
 false
 );
 
 return;
 }
 
-/* رفع CV */
 
-const safeName=
+/* =========================
+   UPLOAD CV
+========================= */
+
+const cleanName =
 file.name
-.replace(/[^a-zA-Z0-9._-]/g,'_');
+.replace(/[^a-zA-Z0-9._-]/g,"_");
 
-const filePath=
+const filePath =
 currentUser.id+
-'/'+
+"/"+
 jobId+
-'/'+
+"/"+
 Date.now()+
-'-'+
-safeName;
+"-"+
+cleanName;
+
 
 const {
 error:uploadError
-}=await supabaseClient
+} = await supabaseClient
 .storage
-.from('cvs')
+.from("cvs")
 .upload(
 filePath,
 file,
 {
-contentType:'application/pdf',
+contentType:"application/pdf",
 upsert:false
 }
 );
+
 
 if(uploadError){
 
@@ -895,31 +969,39 @@ console.error(uploadError);
 
 showElementMessage(
 msg,
-'❌ تعذر رفع الـCV: '+uploadError.message,
+"❌ تعذر رفع الـCV: "+
+uploadError.message,
 false
 );
 
 return;
 }
 
-/* رابط CV */
+
+/* =========================
+   CV URL
+========================= */
 
 const {
 data:urlData
-}=supabaseClient
+} =
+supabaseClient
 .storage
-.from('cvs')
+.from("cvs")
 .getPublicUrl(filePath);
 
-const cvUrl=
-urlData?.publicUrl||filePath;
+const cvUrl =
+urlData.publicUrl;
 
-/* إنشاء الترشح */
+
+/* =========================
+   INSERT APPLICATION
+========================= */
 
 const {
-error:applicationError
-}=await supabaseClient
-.from('applications')
+error:insertError
+} = await supabaseClient
+.from("applications")
 .insert({
 
 job_id:jobId,
@@ -931,109 +1013,114 @@ cv_url:cvUrl,
 message:
 messageInput.value.trim(),
 
-status:'submitted'
+status:"submitted"
 
 });
 
-if(applicationError){
 
-console.error(applicationError);
+if(insertError){
+
+console.error(insertError);
 
 showElementMessage(
 msg,
-'❌ تعذر تسجيل الترشح: '+applicationError.message,
+"❌ تعذر تسجيل الترشح: "+
+insertError.message,
 false
 );
 
 return;
 }
 
+
 showElementMessage(
 msg,
-'تم تقديم ترشحك بنجاح ✅ المؤسسة تنجم توا تشوف ترشحك.',
+"✅ تم تقديم ترشحك بنجاح! المؤسسة تنجم توا تشوف ترشحك.",
 true
 );
 
-/* تنظيف الاستمارة */
 
-fileInput.value='';
+fileInput.value="";
+messageInput.value="";
 
-messageInput.value='';
-
-/* تحديث قائمة الترشحات */
 
 setTimeout(
 loadApplications,
 500
 );
+
 }
 
+
 /* =========================
-APPLICATIONS LIST
+   APPLICATIONS
 ========================= */
 
 async function loadApplications(){
 
-if(!currentUser)return;
-
 const {
 data,
 error
-}=await supabaseClient
-.from('applications')
-.select('*')
-.eq('candidate_id',currentUser.id)
-.order('created_at',{ascending:false});
+} = await supabaseClient
+.from("applications")
+.select("*")
+.eq("candidate_id",currentUser.id)
+.order("created_at",{ascending:false});
 
-const container=
-document.getElementById('applications');
+const container =
+document.getElementById("applications");
+
 
 if(error){
 
 console.error(error);
 
-container.innerHTML=
-'<div class="empty">❌ تعذر تحميل ترشحاتك.</div>';
+container.innerHTML =
+'<div class="empty">❌ تعذر تحميل الترشحات.</div>';
 
 return;
 }
 
-if(!data||data.length===0){
 
-container.innerHTML=
-'<div class="empty">ما عندكش ترشحات حاليًا.</div>';
+if(!data || data.length===0){
+
+container.innerHTML =
+'<div class="empty">لا توجد ترشحات حاليًا.</div>';
 
 return;
 }
 
-container.innerHTML=
-data.map(app=>{
 
-let statusClass='pending';
+container.innerHTML =
+data.map(application=>{
 
-let statusText='🟡 قيد الدراسة';
+let statusText="🟡 قيد الدراسة";
+let statusClass="pending";
 
-if(app.status==='accepted'){
 
-statusClass='accepted';
+if(application.status==="accepted"){
 
-statusText='🟢 مقبول';
+statusText="🟢 مقبول";
+statusClass="accepted";
+
+}
+
+
+if(application.status==="rejected"){
+
+statusText="🔴 مرفوض";
+statusClass="rejected";
 
 }
 
-if(app.status==='rejected'){
-
-statusClass='rejected';
-
-statusText='🔴 مرفوض';
-
-}
 
 return `
 
 <div class="application">
 
-<strong>💼 الترشح</strong>
+<strong>
+💼 الترشح
+</strong>
 
 <br><br>
 
@@ -1041,167 +1128,169 @@ return `
 ${statusText}
 </span>
 
-<p>
-📅 ${formatDate(app.created_at)}
-</p>
+<br><br>
+
+📅
+${formatDate(application.created_at)}
 
 ${
-app.cv_url
+application.cv_url
 ?
-`<a
-href="${escapeAttribute(app.cv_url)}"
+`
+
+<br><br>
+
+<a
+href="${escapeAttribute(application.cv_url)}"
 target="_blank"
 rel="noopener"
 >
+
 📄 مشاهدة CV
-</a>`
-:''
+
+</a>
+
+`
+:""
 }
 
 </div>
 
 `;
 
-}).join('');
+}).join("");
 }
 
+
 /* =========================
-NOTIFICATIONS
+   NOTIFICATIONS
 ========================= */
 
 async function loadNotifications(){
 
-if(!currentUser)return;
-
 const {
 data,
 error
-}=await supabaseClient
-.from('notifications')
-.select('*')
-.eq('user_id',currentUser.id)
-.order('created_at',{ascending:false});
+} = await supabaseClient
+.from("notifications")
+.select("*")
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false});
 
-const container=
-document.getElementById('notifications');
+const container =
+document.getElementById("notifications");
+
 
 if(error){
 
 console.error(error);
 
-container.innerHTML=
+container.innerHTML =
 '<div class="empty">لا توجد إشعارات جديدة.</div>';
 
 return;
 }
 
-if(!data||data.length===0){
 
-container.innerHTML=
-'<div class="empty">ما عندكش إشعارات حاليًا.</div>';
+if(!data || data.length===0){
+
+container.innerHTML =
+'<div class="empty">لا توجد إشعارات جديدة.</div>';
 
 return;
 }
 
-container.innerHTML=
-data.map(n=>`
+
+container.innerHTML =
+data.map(notification=>`
 
 <div class="notification">
 
 <strong>
-📢 ${escapeHtml(n.title||'إشعار')}
+📢 ${escapeHtml(notification.title || "إشعار")}
 </strong>
 
-<p>
-${escapeHtml(n.message||'')}
-</p>
+<br>
+
+${escapeHtml(notification.message || "")}
+
+<br>
 
 <small>
-📅 ${formatDate(n.created_at)}
+📅 ${formatDate(notification.created_at)}
 </small>
 
 </div>
 
-`).join('');
+`).join("");
 }
 
+
 /* =========================
-HELPERS
+   HELPERS
 ========================= */
 
-function showMessage(id,text,ok){
+function showMessage(id,text,success){
 
-const element=
+const element =
 document.getElementById(id);
 
 element.textContent=text;
 
-element.className=
-'msg '+(ok?'ok':'err');
+element.className =
+"message "+
+(success ? "success" : "error");
 
-element.style.display='block';
+element.style.display="block";
 }
 
-function showElementMessage(element,text,ok){
+
+function showElementMessage(element,text,success){
 
 element.textContent=text;
 
-element.className=
-'msg '+(ok?'ok':'err');
+element.className =
+"message "+
+(success ? "success" : "error");
 
-element.style.display='block';
+element.style.display="block";
 }
+
+
+function escapeHtml(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+
+
+function escapeAttribute(value){
+
+return String(value ?? "")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;");
+}
+
 
 function formatDate(date){
 
-if(!date)return'';
+if(!date)return"";
 
 return new Date(date).toLocaleString(
-'fr-TN',
+"fr-TN",
 {
-dateStyle:'short',
-timeStyle:'short'
+dateStyle:"short",
+timeStyle:"short"
 }
 );
 }
 
-function escapeHtml(value){
-
-return String(value??'')
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;')
-.replace(/'/g,'&#039;');
-}
-
-function escapeAttribute(value){
-
-return String(value??'')
-.replace(/"/g,'%22')
-.replace(/</g,'%3C')
-.replace(/>/g,'%3E');
-}
-
-/* =========================
-INITIALIZE
-========================= */
-
-async function initialize(){
-
-const authenticated=
-await checkAuthentication();
-
-if(!authenticated)return;
-
-await loadProfile();
-
-await loadNotifications();
-
-await loadJobs();
-
-await loadApplications();
-}
 
 initialize();
 
