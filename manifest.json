@@ -1,0 +1,15 @@
+
+{
+  "name": "Ras Jebel Jobs",
+  "short_name": "Ras Jebel",
+  "id": "/Ras-Jebel-Jobs-/",
+  "description": "منصّة مهنية محلية تربط الباحثين عن شغل بالمؤسسات في رأس الجبل وبنزرت والمناطق القريبة في تونس.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/Ras-Jebel-Jobs-/",
+  "scope": "/Ras-Jebel-Jobs-/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#123b5d"
+}
