@@ -11,5 +11,13 @@
   "display": "standalone",
   "orientation": "any",
   "background_color": "#ffffff",
-  "theme_color": "#123b5d"
+  "theme_color": "#123b5d",
+  "icons": [
+    {
+      "src": "/Ras-Jebel-Jobs-/file_0000000087a08246bd5dc6a7194231d9.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
